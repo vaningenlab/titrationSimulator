@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# HvI 2015-2022
+# wrapper to start GNU Octave
+# and start NMR simulator
+
+# Automagically find the folder of the scripts
+NMRSIM_PATH="$( dirname "${BASH_SOURCE[0]}" )"
+
+# to make sure double clicking this file will lead octave to the right directory
+cd "$NMRSIM_PATH"
+
+# resize current terminal window to 30x100
+# works under Apple Terminal, should work with gnome-terminal
+# does not work with iTerm2 if "disable session initiated resizing" is checked
+resize -s 30 100 >& /dev/null
+
+# Automagically find path to octave installation
+if [ ! -z $( command -v octave 2> /dev/null ) ]
+then
+  OCTAVE=$( command -v octave )
+else
+  echo "Octave could not be found."
+  echo "Make sure it is installed and in the PATH"
+  echo
+  echo "Install Octave via the package manager of your system."
+  echo
+  echo "Otherwise you could open the app in the usual way, then navigate within the app"
+  echo "to the directory where you put the nmrSim scripts (change the working directory),"
+  echo "and then type \"ini\" (without the quotes) to start the simulator."
+  echo
+  exit 1
+fi
+
+# -q = quiet (no octave version onfo etc)
+# --persist = keep running after ini.m has run
+
+$OCTAVE -qf -p "$NMRSIM_PATH"/scripts --persist "$NMRSIM_PATH"/scripts/ini.m

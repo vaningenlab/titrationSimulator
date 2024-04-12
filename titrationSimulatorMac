@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# HvI 2015-2022
+# wrapper to start GNU Octave and start NMR simulator
+
+echo `pwd`
+
+# Automagically find the folder of the scripts -- only works from the Terminal
+# use quotes to avoid issues with spaces
+NMRSIM_PATH="$( dirname "${BASH_SOURCE[0]}" )"
+
+echo "$NMRSIM_PATH"
+
+# to make sure double clicking this file will lead octave to the right directory
+# use quotes to avoid issues with spaces
+cd "$NMRSIM_PATH"
+
+# resize current terminal window to 30x100
+# works under Apple Terminal, should work with gnome-terminal
+# does not work with iTerm2 if "disable session initiated resizing" is checked
+resize -s 30 100 >& /dev/null
+
+# Automagically find path to octave installation
+if [ ! -z $( command -v octave 2> /dev/null ) ]; then
+  OCTAVE=$( command -v octave )
+  #OCTAVE="/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
+elif [ ! -z $( ls /Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
+  OCTAVE="/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
+elif [ ! -z $( ls ~/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
+  OCTAVE="~/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
+else
+  echo
+  echo "Octave could not be found."
+  echo
+  echo "Install Octave via the the Mac Octave.app website or via a package manager like HomeBrew."
+  echo
+  echo "If you installed the Ocave-6.2.0.app, make sure it is in the /Applications folder."
+  echo
+  echo "Otherwise you could open the app in the usual way, then navigate within the app"
+  echo "to the directory where you put the nmrSim scripts (change the working directory),"
+  echo "and then type \"ini\" (without the quotes) to start the simulator."
+  echo
+  exit 1
+fi
+
+echo
+echo "Starting GNU Octave from $OCTAVE"
+echo
+
+# -q = quiet (no octave version onfo etc)
+# --persist = keep running after ini.m has run
+
+$OCTAVE -qf -p "$NMRSIM_PATH"/scripts --persist "$NMRSIM_PATH"/scripts/ini.m
