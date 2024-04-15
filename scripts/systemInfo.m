@@ -64,6 +64,7 @@ if sum(questionAsked) < numQuestions
 			printf(" %d ", q)
 		end 
 	end 
+	print("\n\n")
 	disp("Type, for example, \"question(5)\" to still try to answer question 5.")
 	disp("")
 	disp("If you are not done yet w/ the titration, simply continue your experiment.")

@@ -140,7 +140,7 @@ else
                 end
                 % pick centre peak, return x y
                 disp("")
-                printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorPlot(mod(ss-1,length(colorPlot))+1))
+                printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,:))
                 [x_s, y_s, buttons] = ginput(1);
                 if ss == 1
                     x_f = x_s;
