@@ -1,0 +1,823 @@
+HISTORY titrationSimulator
+
+2024: moved to GitHub changes tracked there, but also here for larger changes
+
+before ICMRBS/2024 BMSB course:
+- adjust Windows BAT file to use octave-gui and qt toolkit to have fancier graphics
+- fix colors in getKD prompt
+- pulse calibration in easyMode 0 1 2 is also a question but not counted!
+  135 out of 130 points...
+  temp fix for easyMode 2 in question2.m
+
+
+% HISTORY:
+========================================================================
+
+v16 after BMI track 2023
+- added saving backup in each xfb to make restaring afer crash more easy
+- added p1 in system.out so that after restart have same pulse lengh
+- limited steps in getKD to 200
+- added warning against changing window size in calcCSP 
+- added exchangeClass in system.out
+
+======================================================================
+
+v15 after BMSB CP2 Sep 2023
+- update to GNU Octave 8.3.0 Windows
+- update to GNU Octave 8.3.0 Mac OS 11+ (Macports)
+- update to GNU Octave 6.2.0 Mac OS 10.x
+
+=====================================================================
+CHECK for USP NMR course, easyMode=2
+- high affinity check:                  OK Mac 8.3
+- low  affinity small check:            OK Mac 6.2
+- low  affinity protein check :         OK Win 8.3
+- testingFlag 0 double check: 
+- 8 questions: OK 100 points
+
+
+=============================================================================================================
+FIXED:
+- brew installing does not place octave in auto-findable position, so need explicit /opt/homebrew/bin/octave        DONE
+- brew does not install on MacOS 10.14.6/ 10.15 ==> use Octave 6.2.0 fall back (or just keep using that?)           DONE
+- remove break in calcCSP as it generates a loop for some                                                           DONE
+- better be a bit stricter on p1 pulse calibration                                                                  DONE
+- code of designating exchange regime is certainly incorrect, need to combine 1H and 15N dims somehow!              DONE
+- some missed question 7 dilution? add check in calcCSP                                                             DONE
+- major bug with saveFigure on Windows, breaks and locks everything REMOVE                                          DONE
+- extract outside home folder does not work , added to README                                                       DONE
+- starting GUI and not descending in script sub folder, added to README                                             DONE
+- doing eda in middle of experiment no longer resets allSpectra!                                                    DONE
+- constant ‘errors’ and ‘you sure you want to continue?’. with low KD, adapted fast-excahnge scenario               DONE
+- if already max and min concentration then no longer check that needs updateing,                                   DONE
+- if pulse is bad should not show the loading of HSQC, checked optimized should be OK                               DONE
+- double check selection peak for getKD                                                                             DONE
+- add fit error to KD especially                                                                                    DONE
+- add score 1/10 in systemInfo                                                                                      DONE
+- tell them exactly which figure window to send                                                                     DONE
+- add more than >=0.5 in first step, check 0.66 in first step, now prevented in all cases                           DONE
+- titrate guidance  if making poor choices, like less than 0.5 bound after 5 points.                                DONE
+- titrate guidance    also stop sign if more than 0.95%                                                             DONE
+- titrate guidance or if making little progress for fe steps                                                        DONE
+- titrate guidance    warn against makeing a big step!                                                              DONE
+- encourage to go to 90% at least if calcCSP already at five/6 points?                                              DONE
+- missed quesstion(8) == calcCSP clicking should be OK since no more break, so everybody finishes                   DONE
+- testingflag                                                                                                       DONE
+- stream line the information: moved showHint zoomPeak info to question on peak intensitie                          DONE
+- fixing scoring multple times pulse calibration                                                                    DONE
+- fixed bug in unAdd                                                                                                DONE
+- peakInfo peakpos incorrect, corrected                                                                             DONE
+
+============================================================================================
+
+v14 before BMSB CP2 Sep 2023
+- update to GNU Octave 8.3.0 Windows
+- update to GNU Octave 8.3.0 Mac (Macports) (Octave.app is out of date, and not supported on Apple silicon)
+
+Q (12): 1 2 3 4 5 6 7 8 9 10 11 12 (score is max 130 since 10 point bonus)
+plots : 1 popt 
+        1 acquisition 
+        2 FID 1/FT/11/FT
+        2 spectrum
+        3 coneview
+        4 slices
+        5 CSP
+        6 KD
+
+- corrected "P" zoom mode is right click for Windows in zg.m
+- corrected typos in prompt for question 4 resolution in xfb.m
+- corrected check for consistent titration and spectrum plot in titrate.m
+- added dilution effect in answer to question(11)
+- changed calcCSP pointer on cursor to match behaviour windows10/octave8.3
+- added logging of all commands in ini.m -> diary nmrsim.log
+- added check for [complex]==0 in unAdd.m and zg.m
+- more feedback on KD error in getKD.m
+- added few more protein descriptors
+- p1 calibration within 0.5 us for maximum points in rpar.m
+- update figure button directions for 8.3 qt mac windows 
+- check windows still needs cli to get fltk since gui mode with qt performs very poorly at least in my VM
+- updated code for determining exhchange regime in initialiseSystem.m
+    now 5 possible scanrios, easyMode=1 only has 3, easyMode 2/3 only 2
+    added to systemInfo.m
+    intermediate class, can still sort of fit the KD on fast exchange peak
+- adapted also calcCSP.m to match better and make clear to figure what goes where
+- adapted getKD to be bit more toleerant on using fast-intermediate peaks for fitting
+- adapted answer to question(11) to match better to my intuition
+- checked extreme scenario 2.5 mM KD fast exchange OK, 80% is doable doubling steps is necessary
+- checked extreme scenario 60 uM KD slow intermediate OK
+- included 4th best residues for interface calcCSP such that if 3rd and 4th are close, both are correct
+
+
+==============================================
+
+- if easymode = 2 perhaps no 2D question (in zg.m)  DONE
+- need to have a full log file of commands typed for bugfixes, or more info in systemInfo DONE
+- need to have default state.out saved for bugfixes even if exiting program wrong way ONLY W/ GOODBYE
+- no final score calculated if question(8) is missed? SHOULD NOT BE 
+    8 is calcCSP
+
+==================================================
+2023: after BMSB practical, 40 students used it:
+- none w/ ginput issues!
+- major installation issue for one student, gnuplot installation failed, 
+    M1 ARM macbook! gnuplot not supported!
+    !needs brew install in order to work!
+- major issue w/ contouring of spectra for 2-3 students, edlev resets to 3*noise but is way too low?
+    quick fix would be reset baseLevel, as is used for plotAll 
+        --- would need more help info for commands
+    issue is that first two! spectrum are somehow empty! unclear how?
+    probably did not do the xfb Fourier transform? 
+    added another check in titrate DONE
+- error in systemInfo report KD is 0 nM but fit is OK, should be uM KD. // should be OK
+- error in tirate that for few students farcion bound is zero! in intermediate step! ==> related to unAdd > ADDED CHECK
+- error in bindingcurves, perhaps is misclick then not in include in fiting?         ???
+- stetout does not sstore ttitration steps? sysmeInfo doess not work afetr resstart  ???
+- check feedback KD for 100% error  ADDED
+- check check p1 for 2-3 us difference SHOULD BE OK
+- check easyMode 1 KD distributtion IS OK
+- check easyMode 1 ligand classes! IS OK
+- check ligand/protein mass distribution IS OK
+- extend ligand /protein descriptions (GO terms?) DONE
+
+==================================================
+*** v13 prep 2022 version BMSB / BMI track ***
+- GNU Octave is v. 7.2.0 Windows / 6.2.0 dmg version Mac / 7.2.0 version MacPorts/Homebrew
+
+- FIXED issue with bat file if Windows does not have 8.3 names enabled! 
+    new bat file does not use 8.3 names and does not rely on octave-7.2.0.bat
+    still workaround if bat-file does not work is to use gui
+- FIXED mac startup script to also work with spaces
+
+BMSB: final check:
+- sc in systemout remove    DONE
+- drawnow FID fix to plot 1 ADDED pointer tto zg
+- make  FID         = plot 1      zg HSQC and 1H calibration
+        spectrum    = plot 2      calcCSP/edlev/getKD/makeSample/plot2D/plotAll/saveFigure/zoomFull/zoomPeak/qfp find90 1H calibration
+        coneView    = plot 3      coneView
+        showFID     = plot 4      showFID/2
+        CSP         = plot 5      calcCSP
+        binding     = plot 6      getKD/saveFigure/plotBindingcurve
+- zg HSQC 5-60sec is 60sec  DONE
+- final double check
+    MAC:    
+    - added concentration guidance for easyMode=1 in makeSample
+    - scale FID amplitude by ns
+    - updated plotAll
+    - lowered low protein conc warning to 50uM
+    - few typo fixes
+    - all OK
+    WIN:
+    - all OK
+==================================================
+BMI:
+- all could start script file without issues
+- none with ginput issues
+- took them certainly 60min
+
+issues after BMI track:  
+- Eri name has too few consonants ...
+    FIXED by suggesting adding last name in initialiseSystem and updating createAcronym
+- folded peak 1H after adding dw still
+    FIXED in initialiseSpectrum, recoded check for folding, should work always, also removed "sc" scaling parameter
+- after rpar("HSQC") pulse check does not continue
+    FIXED by adding loadHSQC check
+- p1 calibration how to infer which value, add that cannot use x-axis indicator of plot window!
+    FIXED even more explicit explanation on what to
+- should keep plot windows open and not minimize them
+    FIXED in zg of HSQC
+- question(5) missed? multiple people run into this but not all
+    CORRECTED check fom cspTime to questionAsked
+- getKD twice simply works again?
+    FIXED
+
+- ginput fails for in some cases; restart resolves issue
+    could try fltk or gnuplot terminal instead? since qt terminal has known bugs
+    graphics_toolkit('gnuplot') -- not supported on windows? no is
+    graphics_toolkit('fltk')    -- standard on 4.4.1 on windows; no errors encountered Rdam 2019
+    needs ginput(1) only in qt works; not in gnuplot terminal (known bug since Dec 2017); starting -cli forces gnuplot window!!
+        run octave --nogui
+    windows bat file now also
+
+    2021:https://lists.libreplanet.org/archive/html/octave-bug-tracker/2021-06/msg00191.html
+     If it is because you are using "octave-cli", please try using "octave" instead.  You
+        will still get a command-line by default but you will get the more actively
+        developed and supported graphics widgets built with Qt instead of FLTK.
+
+    https://savannah.gnu.org/bugs/?52693
+    s reported in bug #51452, it is a known issue that ginput only works with Qt toolkit if no tool (zoom-in, zoom-out, pan, text) is enabled in the figure. Is this what you are observing or does ginput really never work? 
+
+Also, is the issue you are reporting only present for Qt toolkit (the default, at least in --no-gui mode, not in -cli) or does it also occur with fltk and gnuplot toolkits?
+
+    v.7.2.0:
+        starting -cli gives only fltk and gnuplot, defaults fltk, ginput works, font OK, buttons are: R to rotate
+        starting -gui gives fltk, gnuplot and qt, default qt, ginput work, but font on my virtual machine very small
+        ==>> could try next time "call octave --no-gui" to have qt toolkit?
+
+
+changes:
+- double check sequence AAAAAAA is prevented DONE
+- correct npH and npH to be even DONE
+- check on ns and feedback DONE
+- check easymode 1 on Mac w/ v 6.2 Octave DONE, ok, adapted numQuestions, showFID2
+- fix prompt to start titrate DONE
+- double check text; more intervals, rephrasing and some corrections DONE
+    check width: grep -h disp *.m | sed "s/^[ \t]*//" | grep -v '\"\"' | sed 's/disp(\"//' | sed 's/\")$//' | sed 's/\");$//' | more
+    also FIXED - spell check and styling of text to fixed width of maximum x-chars
+- added check for proper resolution before starting titrate DONE
+- check intermediate exchange; DONE CSP and getKD work DONE
+- check 3 large, 3 medium, 3 small CSP, did not work w. easyMode=1, could be chance result to have 5 large ones
+    recoded to match dwH and dwN together. DONE
+- add amino acids to peak labels and to bar graph interface, plot2D, zoomPeak, calcCSP, getKD adjusted DONE
+    edlev DONE
+- automatic copy of right question file for each easyMode setting DONE
+- remove unnecessary files DONE
+- fix folder where data is saved (?) added pointer to check themselves DONE
+- fix showSlices DONE
+- add question dilution intensity DONE
+    also FIXED - question on intensity differences during titration (dilution and relaxation)
+- add question exhange regime DONE djusted to 2D DONE
+   also FIXED check question 9 in easymode 0: slice is along 1H but peak may shift only along 15N!
+- added showSlices option "b" to plot both slices in one window DONE
+- corrected loading system.out is not followed by initialiseSpectrum after restart. DONE
+- added missing question analysis in goodbye and added calcCSP and getKD primer in qustion 0 and 1 DONE
+- final check Mac/6.2.0: few fixes, OK
+- final check Win/7.2.0: fix startup script / v7 specific error:
+    change all .**2 to .^2
+    uses fltk toolkit! and not qt, which is active when starting octave as app ...
+    ginput works on ftlk
+    adding fltk specific pointers for zooming and rotating
+    all works DONE
+- fixed Mac startup script to just open upon double-click DONE
+- double check ginput work with Octave6.2 Mac App DONE
+- if PC is really slow, adjust showing the FIDs - DONE
+- make students aware that can fail; and make them run a test beforehand, in manual DONE
+- Ajith check: installation OK, practical
+    - pulse calibration check too sstrict, loosened to 25% (2-3us) for easyMode=1
+- double check for BMI track course: check easyMode 2 protein low affinity,OK compound high affinity compound low affinity
+    question on 2D? for BMI track audience could try it
+    bug in showFID2 == fixed and edited to have just 1 showFID
+    update question.2 end
+- check questions easyMode 1
+    1. labeling
+    2. calibration
+    -  value of p1
+    3. NH2
+    4. s/n res
+    5. S2
+    6. affinity
+    7. dilution
+    8. CSP
+    9. interface
+    10. binding curve
+    11. exchange regime
+    12. docking
+    total 110 points
+-  bug in zoomPeak? FIX in MAC-CLI; check WIN-CLI: no issues encountered in tests
+    no issues during BMI track, no issues in BMSB
+==================================================
+
+**** v12 ****
+after update to octave 6.3 (windows) and octave.app 6.2 installation (mac)
+before BMI track course (easymode = 2)
+- fixed startup script Mac to tolerate spaces in folder of simulator script Mac
+- fixed weight selection for birthday in yr 2000+
+- added objective again after system definition, also added objective to calcCSP and getKD
+- spelled out degree as ° does not print
+- added points for pulse calibration by fixing numCalib mistake
+- added comment FID window to encourage deeper thinking
+- fixed prompting of information after question(3) , for both easymode=2 and easymode=3
+- added more direct prompt to calcCSP as in getKD was set to 1.5x molar ratio, calcCSP to 80% bound state
+- increased zero padding in popt spectra for better seperation
+- added error in KD to systemInfo
+- added goodbye command to systemInfo and to saveFigure
+- corrected goodbye command
+- added to calcCSP and getKD: make sure cursor is plus sign and not loop to zoom in if so decativate zoom
+- added zoom reset option in coneView text for qt graphics
+- added warning overlapping peaks in calcCSP
+- moved legend KD fit to bottom
+- added intermezzo on 2D FT to easyMode=2
+
+- check Mac app-version 6.2.0: OK
+- check Windows version 6.3.0: OK
+
+- afterwards:
+-- again few students w/ ginput buffer overflow issues (add to intro slide "CHECK FAQ") (bring printed copies FAQ)
+-- few students w/ figure window each auto-changing to zoom mode... (add to FAQ with pictures)
+-- one student where Octave crashed upon showing FID of HSQC (no solution, add join neigbour to FAQ)
+-- one student where HSQC simulation was completely screwed up, w/ inverted FIDs -- very strange (no solution)
+    state.out of student is fine on my computer, so something very weird.
+    report after loading state.out does not work ==> fix report.m 
+-- some calibrations failed, also alowwed to continue w/ rather wrong p1 resulting in many artifacts 
+    due to eda prompt not being suppressed (edit rpar to wait until proper pulse before prompting for eda)
+-- one student w/ empty coneView
+-- students maybe missed one question (90 points = 8 question + 1 calibration)
+    --> add check to systemInfo and prompt for open question for easyMode =2 and easyMode=3
+-- could go to little bit intermediate exchange situations
+   --> adapted initialiseSystem
+   --> test:
+        protein high affinity needs prompt to change contour level to see weak intensity peak (added to xfb, calcCSP and getKD)
+        works, also added prompt to change to another peak for getKD
+-- make popt spectra pop one after the other for improved experience
+-- one student has fitted KD reported as 131 mM instead of 131 uM! other student has fitted KD 9 uM instead of 140 uM, maybe due to titration point distribution.
+   --> add save binding curve to saveFigure
+   --> add autosave to goodbye command for debugging
+   --> add plotBindingCurve to easily replo bindingcruve forr debugging
+-- mac startup script some have error > /dev/null does not work?
+
+==================================================
+
+**** v11 *****
+after update to octave 6.2
+before Rdam course 2021
+- start is fine; update of QT window style
+- FID counter correct FID number, 
+- complete overlap of peaks, difficult to prevented ==> added warning in xfb.m
+- labels slightly closer to peaks to prevent issue with overlap ==> plot2D.m changed labelShiftH to 0.06
+- Mac OK, Windows OK, but font very small ==> added default font size definition in ini.m and all title to bold
+  does not show bold titles somehow..
+- fixed bug overwriting original FID by plot2D
+- added explicit request to compare spectra
+- add note that speed of experiment is not realistic zg.m
+- show all FIDs with zeros in between at end of experiment zg.m
+- add zeros in popt spectra display to separate the spectra better in qfp.m
+- add experimental error in addition without showing up in report in titrate.m / zg.m/ calcEquilibriumSingleSIte.
+
+==> fix spaces in folder names
+==> text coneView / question(2) timing needs improving
+==> weight -1 kDa with 10/01/2000
+==> 1 very complicated case with overlap
+==> getKD more stringent than calcCSP in terms of saturation
+==> check sanity comparison to do check of actual concentrations
+==> save answers / explanation
+==> 1 student failed ginput -- grpahics toolkist = qt , later on magically works...
+==> FID shows up in Figure(4)
+==> very concrete what is end result: steps
+==> question(5) got skipped after calcCSP?
+==> systemInfo should also have error in KD for quick check
+==> more deep thinking
+
+==================================================
+
+*** v10 ***
+before forking a 1D simulator
+- added a acqu window showing FID real/imag of every scan
+    - reordered the figures such that acqu window is figure 1
+    - implemented fake acqu window for HSQC
+before BMI track course Oct 2020
+- check easymode =2 (w/ pulse calibration)
+	- fixed numCalib issue
+	- replaced pause statements with while loops
+      - octave 5.1.0/5.2.0 mac pause is erratic: FIXED
+
+after BMI track
+- fix Figure1 restarting popt after HSQC
+- fix colors in report
+
+==================================================
+
+*** v9 ***
+after BMI track course 2020
+- fixed resetting cConc and volume after unAdd to reprevent report error
+- fixed too little addition should point to titrate
+- fixed double check against closing the program too early no exit in question(7) but ask Instructor
+- fixed prevent overwriting pi
+- fixed needs explanation 90 calibration exp
+- added question pulse calibration to easyMode=2
+  - could give points for correct calibration Easymode <3
+- changed system to have slightly fast-to-intermediate cases as well in easyMode =2
+- fixed prevent low ligand stock
+- added 10 points for calibration of pulse
+- added determined KD in output
+- added clear goal of experiment and some reminder now and then
+- added more details in eda after setup of 2D HSQC
+   - more explciti feed back pulse calibrated and scans set: in eda
+
+==================================================
+before Rdam course, set easymode==3
+using GNU Octave 5.2 update
+- adapted windows bat startup script to use octave-gui to have qt graphics_toolkit
+- fixed typos in makeSample; rpar; eda; weightFID
+- verified that works, questions are OK. seems a bit simple overall w.o pulse calibration.
+    Mac OK
+    Windows ...
+
+==================================================
+*** v8 ***
+before NMR MSc course 2019
+- double check easyMode = 1; qt windows works
+- fix Mac to use octave not octave-cli
+- fix getKD not responding: mistake in if condition
+bug found by Vincenco
+- error in relaxationmatrix: autorelaxation 9,6==> 9,9
+- error in easymode = 3; wrong questions
+after intensity checks
+- changed noise-estimation to be based on 2D; limit lowest contour to 3*noiseLevel
+before BMI track course 2020 (easymode = 2)
+- check version Octave Mac: v. 5.1.0 installed; newest macports is 5.2
+- check version Octave Windows: v. 5.1.0 installed; is newest
+- double check Mac: feels a bit slow (pause statement issue); 
+                                      CLI calcCSP can give error message but works
+                                      GUI works!
+- double check Windows: all OK< bit small fonts  but maybe due to parallels?
+- fixed error in peak folding in initialiseSpectrum.m
+- fixed reloading of saved state when starting from script folder.
+- FIXED getting more than 70 point by reidduing getKD or calcCSP
+
+==================================================
+
+*** v7 ***
+before Rdam practical 2019 (supereasy mode=3)
+TO DO:
+- FIXED reordered directory structure to have executable windows, mac, linux seperate from script files
+- FIXED make windows bat file to start cli interface or gui interface:
+  interface /package as octave app? // - nice way to start when using octave gui
+    https://stackoverflow.com/questions/36335700/i-would-like-to-build-an-executable-octave-script-for-windows?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+    run_octave_script.bat:
+        @echo off
+        set OCT_HOME=C:\Dev\Octave400
+        set "PATH=%OCT_HOME%\bin;%PATH%"
+        set SCRIPTS_DIR=%~dp0
+        start octave-cli.exe --eval "cd(getenv('SCRIPTS_DIR')); myscript; quit;"
+    Double-click the BAT file, it should run Octave
+- FIXED missing space in second guess
+- FIXED make it look like a real HSQC based on arbitray sentence,
+   extract amino acid sequence, look op averag  e shifts and std. dev.
+   then generate shift = ave + random(-3,3)*std.dev
+- FIXED bit smaller CSPs; not needed for didactical purposes this is fine
+- FIXED closing statement
+- (removed) ADDED ~5% random experimental error on addition for some more variation in final binding curve
+- FIXED popup of figure(2)
+- FIXED processing answer is somehow super slow...?? also loading HSQC very slow?? set all pause statements to 0.5 sec need space?
+- FIXED no labels plotted with peaks due to mistake in preventing floding of peaks
+- recoded plotting labels in ppm positions
+- FIXED directions coneview now specific for qt,  fltk, or gnuplot
+- peak picking fails ??? conistently in mac :( now also in windows :(
+  something really fucked up
+  running within windows gui works.
+- double check super easy mode=3
+- DECIDED SKIP recode the plotting of 2D spectra SKIP
+- FIXED error in calcCSP for FLTK/WINDOWS/CLI: ginput reports ppm directly
+- FIXED error in getKD, pcHp / pcpH typo
+- ADDED directtions for savinf figure at the end.
+
+==================================================
+
+after Rdam practical:
+- bug in zoomPeak? FIX in MAC-CLI; check WIN-CLI:
+- FIX bug in amino acid sequence with too short inputs
+- FIX stuck with titrate going back to question(2) happened to a few students; unclear why? xfb checked for wrong question
+- ADDED double check in titrate that previous point has been recorded and processed.
+- FIXED locatie plaatje in script folder, force edlev ==> made plotAll.m
+- FIXED edlev uitleggen in talk and FAQ, also refer to plotAll
+- FIXED folded peak in calcCSP? with Gly indeed happens.==> now reflected into spectrum;
+
+==================================================
+
+after Utrecht BMI practical 2019 (with easyMode 0-3)
+- fixed info saveState
+- fixed redirect to popt (was find90) when p1 determination is off
+- fixed question(6) pops up
+- fixed easyMode 2 if tests so that also easyMode 3 works
+    calcCSP eda ini getKD initialiseSystem listCommands makeSample question.0 question.1 question.2 rpar titrate xfb zg
+
+==================================================
+
+*** v6 ***
+after Rdam practical 2018
+- reduce time by pushing for 6 to 7 steps - - meer coaching  punten, niet te veel, meer coaching report (first step only) easymode=2
+- fixed: - "ha we don't play that way" titrate vraag komt toch terug
+- fixed: - what is KD makeSample
+- fixed: - report meteen na 1e punt kan niet
+- fixed spelling: - % bound frction
+- fixed spelling: - spellling perturbation Calccsp
+- fixed spelling: - 3 zonder csp is niet altijd
+- added option to restart from state-file that saves ALL variables
+- added saveState.m command to save all data to state.out to restart the titration. 
+- added listCommands.m command to list all user commands (- add help info) (- help_me command (for example )
+- for Advanced Biomolecular NMR course
+        - dedicate question.u.m file, easyMode = 1
+- showFID - add FID to easyMode < 2
+    - option to look at 2D FID, after 1st FT -- showFID.m needs some more work
+      had to remove additional scaling of 1H dimension to match acquisition time
+      - showFID add that is real part!
+- check of easyMode = 1 DONE
+    classification of echange regimes now failry objectve by using also fast-intermediate as a class
+    classicification intermediate / fast still not unambiguous, quite some broadening also with 0.05 < dw/kex < 0.1 DONE
+- fixed: calcScore does not work with 5 options for answers -- added calcScore5
+- changed rHH to 1.85 A as also used in CPD paper for bit more decay and faster relaxation
+
+==================================================
+
+after Utrecht practical
+- fix uu email in printResult.m
+- fix checkAnwer10/ checkAnswer3 in question.m question.1.m question.0.m question.u.m
+- catch report before zg in first titration step in report.m
+- catch makesample after first try should still go to popt if not calibrated yet
+- fix HSQc should go popt instad of find90 when p1 is incorrect in easymode !=0
+- changed stdnormal_rnd in simFind90.m and zg.m to randn for compatibility with Octave 4.4 (does also work with 3.8)
+- changed betarnd in rand() in prepareH2O.m for compatibility with Octave 4.4 (does also work with 3.8)
+- fixed: "Het experiment met rpar("find90") wordt overgeslagen als je alle instructies volgt"
+        rpar toont nu alleen de relevante opties
+- fixed: "als je titrate typt in het begin stuurt het je ver vooruit in het experiment"
+        titrate checked nu of sample er al is en of het eerste spectrum van vrije eiwit als is opgenomen
+- added - instructorMail variable
+- checked numbering of figures
+- update README
+- changed name printResult to saveFigure.m
+- force to use saveFigure rather all diverse options from the figure window...!
+- systemInfo includes report output
+- ini.m comments
+- test:changed to 11 darker colors using rgb triplets to avoid low contrast and "missed spectra"
+    - bug in getKD one spectrum no 6 is not shown ( because this one is in yellow??)
+    need to test this: adapted plot2D, edlev, showSlices and report and getKD WORKS
+- added questionAsked(7)/8/9 = 1 to calcCSP and getKD to keep track of questions
+- changed showSlices to include ppm axis
+- increased box size getKD in 15N dimension to 1 ppm
+- added check in getKD to be sure to have plateau for high affinities
+- increased default acq. time to 40ms on 15N (25ms is too short)
+- fixed mistake in spectral densities: double checked relaxation rates, now correct
+   now also more decay in 1H and 15N FID which looks realistic
+- now changed back differences in S2 for more realistic peak intensity differences OK
+- changed default setting contours to 5%
+
+==================================================
+
+double-check before Utrect BMI track course
+- set to easy mode =2 to be sure it is not too difficult
+- figure 2 is prompted at end makeSample already
+- plotting does not work when starting octave from CLI/ nor GUI in Mac OS 10.14 /Octave 4.4!
+	because no qt terminal does not work somehow....(not installed properly?)
+	works if switching to gnuplot terminal and having GNUTERM=x11 in cshrc and starting from CLI
+					does not work if setting graphics_toolkit('gnuplot') in gui
+					fix using setenv("GNUTERM","x11")
+- calcCSP clicking on peak center is not registered
+- after upgrade of octave everything works again using qt terminal
+- error getKD: fixed by rewrite
+- error instructorMail: fixed by defining as global
+- sometimes very slow...
+- easyMode=1 is too difficult/too many questions for now
+- added pulse calibration to easyMode=2; easyMode=3 is w/o pulse calibration
+- fix text rpar wrong argument
+
+after practical:
+- ginput bug for several student; restart works with saveState
+- students don't read and do not really what they are doing; like to work in full-screen mode
+- TO UPDATE
+-		info saveState
+-		question(2)/redirect find90 is p1 determination is off
+-		question(6) pops up
+
+==================================================
+
+*** v5 ***
+after Rdam practical 2017
+- added superEasyMode == easyMode=2; 
+        - only fast exchange titration of small compound, that is always possible to saturate
+        - no pulse calibration; only set ns
+        - questions:   1= Q1 OK (makeSample.m --> question.2.m)
+                        Q2 popt style simple question  --- skipped
+                        Q3 NH2 appearance question  --- skipped
+                        Q4 strict guidance --- skipped
+                       2= Q5 simplified answers OK (xfb.m ---> question.2.m)
+                       3= Q6 affinity OK (titrate.m > 1 eq)
+                       4= Q7 picking peaks OK (calcCSP)
+                       5= Q8 CSP OK (need to point to Figure) (calcCSP)
+                       6= Q9 extract bindingcurve and fit (getKD)
+                       7= Q10 docking
+          adapted question numbering for easyMode == 2, adapted question file.
+- added explicit mention of max/min concentration when readjustment is needed.
+- set to ppm plots 
+    - adapted initialiseSpectrum to set everything in ppm from the start
+      note that because of inversal of axis is necessary the relation between wHvppm etc and the spectrum is broken
+      since only the axis is reversed not the actual data!
+    - plot2D.m OK, coneView OK
+    - zoomFull OK, zoomPeak OK
+    - edlev OK
+    - calcCSP OK
+    - getKD OK
+    - reduceOverlay ?
+- spelling correction
+- correct truCSP , added sqrt
+- corrected units fitted KD (is always in mM), - bug in getKD nM reported but should be mM? FIXED
+- corrected question 7 answer --     - question 10: mijn ligand was niet een ander eiwit maar een compound (0.6 kDa), maar toch was c het juiste antwoord (niet b)?
+        ==> zou moeten werken FIXED
+- added calcCSP info:     - het programma makkelijk vastloopt als je het venster met de hsqc pieken iets verandert om makkelijker pieken aan te klikken
+        ==> aangeven dat in zoomFull mode doen met groot scherm en dan niet meer veranderen. FIXED
+- allow for larger first addition:     - is het niet mogelijk om meer dan 0.1 Molair equivalent toe te voegen in de eerste titratiestap
+        ==> voor easyMode ==2  is iets meer wel OK
+- added unAdd option -- - option to go back one step.
+- adapted explanation affinity for easyMode=2
+- fixed mistake in KD-real in get KD
+- made sure interface picking always continues -     - Als je question 8 fout hebt of teveel numers hebt gegeven dan kan je niet meer terug om opnieuw antwoord te geven. 
+      De analyse met piek aanklikken moet dan helemaal opnieuw. FIXED
+==================================================
+
+*** v4 ***
+- put all questions in separate file for easy adaption: Q7/8 in calcCSP are in all levels, so don't need adaptation.
+- allowed for any setting of numPeaks
+- on rate still too high and thus koff also still too high to be realistic? - smaller CSPss
+    yes 1e8 is much higher than average/typical value is 1e6 see Schlosshauer & Baker 2004 for protein-protein
+    1e8-1e9 for small molecules is possible see Williamson 2013
+    in reality many combinations of affinities and exchangre regime are possible. see Teilum et al 2017
+    for simple binding model this does fix the offrate.
+    I set the typical offrates to 1-10 for slow; 100-1000 for intermediate and >10000 for fast
+    this also matches Willamson 2013 roughly.
+    this should also help classification of exchange regimes
+- easyMode option to select easier systems: 
+    this means no slow exchange as then you cannot do calcCSP
+    this means no protein assemblies as low concentration and high relaxation!
+    also adapted importance of scoring: no high score and no mention of passing/studying
+- added pulse calibartion using popt
+- set default values in eda
+- easier questions
+  Rdam in new style:    Q1 OK
+                        Q2 popt style simple question
+                        Q3 NH2 appearance question
+                        Q4 strict guidance
+                        Q5 simplified answers
+                        Q6 affinity OK 
+                        Q7 picking peaks OK
+                        Q8 CSP OK (need to point to Figure)
+                        Q9 extract bindingcurve and fit
+                        Q10 docking
+- add plot of CSP curve/ fitting to extract KD? getKD.m
+- after titrate xfb initial spectrum is not shown; only after edlev ::: not reproducible?? I got now as well! no idea what caused it
+  again encountered it with Octave 4.2 in gui-mode:
+    - allSPectra and plotSpectra are correctly defined, so output of process2D is ok
+    - foudn bug in setting hold state was not explicit in settign it for figure (2) -- fixed
+- added overlayAll to undo reduceOverlay; also added check in getKD to make sure all spectra are plotted
+- shifted labels a bit to reduce overlap with broad peaks -custom value, also custom font size
+- - prevent getKD from scoring twice
+- added remidner for tight interaction si very important to have points close to 1:1 to discriminate between super tight and weaker bidning
+- double check whether printResult works on intended machine! --- works on octave 4 gui mode
+- removed scaling of spectrum; also reset max t1,15N to 100ms, ns to 64.
+- option to look at FID -- not perfect yet
+- use Allard style relaxation, include relaxation for protonated proteins: was already done,maybe increase a bit more rHH? to 2 Å
+- added catches for very low and very high affinity in initialiseSystem; updated so that is should always just work!
+- fixed remained affinityClasss
+- doubled maximum proteinConcentration to 10mM , maximum protein amount to 40mg, maximum ligand to 200 mg, all for easyMode only
+
+==================================================
+
+*** v3.3 ***
+checking v3 in March 2017
+- breaks on name / yourName mistake in initialiseSpectrum; fixed
+- breaks on initialiseSpectrum since it was before defining B0 and gyromagnetic ratios; fixed
+- breaks on restart when loading system.out (now with same spectrum, so initialiseSpectrum is skipped; fixed
+- edlev always complains about baselevel (after few additions): plotSpectra;allSpectra first spectrum is empty! likely to be fixed now?
+  - some have very noise spectra for some reason when using edlev (likely to be fixed now)
+
+==================================================
+
+*** v3.2 ***
+after FofNMR 2016
+- activated second gues for real, even without points by modifying calcScore
+- catch enter before giving input in makeSample, checkAnswer, rpar, eda, titrate
+- reworded Q2 max intensity to be clear that is should be positive
+- catch calibrating 360+180 before starting HSQC, this should also avoid to big artefacts
+  ( feedback on spectrum if p1 is wrong and full of artifacts)
+- fixed name error at end
+- abc option at question 10 need checkAnswer3 function
+- catch too short 1H acq. time also for 15N, also catch ns =0
+- indicate how to proceed after catching of invalid input, explicit "titrate" eda"
+- millimollar affinity still catch too big of addition
+- coach students to use 10 steps in tritration, using explicit guide in beginning and promoting report command
+- coneview restart text
+- reworded Q5
+- question 9, will also showSlices while answering
+
+==================================================
+
+*** v3.1 ***
+- changed to define koff for better definition of exchange regimes, also adapted question 9/10
+- excluded huge protein complex option to always be possible to record saturated spectrum
+- elevated maximum compound concetration to 20 mM
+- fixed bug in report-command, related to mistakes in titrate.m and makeSample.m
+- calcCSP does not work with octave 3.8! does work needs x11 GNUTERM
+  fixed mac exectuable by explicit setting of GNUTERM=X11
+- relaxation now include H-H dipolar relaxation as in Allard/Helgstrand paper w/ Ha at 2.3 A so not too strong
+  this also has the effetc that there will be more intenisty differences in the spectrum
+- maximum protein weight is 30 kDa, maximum ligan weight is 15 kda, so that maximum complex size 45 kDa
+- koff setting in three much more narrow classes to be more unambiguous
+- put without in CAPS in makeSample
+- aligned text of new concentrations
+- reduced number of non-shifting peaks from 3-6 to 2-4
+- question 5 first sentence twice removed
+- prompt for S/N lower than 10
+- improved text of Q6 a bit to indicate that question is before actual addition
+- fixed redoing rpar(find90) and eda prompts question for the second time; only Q7/8 in calcCSP can be redone 
+- fraction bound > 1
+    --- did not encounter this mistake, made double-echeck to capture such event
+- if no exchange then no explanation in question 9
+- question 9 apadted to only 1H dimension
+- peakInfo uses scientific notation for alpha
+- corrected scoring of Q7 to have 10 point max instead of 9
+- improved phrasing of Q8
+- added question 8 sanity check on input
+- improved answer explanation to question 10
+
+==================================================
+
+*** v2 ****
+- after Coimbra practical:
+    - FIXed SERIOUS BUG in titrate additions
+    - made separate function to createAcronym: removes all digits and symbols, retains only consonants.
+    - imagesc shows inverted 15N dimension? NOT TRUE, is okay
+    - added proper argument checking in initialeSystem
+- show 1D profiles of certain Peak
+    should store individual peak FIDs and process them to 2D
+    then sum along 15N or 1H from peakpos to peakpos+dw + few extra points.
+- added peakInfo command to see where peaks are going and to specify exchange regime
+- added systemInfo command to check, names, amsses, affinity etc.
+- update simHSQCs code by reducing computations in loop, reduced time/HSQC from 280 ms to 230 ms.
+  there seems to be little space for further speed enhancements.
+- bug in showSlices: bounds outside range, fixed by explicit checking
+- fix clicking outside window in calcCSP: added warning and loop to get correct result
+- clear the lines from calcCSP upon new xfb; now works by issuing edlev
+- added multiple choice question to increase educational value: 
+- added questions within program; with answers!
+        - Q1: sample: labeling pattern
+        - Q2: pulse calibration: zero/max signal
+        - Q3: eda: length of tau
+        - Q4: first spectrum: resolution sensitivity
+        - Q5: coneview: internal dynamics
+        - Q6: titrate: 9*KD + P upon adding more than 1 eq.
+        - Q7: calcCSP: which peak shifts where?
+         -Q8: calcCSP: which is binding interface?
+        - Q9: finalQuestions:
+              showSlices/peakInfo: which peak is in which exchange regime?
+        - Q10: systemInfo: estimate off-rate
+- rewrrite to avoid tl;dr , hopefully circumvented by questions.
+- added reduceOverlay to only plot 5 spectra of titration.
+- rewritten calcCSP to check peak picking
+    - free state is fine
+    - bound state only works if saturated and probably if slow exchange
+    - for not fully bound systems (when partner) is very large,
+        saturated is impossible and analysis should be done
+        based on peakpos in final spectra
+        is simply skipped now.
+- fixed entering input on "<>" crashes the program
+- prevent first point with 1 or more equivalents now also for weak binders
+- fixed entering "o" instead of 0 crashes titrate command
+    also in eda and makeSample
+- fixed some questions can be aswered multiple times
+- fixed maximum amount ligand is miscalculated
+- prevent strong dilution of protein so that no signal will be measured
+- kon is now 1e6 by default limiting koff to 1000-10.000, also updated systemInfo
+- CSPs reduced to 1 ppm 1H and 6 ppm 15N which is still very large
+- add in high score in ini.m
+- estimation koff now in ranges depending on true value to ease this question
+- fixed question 6 bug and rephrased for correctness
+
+==================================================
+
+*** v1 ****
+- AFTER R'DAM PRACTICAL
+    - fix bug upon titrating with 0 eq, now proper checking of validaty of input
+    - prevent running HSQC with wildy incorrect p1
+    - explicit mention of p1
+    - rephrase balance issue in sample prep to stimulate to continue
+    - calcCSP switch explicitly to figure(2)
+- fixed noise, calculate noise level on noise-FID to avoid issues with peak edges!
+- also fixed/decided on minimum baseLevel to avoid long processing times for contour plot
+
+==================================================
+
+*** v0.1 ***
+- now add noise based on concentration (complex number!)
+- keep baselevel of 2D fixed unless replotted
+- fixed bug in some peaks are still at the edge in 15N dimension (because of line width)
+- randomize which peak gets which dw, so that it makes sense to compare in class
+- should have few peaks without any chemical shift change
+- label peaks on first spectrum
+- check how to zoom on 2D: zoom peak in apo position; zoom full spectrum;
+- check how to replot all spectra after changing figure (different contouring), adding in new plot at same levels
+- avoid peaks at edges
+- add 1H pulse calibation; adapted HSQC to use p1 value; no extra phaseCycling is needed, just affects intensity.
+  offResonance effects are optional
+- double check calculate of volume, or change wording, molEq now total and can only be incremented
+- add report of titration
+- double check whether variables exist at first step of script (qfp done, xfb done)
+- double check whether concentrations entered are numbers
+- double check minimum protein mass to be 10 kDa
+- fixed bug where proteinWords{0} is being tried to access
+- add legend, change title
+- add save plot
+- add coneView - figure(3),
+- fixed bug in 15N dwNs
+- added explicit comment on possible error if quotes are forgotten in rpar
+- added residual water scaled by calibration error
+- axis in ppm's:: still BUGGED, rewritten to inactive option
+        ppmaxis=1 actually changes the spectrum rather than simply the axis!
+- B0, gH, gN defined in ini.m
+- added eda.m to setup t1, t2 max
+- fixed bug in noiselevel calculation;
+- double check noise level to avoid long waiting times, plot image instead of contours
+- added ns to eda and scaled intensities and noise and acq. time accordingly
+- fixed initial peak position to within 90% of spectral widths.
+- added question with coneView
+- make new sample without asking for pulse calibration
+- add plot of CSP magnitude: add vector drawing from start to end point interactively
+- double check whether variables exist at first step of script (qfp done, xfb done)
+- double check sanity of contour levels
+- xfb and edlev show exact full spectrum using axis limits (so automatic rezoom)

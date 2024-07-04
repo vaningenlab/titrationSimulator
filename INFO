@@ -1,0 +1,178 @@
+INFO titrationSimulator
+
+!!use zip command line!!
+- windows users extract gives _MACOSX that seemingly includes same files but does not work
+  == use zip command in Terminal to zip the files without the .DS_Store, __MACOSX and other .* files.
+     zip -r dir.zip . -x '**/.*' -x '**/__MACOSX'
+
+- windows bat fails if octave already opened which happen automatically after installing...
+  then also double-clicking from within Octave is bad...
+  Ocave 8.3 also launches command terminal for some...
+
+
+1. start terminal, 
+2. type "./titrationSimulator" to start simulator
+    resizes terminal window 90 columns wide, 30 lines tall
+3. this loads ini.m immediately 
+                - initialiseSystem.m
+                    - createAcronym.m
+                    - extractNumbers.m
+                - calcRelaxationRates.m
+                - initialiseSpectrum.m
+                - setupAX.m
+                - prepareHSQC.m
+                - setupH2O.m
+                - prepareH2O.m
+4. the user can execute the following commands (dependencies in brackets)
+    - makeSample.m (can be used to start over)
+    - zg.m:
+                - precalcPulses.m
+                - calcEquilibriumConcSingleSite.m
+                - buildExchangeMatrix.m
+                - buildRelaxationMatrix.m
+                - precalcPropagators.m
+                - setupMagnetization.m
+                - simHSQC.m
+                    - phaseCycle.m
+                - simFind90.m
+    - xfb.m
+                - process2D.m
+                    - addResidualWater.m
+                    - processFID.m
+                        - weigthFID.m
+                - plot2D.m
+    - titrate.m
+    - zoomPeak.m
+    - zoomFull.m
+    - edlev.m
+    - rpar.m
+    - qfp.m
+                - processFID.m
+                    - weigthFID.m
+    - report.m  (after each step, so added option to xfb)
+    - saveFigure.m (prints current Figure)
+    - calcCSP.m
+    - coneView.m
+    - eda.m
+    - showSlices.m
+                - processFID.m
+                    - weigthFID.m
+    - getKD.m
+                - fitCurve.m
+    - unAdd.m
+    - listCommands.m
+    - saveState.m
+    - reduceOverlay.m
+    - overlayAll.m
+    - showFID.m
+    - question.m
+                - calcScore.m
+                - calcScore5.m
+                - checkAnswer.m
+                - checkAnswer3.m
+                - checkAnswer5.m
+5. the instructor can also execute the following commands:
+   (could be executed by user at the end to compare).
+    - peakInfo.m
+    - systemInfo.m
+
+plots : 1 popt 
+        1 acquisition 
+        2 FID 1/FT/11/FT
+        2 spectrum
+        3 coneview
+        4 slices
+        5 CSP
+        6 KD
+
+BUGS:
+- warning: opengl_selector::select: selection buffer overflow
+  warning: called from
+    ginput at line 88 column 7
+    calcCSP at line 137 column 30
+  in gui /cli in os x; also windows; picking still works
+
+
+- ginput fails for in some cases; restart resolves issue
+	could try fltk or gnuplot terminal instead? since qt terminal has known bugs
+    graphics_toolkit('gnuplot') -- not supported on windows? no is
+    graphics_toolkit('fltk')    -- standard on 4.4.1 on windows; no errors encountered Rdam 2019
+    needs ginput(1) only in qt works; not in gnuplot terminal (known bug since Dec 2017); starting -cli forces gnuplot window!!
+    	run octave --nogui
+    windows bat file now also
+
+    2021:https://lists.libreplanet.org/archive/html/octave-bug-tracker/2021-06/msg00191.html
+     If it is because you are using "octave-cli", please try using "octave" instead.  You
+        will still get a command-line by default but you will get the more actively
+        developed and supported graphics widgets built with Qt instead of FLTK.
+
+    https://savannah.gnu.org/bugs/?52693
+    s reported in bug #51452, it is a known issue that ginput only works with Qt toolkit if no tool (zoom-in, zoom-out, pan, text) is enabled in the figure. 
+    Is this what you are observing or does ginput really never work? 
+    Also, is the issue you are reporting only present for Qt toolkit (the default, at least in --no-gui mode, not in -cli) or does it also occur with fltk and gnuplot toolkits?
+
+    v.7.2.0:
+        starting -cli gives only fltk and gnuplot, defaults fltk, ginput works, font OK, buttons are: R to rotate
+        starting -gui gives fltk, gnuplot and qt, default qt, ginput work, but font on my virtual machine very small
+        ==>> could try next time "call octave --no-gui" to have qt toolkit? 
+        YES NEED TO CHECK IN RUPPERT
+
+
+% plan:
+FURTHER OPTIMISATION
+highest priority, necessary before publication 
+- need a bit more introduction on the setup, as ppt/pdf also to point to FAQ
+- easier way to auto-extract results for instructor 
+
+medium priority
+- check for matlab compatibility: certainly needs a bit work
+- include off-resonance effects - check implementation
+     NO IS DUE TO TIMING ISSUE: t1 and INEPT delays are not compensated for evolution during pulse!
+        this will obviously give problems with phase
+                - need to have simultaneous pulses coded as well.
+     PFG's may also be added for more realistic simulation
+
+low priority
+- make test files system.out with extreme cases for each easyMode for testing
+- different color for negative contours
+- could vary rHH in calcRelaxation rates depending on mass to reflect partial or full deuteration
+- could do TROSY for large proteins; make students select labeling
+- ased to set pwN, p1 (d1 is not accurately simulated?)
+- let user pick the field strength NO
+- add dataView - figure(7) scatter
+
+easyMode=0 only:
+- double check easyMode is off  --- definitely needs checking!!
+- add identifyInterface for when calcCSP is not possible (easyMode is off)
+    - add calcInt for not fast exchange or difficult systems!
+    - in calcCSP also check for correct assignments if not saturated.
+    - make calcCSP robust for when saturation is not reached (calculate CSP from spectral peak position, rather than absolute)
+- easyMode 0: push for students also examining weak signals by changing contour levels
+
+IDEAS
+- translate to python/matplotlib for better portability and higher quality graphics
+- setting defaults using custom .octaverc file
+- getKD when < 1uM adjustment / fake line shape fitting.  koff / vs koff*2 koff*0.5 for example
+    but this needs scaling also in both dimensions! so need to do the simulation as 2D spectrum of 1 peak
+    could do user setting of koff as parameter using fitted KD if not too bad
+    simply simulate spectrum again; instead of question on koff estimation
+    also depends on KD , not only koff so how to deal with this?
+- three site exchange
+
+
+ISSUES that students reported using their own hardware and are hard to fix/check:
+- camera view angle error with 3D plots 
+- some students rotate 2D plot into 3D which confuses things, can it be deactivated?
+- someone could not enter number in titrate?
+- exchangeClass undefined in systemInfo, only for some?? should be OK? 
+- actual bindingcurve has different scaling, should auto adjust? should be OK?
+- row of one point is not printed? systemInfo/report
+- redo question prompt at end is incorrect? this is probably related problem                                       
+- cannot use 2 words for favourite food --> CHECK; should be fine and take only 1st word, yes in testing works
+- still few students have issue with plotting all spectra, or getKD plots, should be better now eda bug fixed
+- 1 student could not select quiestion (9) peaks -- keyboard issue?? should continue
+- error at question 10 that was regarding selecting the centre of different peaks , should better now
+- question(11) question(11): out of bound 9 (dimensions are 1x9) (note: variable 'question' shadows function) after "redo whole practical"
+- the signal-to-noise ratio was different the second time and I had to put in >50 trials for it to be ‘acceptable’.
+- warning: suggest parenthesis around assignment used as truth value near line 171, column 20 in file initialiseSystem.m'
+- stream line the information now sometimes bit jumping back and forth
