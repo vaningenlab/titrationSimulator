@@ -8,7 +8,7 @@ Rem without using --gui will force --cli and default to fltk toolkit
 Rem User needs to asjust ROOT_PATH if Octave is not installed in default location
 Rem spaces in variable is OK
 
-set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.3.0
+set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.4.0
 
 Rem titration simulator script dir extracted from current working dir -- could contain spaces
 Rem should not be necessary since current dir is already main dir of simulator

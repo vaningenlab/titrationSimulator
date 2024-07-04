@@ -158,7 +158,7 @@ else
             disp("It could be that it only shows up like that after proceeding.")
         elseif strcmp(graphics_toolkit, 'fltk') == 1
             disp("Be sure that the cursor is in selection mode, visible as a normal cursor.")
-            disp("Make sure not of the A, P, G, R tools are active!")
+            disp("Make sure none of the A, P, G, R tools are active!")
         end
         disp("")
         disp("And click slowly!")
