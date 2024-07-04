@@ -62,7 +62,7 @@ cntLvls = [negCntLvls posCntLvls];
 % this works: colorPlot=[[1,0,0];[1,1,1]]; plot(sin([0:0.1:6]),'color', colorPlot(1,:))
 colorPlot = [[0,0,0];[1,0,0];[1,0,1];[1,0.5,0];[0.8,0.7,0];[0,1,0]; [0,1,1];[0,0,1];[0.6,0,0.8];[0.5,0.5,0.4];[0.3,0.4,0.5]];
 colorNames = ['bk';'rd';'ma';'or';'yl';'gr';'cy';'bl';'pu';'ol';'tl'];
-colorNamesLong = ['black'; 'red'; 'magenta'; 'orange';'yellow';'green';'cyan';'blue';'purple';'olive';'teal']
+colorNamesLong = ['black'; 'red'; 'magenta'; 'orange';'yellow';'green';'cyan';'blue';'purple';'olive';'teal'];
 
 % plot 2D
 if titrationPoint == 1

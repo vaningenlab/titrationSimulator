@@ -1,64 +1,141 @@
 INFO titrationSimulator
 
-!!use zip command line!!
-- windows users extract gives _MACOSX that seemingly includes same files but does not work
-  == use zip command in Terminal to zip the files without the .DS_Store, __MACOSX and other .* files.
-     zip -r dir.zip . -x '**/.*' -x '**/__MACOSX'
+General information on the use of titrationSimulator for instructors
 
-- windows bat fails if octave already opened which happen automatically after installing...
-  then also double-clicking from within Octave is bad...
-  Ocave 8.3 also launches command terminal for some...
+How to prepare the titrationSimulator for distribution?
+
+1. Download the titrationSimulator folder from GitHub
+2. Adjust the titrationSimulatorWindows.bat file:
+    - adapt the GNU Octave program to the correct version and install path, if necessary
+      e.g. 
+        set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.4.0
+      to:
+        set ROOT_PATH=D:\Program Files\GNU Octave\Octave-9.2.0
+    - add pushd command if using network drives:
+3. Adjust the ini.m file in scripts dir:
+    - adjust instructorEmail
+    - ajdust easyMode
+4. when using a Mac and you want to prepare a zip file to distribute to students, 
+   use zip command in Terminal to zip the files without the .DS_Store, __MACOSX and other .* files:
+    zip -r titrationSimulator.zip . -x '**/.*' -x '**/__MACOSX'
+   Do not the "Compress Archive" option in Finder, as students may get confused by 
+   the _MACOSX folder that seemingly includes same files but does not work
 
 
-1. start terminal, 
-2. type "./titrationSimulator" to start simulator
-    resizes terminal window 90 columns wide, 30 lines tall
-3. this loads ini.m immediately 
-                - initialiseSystem.m
-                    - createAcronym.m
-                    - extractNumbers.m
-                - calcRelaxationRates.m
-                - initialiseSpectrum.m
-                - setupAX.m
-                - prepareHSQC.m
-                - setupH2O.m
-                - prepareH2O.m
-4. the user can execute the following commands (dependencies in brackets)
+How does the titrationSimulator work?
+
+1. start the program by
+    a. double clicking:
+    - Windows: titrationSimulatorWindows.bat
+    - Mac    : titrationSimulatorMac
+    - Linux  : titrationSimulatorLinux
+    b. opening a terminal, navigating to the titrationSimulator folder and typing:
+    - Mac    : ./titrationSimulatorMac
+    - Linux  : ./titrationSimulatorLinux
+    c. last resort fall-back option if above does not work:
+    - start GNU Octave in normal way which opens the GUI
+    - navigate within Octave to the titrationSimulator/scripts folder
+    - type "ini"
+
+2. This auto-starts GNU Octave and the titrationSimulator by executing ini.m
+   This file defines:
+    - email address of instructor to send the results to
+    - the difficulty level of the practical (easyMode 0-3)
+    - and several other parameters that do not need adjustment
+
+3. ini.m also starts initialiseSystem.m that prompts the student to enter:
+    - name
+    - favourite food
+    - birthday
+    in order to derive a protein/ligand system.
+
+4. the student is then prompted to perform an interaction study, making use of the commands:
+    - makeSample
+    - titrate
+    - unAdd
+    - calcCSP
+    - getKD
+    - question
+    - rpar
+    - popt
+    - zg
+    - qfp
+    - xfb
+    - edlev
+    - eda
+    and auxiliary commands:
+    - zoomPeak
+    - zoomFull
+    - coneView
+    - showSlices
+    - report
+    - listCommands
+
+5. the instructor can also execute the following commands:
+    - peakInfo
+    - systemInfo
+
+6. Plot windows that are generated: 
+    - figure 1: acquisition window showing FID
+                and H2O spectrum after popt pulse calibration
+    - figure 2: 2D spectrum
+                and 2D FID and partially FT spectrum 
+    - figure 3: 2D spectrum in 3D mode
+    - figure 4: 1D slices in 1H and 15N dimension through the processed 2D spectrum
+    - figure 5: bar plot of CSPs
+    - figure 6: CSP-based binding curve and KD fit
+
+7. Files to check in case of bug-fixing:
+    - nmrsim.log    diary of complete session
+    - system.out    definition of protein-ligand system
+    - state.out     octave file containing state of the session
+
+Script hierarchy:
+- ini.m
+    - initialeSystem.m
+        - createAcronym.m
+        - extractNumbers.m
+    - calcRelaxationRates.m
+    - initialiseSpectrum.m
+    - setupAX.m
+    - prepareHSQC.m
+    - setupH2O.m
+    - prepareH2O.m
     - makeSample.m (can be used to start over)
-    - zg.m:
-                - precalcPulses.m
-                - calcEquilibriumConcSingleSite.m
-                - buildExchangeMatrix.m
-                - buildRelaxationMatrix.m
-                - precalcPropagators.m
-                - setupMagnetization.m
-                - simHSQC.m
-                    - phaseCycle.m
-                - simFind90.m
+    - zg.m
+        - precalcPulses.m
+        - calcEquilibriumConcSingleSite.m
+        - buildExchangeMatrix.m
+        - buildRelaxationMatrix.m
+        - precalcPropagators.m
+        - setupMagnetization.m
+        - simHSQC.m
+        - phaseCycle.m
+        - simFind90.m
     - xfb.m
-                - process2D.m
-                    - addResidualWater.m
-                    - processFID.m
-                        - weigthFID.m
-                - plot2D.m
+        - process2D.m
+        - addResidualWater.m
+        - processFID.m
+        - weigthFID.m
+        - plot2D.m
     - titrate.m
     - zoomPeak.m
     - zoomFull.m
     - edlev.m
     - rpar.m
     - qfp.m
-                - processFID.m
-                    - weigthFID.m
-    - report.m  (after each step, so added option to xfb)
-    - saveFigure.m (prints current Figure)
+        - processFID.m
+        - weigthFID.m
+    - report.m
+    - saveFigure.m
     - calcCSP.m
     - coneView.m
     - eda.m
     - showSlices.m
-                - processFID.m
-                    - weigthFID.m
+            - processFID.m
+            - weigthFID.m
     - getKD.m
-                - fitCurve.m
+            - fitCurve.m
     - unAdd.m
     - listCommands.m
     - saveState.m
@@ -66,24 +143,15 @@ INFO titrationSimulator
     - overlayAll.m
     - showFID.m
     - question.m
-                - calcScore.m
-                - calcScore5.m
-                - checkAnswer.m
-                - checkAnswer3.m
-                - checkAnswer5.m
-5. the instructor can also execute the following commands:
-   (could be executed by user at the end to compare).
+            - calcScore.m
+            - calcScore5.m
+            - checkAnswer.m
+            - checkAnswer3.m
+            - checkAnswer5.m
     - peakInfo.m
     - systemInfo.m
 
-plots : 1 popt 
-        1 acquisition 
-        2 FID 1/FT/11/FT
-        2 spectrum
-        3 coneview
-        4 slices
-        5 CSP
-        6 KD
+
 
 BUGS:
 - warning: opengl_selector::select: selection buffer overflow
@@ -92,6 +160,9 @@ BUGS:
     calcCSP at line 137 column 30
   in gui /cli in os x; also windows; picking still works
 
+- windows bat fails if octave already opened which happen automatically after installing...
+  then also double-clicking from within Octave is bad...
+  Octave 8.3 also launches command terminal for some...
 
 - ginput fails for in some cases; restart resolves issue
 	could try fltk or gnuplot terminal instead? since qt terminal has known bugs
@@ -115,7 +186,9 @@ BUGS:
         starting -cli gives only fltk and gnuplot, defaults fltk, ginput works, font OK, buttons are: R to rotate
         starting -gui gives fltk, gnuplot and qt, default qt, ginput work, but font on my virtual machine very small
         ==>> could try next time "call octave --no-gui" to have qt toolkit? 
-        YES NEED TO CHECK IN RUPPERT
+     
+    v. 8.4.0:
+        windows qt works 
 
 
 % plan:

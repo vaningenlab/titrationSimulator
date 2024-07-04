@@ -4,12 +4,23 @@ HISTORY titrationSimulator
 
 before ICMRBS/2024 BMSB course:
 - adjust Windows BAT file to use octave-gui and qt toolkit to have fancier graphics
+  check in virtual machine: works fine this time
 - fix colors in getKD prompt
 - pulse calibration in easyMode 0 1 2 is also a question but not counted!
   135 out of 130 points...
   temp fix for easyMode 2 in question2.m
+- calcCSP shoudl continue even if misidentifing CSPs
+- fix: warning: suggest parenthesis around assignment used as truth value near line 157, column 19 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
+warning: called from
+    ini at line 208 column 9
+warning: suggest parenthesis around assignment used as truth value near line 153, column 16 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
+warning: called from
+    ini at line 208 column 9
 
-
+warning: suggest parenthesis around assignment used as truth value near line 171, column 20 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
+warning: called from
+    ini at line 208 column 9
+    
 % HISTORY:
 ========================================================================
 

@@ -5,10 +5,14 @@ Rem includes all settings from octave-7.2.0.bat to make sure file copy works!
 Rem see https://lists.libreplanet.org/archive/html/octave-bug-tracker/2021-04/msg00373.html
 Rem without using --gui will force --cli and default to fltk toolkit
 
-Rem User needs to asjust ROOT_PATH if Octave is not installed in default location
+Rem User needs to adjust ROOT_PATH if Octave is not installed in default location
 Rem spaces in variable is OK
 
 set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.4.0
+
+Rem User will need to activate pushd command below in case users are logged in from network drive
+Rem Remove "Rem" in line below:
+Rem pushd %~dp0
 
 Rem titration simulator script dir extracted from current working dir -- could contain spaces
 Rem should not be necessary since current dir is already main dir of simulator
@@ -73,5 +77,6 @@ ENDLOCAL & SET OPENBLAS_NUM_THREADS=%OPENBLAS_NUM_THREADS%
 :openblas_num_threads_set
 
 Rem since we should be in main directory, just cd('scripts') should be sufficient
-Rem octave-cli has old-fashioned fltk toolkit but much more responsive than qt in my testing
-call "%OCTAVE_HOME%\bin\octave-cli.exe" --eval "cd('scripts'); ini" --persist
+Rem test 4/6/2024: 8.4.0 octave with qt toolkit works fine
+Rem use octave-cli.exe to default to fltk old-school graphics
+call "%OCTAVE_HOME%\bin\octave.exe" --eval "cd('scripts'); ini" --persist
