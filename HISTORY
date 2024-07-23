@@ -2,14 +2,26 @@ HISTORY titrationSimulator
 
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
+test:
+ - Windows: Octave 8.4.0 - Qt (computer room)
+            Octave 9.2.0 - Qt (latest)
+ - Mac    : Octave 6.2.0 - Qt (octave.app)
+            Octave 9.2.0 - Qt (latest)
+
 before ICMRBS/2024 BMSB course:
+- seperate INFO and HISTORY file DONE
 - adjust Windows BAT file to use octave-gui and qt toolkit to have fancier graphics
-  check in virtual machine: works fine this time
-- fix colors in getKD prompt
+  check in virtual machine: works fine this time, check PC room, works fine! DONE
+- fix colors in getKD prompt DONE
+
+
 - pulse calibration in easyMode 0 1 2 is also a question but not counted!
   135 out of 130 points...
   temp fix for easyMode 2 in question2.m
 - calcCSP shoudl continue even if misidentifing CSPs
+- redo getKD if really bad
+- question on equation for KD fitting
+- 
 - fix: warning: suggest parenthesis around assignment used as truth value near line 157, column 19 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
 warning: called from
     ini at line 208 column 9
@@ -20,7 +32,9 @@ warning: called from
 warning: suggest parenthesis around assignment used as truth value near line 171, column 20 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
 warning: called from
     ini at line 208 column 9
-    
+
+
+
 % HISTORY:
 ========================================================================
 

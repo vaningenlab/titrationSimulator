@@ -15,7 +15,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         end
         disp("Starting HSQC experiment, takes ~1 min depending on")
         disp("your number of a scans and 1H/15N acquisition times....")
-        disp("Note that in real life such experiment would take ~10min up to 1hr.")
+        disp("Note that in real life such experiment would take ~10 min to 1 hr.")
         calcEquilibriumConcSingleSite       % calculate free/bound protein (pa/pb)
         cConcv(titrationPoint) = C;         % store concentration complex
         if cConcv(titrationPoint) > pConcv(titrationPoint)

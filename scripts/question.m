@@ -436,6 +436,9 @@ global dwNvppm dwHvppm numPeaks
                     score = score +2;
                 else
                     disp("Well, the peak just gradually shifts in position. The intensity decreases gradually due to dilution.")
+                    if laN_Av(p)/laN_Bv(p) < 0.8
+                        disp("In your case the increase of size for the complex is significant which cause further reduction in peak intensities.")
+                    end
                     disp("This is fast exchange.")
                 end
                 disp("Inspect the information below, specifically ")

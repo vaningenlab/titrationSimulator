@@ -1,8 +1,11 @@
 INFO titrationSimulator
 
-General information on the use of titrationSimulator for instructors
 
-How to prepare the titrationSimulator for distribution?
+========================================================================
+1. General information on the use of titrationSimulator for instructors
+========================================================================
+
+1.1 How to prepare the titrationSimulator for distribution?
 
 1. Download the titrationSimulator folder from GitHub
 2. Adjust the titrationSimulatorWindows.bat file:
@@ -14,15 +17,17 @@ How to prepare the titrationSimulator for distribution?
     - add pushd command if using network drives:
 3. Adjust the ini.m file in scripts dir:
     - adjust instructorEmail
-    - ajdust easyMode
+    - adjust easyMode
 4. when using a Mac and you want to prepare a zip file to distribute to students, 
    use zip command in Terminal to zip the files without the .DS_Store, __MACOSX and other .* files:
-    zip -r titrationSimulator.zip . -x '**/.*' -x '**/__MACOSX'
-   Do not the "Compress Archive" option in Finder, as students may get confused by 
+
+        zip -r titrationSimulator.zip . -x '**/.*' -x '**/__MACOSX'
+
+   Do not use the "Compress Archive" option in Finder, as students may get confused by 
    the _MACOSX folder that seemingly includes same files but does not work
 
 
-How does the titrationSimulator work?
+1.2 How does the titrationSimulator work?
 
 1. start the program by
     a. double clicking:
@@ -90,6 +95,10 @@ How does the titrationSimulator work?
     - system.out    definition of protein-ligand system
     - state.out     octave file containing state of the session
 
+
+=====================================================================================
+
+
 Script hierarchy:
 - ini.m
     - initialeSystem.m
@@ -98,7 +107,6 @@ Script hierarchy:
     - calcRelaxationRates.m
     - initialiseSpectrum.m
     - setupAX.m
-    - prepareHSQC.m
     - setupH2O.m
     - prepareH2O.m
     - makeSample.m (can be used to start over)
@@ -154,11 +162,12 @@ Script hierarchy:
 
 
 BUGS:
-- warning: opengl_selector::select: selection buffer overflow
-  warning: called from
-    ginput at line 88 column 7
-    calcCSP at line 137 column 30
-  in gui /cli in os x; also windows; picking still works
+- when doing peak picking in calcCSP,the following warning may appear:
+    warning: opengl_selector::select: selection buffer overflow
+        warning: called from
+            ginput at line 88 column 7
+            calcCSP at line 137 column 30
+  this is harmless, the peak picking will still work
 
 - windows bat fails if octave already opened which happen automatically after installing...
   then also double-clicking from within Octave is bad...

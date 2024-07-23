@@ -239,7 +239,7 @@ disp("")
 printf("\t%s factor %s ( %.1f kDa) with\n", proteinDescriptor, acronymProtein, proteinMass)
 printf("\t%s %s ( %.1f kDa)\n", ligandDescriptor, acronymLigand, ligandMass)
 disp("")
-printf("The amino acid squence of %s is %s", acronymProtein, aa_string)
+printf("The amino acid squence of %s is %s\n", acronymProtein, aa_string)
 disp("")
 junk=input("<>","s");
 disp("")
