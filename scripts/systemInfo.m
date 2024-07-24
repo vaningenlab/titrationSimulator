@@ -47,7 +47,9 @@ report
 disp("")
 disp("\t*** score ***\n")
 disp("")
-if easyMode < 3
+if easyMode == 1
+	printf("Your final score          : %d out of 10 points\n", finalScore)
+elseif easyMode < 3
 	printf("Your final score          : %d out of %d points\n", score, numQuestions*questionPoints+10)
 else
 	printf("Your final score          : %d out of %d points\n", score, numQuestions*questionPoints)

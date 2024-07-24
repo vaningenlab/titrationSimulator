@@ -2,10 +2,10 @@
 
 function chi2 = calcChi2(parVector)
 
-    global pConcv lConcv molEqv CSP_o CSP_c
+    global pConcv lConcv molEqv CSP_o CSP_f
     
     KD_     = parVector(1);     % KD in uM
-    maxCSP_ = parVector(2);     % CSP in Hz
+    maxCSP_ = parVector(2);     % CSP in Hz (amplitude)
 
     % fit using fast-exchange equation: first determine percentage bound
     
@@ -21,10 +21,10 @@ function chi2 = calcChi2(parVector)
     
     % fit using fast-exchange equation: then determine CSP
 
-    CSP_c = pB.*maxCSP_;
+    CSP_f = pB.*maxCSP_;
     
     % calculate goodness of fit
     
-    chi2 = sum((CSP_c - CSP_o).^2);
+    chi2 = sum((CSP_f - CSP_o).^2);
 
 endfunction

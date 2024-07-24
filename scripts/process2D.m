@@ -31,13 +31,9 @@ for q=2:zfN
 end
 
 asH 	  = (saxisH - zfH/2 -1)./(zfH/2).*swH/2;			% as in relative Hz
-                                                        % removed -0.5 to have extact match with input Hz
-                                                        % change to -1
 asHppm	  = fliplr(asH*2*my_pi/(gH*B0*1e-6) + centerHppm);
 
 asN 	  = (saxisN - zfN/2 -1)./(zfN/2).*swN/2;			% as in relative Hz
-                                                        % removed -0.5 to have extact match with input Hz
-                                                        % changed to -1
 asNppm	  = fliplr(asN*2*my_pi/(gN*B0*1e-6) + centerNppm);  
 
 % add in residual water from pulse miscalibration

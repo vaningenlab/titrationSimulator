@@ -26,17 +26,11 @@ else
     end
     disp("")
     figure(3);
-    if ppmaxis == 1
-        mesh(asHppm, asNppm, Sr);
-        xlabel('1H (ppm)')
-        ylabel('15N (ppm)')
-        set(gca,'XDir','reverse')
-        set(gca,'YDir','reverse')
-    else
-        mesh(asH, asN, Sr);
-        xlabel('1H (Hz)')
-        ylabel('15N (Hz)')
-    end
+    mesh(asHppm, asNppm, Sr);
+    xlabel('1H (ppm)')
+    ylabel('15N (ppm)')
+    set(gca,'XDir','reverse')
+    set(gca,'YDir','reverse')
     titlestr = sprintf("1H-15N HSQC spectrum of %s (%.1f kDa)\n\n titration point %d", acronymProtein, proteinMass, titrationPoint);
     title(titlestr,"fontweight","bold")
 end

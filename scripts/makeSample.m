@@ -220,6 +220,8 @@ printf("You have a 500 microliter NMR sample of %s (%.1f kDa) at %.3f mM\n",...
 printf("You will use a stock solution of %s (%.1f kDa) at %.3f mM\n",...
          acronymLigand, ligandMass, ligandStock)
 disp("")
+junk=input("<>","s");
+disp("")
 disp("Walking to the NMR ....")
 nu = time();
 a=1;

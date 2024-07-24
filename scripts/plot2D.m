@@ -12,13 +12,13 @@ if tp == 1
     % get maximum peak height
     peakHeight = max([max(max(Sr)) -min(min(Sr))]);
     % need accurate noise estimate in 2D spectrum, just calculate noise spectrum
-    % get noiselevel as RMS of noise spectrum and store as global variable
     McXn  = noiseSf*noiseX;
     McYn  = noiseSf*noiseY;
     SpHXn = processFID(McXn, zfH, 0, 0, 0, 0, swH); # amplitude modulated cosine FID
     SpHYn = processFID(McYn, zfH, 0, 0, 0, 0, swH); # amplitude modulated sine FID
     Sn   = processFID(SpHXn + sqrt(-1)*SpHYn, zfN, 0, 0, 0, 0, swN);
-    noiseLevel = sqrt(mean(mean(real(Sn).^2)));
+    % get noiselevel as 3* RMS of noise spectrum and store as global variable
+    noiseLevel = 3*sqrt(mean(mean(real(Sn).^2)));
     sino = peakHeight/noiseLevel;
     disp("")
     printf("Signal-to-noise ratio for the strongest peak is ~ %.1f\n", sino)
@@ -78,19 +78,11 @@ end
 figure(2)
 if sino > 5
     colorIdx = mod(tp-1,length(colorPlot))+1;
-    if ppmaxis == 1
-        
-        contour(asHppm, asNppm, Sr, cntLvls, 'linecolor',colorPlot(colorIdx,:));
-        xlabel('1H (ppm)')
-        ylabel('15N (ppm)')
-        set(gca,'XDir','reverse')
-        set(gca,'YDir','reverse')
-    else
-        contour(asH, asN, Sr, cntLvls, 'linecolor',colorPlot(colorIdx,:));
-        xlabel('1H (Hz)')
-        ylabel('15N (Hz)')
-        axis([-swH/2 swH/2 -swN/2 swN/2]);
-    end
+    contour(asHppm, asNppm, Sr, cntLvls, 'linecolor',colorPlot(colorIdx,:));
+    xlabel('1H (ppm)')
+    ylabel('15N (ppm)')
+    set(gca,'XDir','reverse')
+    set(gca,'YDir','reverse')
 else
     %imagesc(asHppm, asNppm, Sr); % does not work?
     disp("Signal-to-noise is too low for a contourplot, showing image instead.")
@@ -106,15 +98,9 @@ title(titlestr,"fontweight","bold")
 if tp==1
     for peakNumber=1:numPeaks
         peakLabel = strcat(aa_string(peakNumber),num2str(peakNumber));
-        if ppmaxis == 1
-            labelShiftPpmN = 0.3;
-            labelShiftPpmH = 0.06;
-            text(wHvppm(peakNumber)-labelShiftPpmH,wNvppm(peakNumber)-labelShiftPpmN,peakLabel,"fontsize", labelSize);
-        else
-            pcH = wHv(peakNumber)/(2*my_pi);       % 1H  peak center frequency in Hz
-            pcN = wNv(peakNumber)/(2*my_pi);       % 15N peak center frequency in Hz
-            text(pcH+labelShift,pcN+labelShift,peakLabel, "fontsize", labelSize);
-        end
+        labelShiftPpmN = 0.3;
+        labelShiftPpmH = 0.06;
+        text(wHvppm(peakNumber)-labelShiftPpmH,wNvppm(peakNumber)-labelShiftPpmN,peakLabel,"fontsize", labelSize);
     end
 end
 

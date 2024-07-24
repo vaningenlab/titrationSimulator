@@ -37,9 +37,9 @@ else
 	disp("Then make sure all spectra and peak labels are visible (do \"plotAll\" if necessary).")
 	disp("Then print your HSQCs and the bindingcurve with the \"saveFigure\" command.")
 	disp("It will put two figures in your working directory.")
-	disp("Please do not use the save option from the figure window!")
+	disp("")
 	disp("Send these figures, together with the output from the \"systemInfo\" command")
-	printf("to: %s", instructorMail)
+	printf("to: %s\n", instructorMail)
 	disp("")
 	% save everything for debugging when students have weird results
 	disp("Saving the titration into \"state.out\" ...")

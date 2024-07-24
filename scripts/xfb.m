@@ -50,7 +50,7 @@ else
                 disp("QUESTION 4.")
                 disp("Now play around a little and investigate how:")
                 disp("    - the resolution changes upon changing the 1H and/or 15N acquisition times;")
-                disp("      record spectra with very different acq. times in either 1H or 15N.")
+                disp("      record spectra with very different acq. times in either 1H or 15N dimension.")
                 if easyMode == 1
                     disp("      Do this by reducing the acq. time to 0.01 sec.")
                 end
@@ -127,11 +127,13 @@ else
                     disp("Take a good look at how the peak intensity changes during the titration.")
                     disp("You can zoom in on one peak using \"zoomPeak\" or")
                     disp("you can extract a 1D slice through one peak using \"showSlices\".")
+                    disp("")
                     disp("If you are ready for the question, type \"question(7)\".")
                     disp("")
                     junk=input("<>","s");
                 end
             end
+            disp("")
             disp("Next, type at the command prompt one of the following commands:")
             disp("")
             disp("\t - report        (print overview of titration steps)")
@@ -139,11 +141,11 @@ else
             disp("\t - calcCSP       (calculate chemical shift perturbations)")
             disp("")
             disp("\t - edlev         (to change contouring of the spectra)")
-            disp("                   (this will also redraw the peak numbers if you've lost them)")
-            disp("\t - zoomPeak      (to zoom in on a peak in the spectra)")
-            disp("\t - zoomFull      (to show full spectrum after zooming in)")
-            disp("\t - coneView      (show a 3D mesh plot of current spectrum)")
-            disp("\t - saveFigure    (save current view of the HSQCs to a PNG file)")
+            disp("\t                 (this will also redraw the peak numbers if you've lost them)")
+            %disp("\t - zoomPeak      (to zoom in on a peak in the spectra)")
+            %disp("\t - zoomFull      (to show full spectrum after zooming in)")
+            %disp("\t - coneView      (show a 3D mesh plot of current spectrum)")
+            %disp("\t - saveFigure    (save current view of the HSQCs to a PNG file)")
             disp("\t - listCommands  (show all commands available)")
             %disp("\t - showFID       (to show the free induction decay)")
             %disp("\t - reduceOverlay (reduce the number of spectra in the overlay")

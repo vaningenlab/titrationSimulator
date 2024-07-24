@@ -46,10 +46,10 @@ else
     disp("")
     if titrationPoint == 1 && plotPoints == 1
         % first point additional info
-        if easyMode >= 1
-            disp("Try to space you additions such that in about 7 steps you go from 0% bound to 90-95% bound.")
+        if easyMode > 1
+            disp("Try to space your additions such that in about 7 steps you go from 0% bound to 90-95% bound.")
         else
-            disp("Try to space you additions such that in about 10 steps you go from 0% bound to 90-95% bound.")
+            disp("Try to space your additions such that in about 7 to 10 steps you go from 0% bound to 90-95% bound.")
         end
         disp("Take a look at the \"report\" command output after each addition to judge how much you need to add.")
         disp("")
@@ -142,8 +142,8 @@ else
             proteinDilution = initialVolume/totalVolume;                                 % dilution factor of protein
             pConc = proteinDilution*proteinConc;                                         % current protein concentrations
             lConc = ligandStock*(totalVolume-initialVolume)/totalVolume;                 % current ligand concentrations
-            % real with experimental error
-            molAddReal = (1+0.05*randn)*molAdd;                                                      % include 5% experimental error on actual addition
+            % real with 2% experimental error
+            molAddReal = (1+0.02*randn)*molAdd;                                                      % include 5% experimental error on actual addition
             molEqReal  = molEqReal + molAddReal;                                                     % total eq. added
             volAddReal = molAddReal * proteinConc * initialVolume/ligandStock;                       % addition volume in uL
             totalVolumeReal = totalVolumeReal + volAddReal;                                          % new total volume
@@ -167,7 +167,7 @@ else
                 pConcv(tp) = pConc;
                 lConcv(tp) = lConc;
                 disp("")
-                printf("OK, you're adding %.2f equivalents of %s stock.\n", molAdd, acronymLigand)
+                printf("OK, you have added %.2f equivalents of %s stock.\n", molAdd, acronymLigand)
                 disp("")
                 disp("New sample conditions:")
                 printf("Volume                     : %.2f (uL)\n", totalVolume)

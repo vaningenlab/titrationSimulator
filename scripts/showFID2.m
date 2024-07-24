@@ -1,4 +1,4 @@
-% showFI2D.m
+% showFID2.m
 % for easyMode=2
 
 figure(4)

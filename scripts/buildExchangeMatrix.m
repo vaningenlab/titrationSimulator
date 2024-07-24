@@ -5,8 +5,8 @@
 
 kb = koff;              % backward rate is koff
 kf = koff/KD*Lf;        % pseudo forward-rate (everything in mM units)
-pa = Ef/E0;             % A will be free protein
-pb = C/E0;              % B will be complexed protein
+pa = Ef/E0;             % A will be free protein (actual)
+pb = C/E0;              % B will be complexed protein (actual)
 
 % build exchange matrix
 

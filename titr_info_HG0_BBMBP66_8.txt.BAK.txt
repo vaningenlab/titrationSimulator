@@ -1,0 +1,30 @@
+	*** system details ***
+	protein                      : angiogenesis factor HG0 (18.5 kDa)
+	ligand                       : compound BBMBP66 (0.6 kDa)
+	true dissocation constant    : 2.49 mM
+	fitted dissocation constant  : 2.56 mM
+	error in dissocation constant: 2.8 %
+	exchange class               : 0
+	off-rate                     : 9975.16 s-1
+	on-rate                      : 4.00 10^6 M-1 s-1
+	protein concentration        : 1.00 mM
+	ligand stock                 : 20.00 mM
+	calibrated p1                 : 8.80 us
+	true p1                       : 8.80 us
+	tau INEPT                     : 2.72 ms
+	acq. time 1H                  : 0.080 s
+	acq. time 15N                 : 0.040 s
+	ns                            : 8
+*** overview of titration steps ***
+  #  	 clr 	 molar   protein   ligand    bound
+     	     	 equiv.  conc.     conc.   protein
+     	     	          (mM)      (mM)  (fraction)
+
+   1 	  bk 	   0.00    1.000    0.000    0.000
+   2 	  rd 	   0.40    0.980    0.392    0.103
+   3 	  ma 	   1.00    0.952    0.952    0.227
+   4 	  or 	   2.00    0.909    1.818    0.371
+   5 	  yl 	   4.00    0.833    3.333    0.537
+   6 	  gr 	   8.00    0.714    5.714    0.677
+   7 	  cy 	  18.00    0.526    9.474    0.781
+   8 	  bl 	  38.00    0.345   13.103    0.840

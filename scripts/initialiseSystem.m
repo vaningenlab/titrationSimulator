@@ -48,9 +48,10 @@ if acronymLigand == 0
     acronymLigand = createAcronym(food);
     if acronymLigand == 0
         disp("OK, I'll guess ...");
+        disp("")
         junk=input("<>","s");
-        disp("Your favorite food is snails!")
-        acronymLigand = "SNAILS";
+        disp("Your favorite food is a boterham met pindakaas!")
+        acronymLigand = "BTRHMPNK";
     end
 end
 disp("")
@@ -63,6 +64,7 @@ if vectorOfNumbers == 0
     [vectorOfNumbers arrayOfNumbers ] = extractNumbers(birthDay);
     if vectorOfNumbers == 0
         disp("Ok, I'll guess...")
+        disp("")
         junk=input("<>","s");
         disp("Your birthday is Nov 30th 1976!")
         vectorOfNumbers = [ 3 0 1 1 1 9 7 6];
@@ -79,6 +81,7 @@ if aa_length == 0
     [aa_length, aa_string]  = extractAA(long_aa_string);
     if aa_length == 0
         disp("Ok, I'll guess...")
+        disp("")
         junk=input("<>","s");
         disp("")
         disp("You may find this inspiring:")
@@ -244,7 +247,7 @@ disp("")
 junk=input("<>","s");
 disp("")
 printf("Preliminary experiments have shown that the\n")
-printf("dissociation constant KD is in the %s range\n", affinityRange)
+printf("dissociation constant KD is in the %s range.\n", affinityRange)
 disp("")
 disp("By doing an NMR titration experiment you will determine")
 disp("the binding interface and the binding constant of this interaction.")

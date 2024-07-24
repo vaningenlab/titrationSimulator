@@ -1,11 +1,7 @@
-% showFI2D.m
-% for easyMode=2
+% showFID.m
+% for easyMode=1,2
 
-if easyMode == 1
-    figure(2)
-else 
-    figure(4)
-end
+figure(1)
 
 SpHX    = processFID(McX, zfH, 0, 0, 0, 0, swH); # amplitude modulated cosine FID
 SpHY    = processFID(McY, zfH, 0, 0, 0, 0, swH); # amplitude modulated sine FID
@@ -22,7 +18,7 @@ for q=2:zfN
 	saxisN=[saxisN q];
 end
 
-asH 	  = (saxisH - zfH/2 -1)./(zfH/2).*swH/2;			% as in relative Hz
+asH 	  = (saxisH - zfH/2 -1)./(zfH/2).*swH/2;		% as in relative Hz
                                                         % removed -0.5 to have extact match with input Hz
                                                         % change to -1
 asHppm	  = fliplr(asH*2*my_pi/(gH*B0*1e-6) + centerHppm);
@@ -165,8 +161,9 @@ junk=input("<>","s");
 disp("")
 
 
-disp("Now you get the full 2D spectrum.")
+disp("Now you get the full 2D spectrum, shown in the Figure 2 window.")
 
+figure(2)
 contour(asHppm, asNppm, Sr, cntLvls, 'linecolor','k');
 xlabel('1H (ppm)')
 ylabel('15N (ppm)')

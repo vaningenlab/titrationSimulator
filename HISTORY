@@ -2,7 +2,7 @@ HISTORY titrationSimulator
 
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
-test:
+test easyMode = 1 / 12 questions:
  - Windows: Octave 8.4.0 - Qt (computer room)
             Octave 9.2.0 - Qt (latest)
  - Mac    : Octave 6.2.0 - Qt (octave.app)
@@ -10,29 +10,24 @@ test:
 
 before ICMRBS/2024 BMSB course:
 - seperate INFO and HISTORY file DONE
+- syntax fix for 8.4.0 in initialiseSystem DONE
 - adjust Windows BAT file to use octave-gui and qt toolkit to have fancier graphics
   check in virtual machine: works fine this time, check PC room, works fine! DONE
-- fix colors in getKD prompt DONE
-
-
-- pulse calibration in easyMode 0 1 2 is also a question but not counted!
-  135 out of 130 points...
-  temp fix for easyMode 2 in question2.m
-- calcCSP shoudl continue even if misidentifing CSPs
-- redo getKD if really bad
-- question on equation for KD fitting
-- 
-- fix: warning: suggest parenthesis around assignment used as truth value near line 157, column 19 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
-warning: called from
-    ini at line 208 column 9
-warning: suggest parenthesis around assignment used as truth value near line 153, column 16 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
-warning: called from
-    ini at line 208 column 9
-
-warning: suggest parenthesis around assignment used as truth value near line 171, column 20 in file '\\Mac\Home\ONDERWIJS\1-UTRECHT\0-COURSES\BSc-BMSB\COMPUTER-PRACTICALS\CP2\dev\nmrSim\scripts\initialiseSystem.m'
-warning: called from
-    ini at line 208 column 9
-
+- fix color long names in getKD prompt DONE
+- moved definition of p1 (trup) to ini.m and stored in system.out DONE
+- added experiment tick marks and labels in popt DONE
+- 2D FID intro in Figure 1, spectrum still in Figure 2 DONE
+- bit more flexibility in using short acquisition times DONE
+- prompt student to close Figure 3 with coneView DONE
+- various spelling/textual fixes DONE
+- final score as grade out of 10 points DONE
+- calcCSP now continue even if misidentifing CSPs DONE
+- removed Hz option spectrum display DONE
+- fix issue in peak positions DONE
+- redo getKD if really bad DONE
+- fix issue w. overestimation CSP in getKD DONE
+- corrected numPoints for easyMode = 1 (12 Q + pulse calib = 130 points) DONE
+- check unAdd for correct handling of real (w/ error) vs intended (w/o error) addition
 
 
 % HISTORY:

@@ -24,12 +24,12 @@ clear -all
 global swH swN wHv wNv dwHv dwNv titrationPoint allSpectra asHppm asNppm
 global numLvls cntFactor baseLevel expPars plotSpectra cntLvls
 global acronymProtein acronymLigand proteinMass ligandMass affinityRange
-global gH gN B0 asH asN ppmaxis swH swN p1 beNice noiseX ns McX
+global gH gN B0 asH asN swH swN p1 beNice noiseX ns McX finalScore
 global peakStoreX peakStoreY zfH zfN koff questionPoints questionAsked
 global score S2Values plotPoints numPeaks yourName trup easyMode cq numPeaks
-global pConcv lConcv cConcv molEqv CSP_o CSP_c CSP_p labelShift labelSize
+global pConcv lConcv cConcv molEqv CSP_o CSP_s CSP_f labelShift labelSize peakIntProfile
 global wHvppm wNvppm centerHppm centerNppm ligandDescriptor numQuestions dwHvppm dwNvppm
-global instructorMail noiseLevel my_pi numCalibCheck numCalib atH atN aa_string my_pi offResonance
+global instructorMail noiseLevel my_pi numCalibCheck numCalib atH atN aa_string my_pi offResonance laN_Av laN_Bv
 
 % reset octave prompt
 PS1(":)] ");
@@ -78,7 +78,7 @@ if easyMode == 0
         % mac/linux version is starting from main dir
         copyfile("scripts/question.0.m", "scripts/question.m");
     end
-    numQuestions   = 13;                % total number of questions (best to have 10)
+    numQuestions   = 13;                % total number of questions
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no DOES NOT WORK YET AS INTENDED
 elseif easyMode  == 1
     if ispc()
@@ -86,7 +86,7 @@ elseif easyMode  == 1
     else
         copyfile("scripts/question.1.m", "scripts/question.m");
     end
-    numQuestions   = 12;                % easy mode 1 has 11 questions + calibration points
+    numQuestions   = 12;                % easy mode 1 has 12 questions + calibration points
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
 elseif easyMode  == 2
     if ispc()
@@ -121,7 +121,7 @@ disp("")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
 disp("\t++         DO THE PEAKS MOVE?         ++")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
-disp("\t++ (c)2023-v14 HvI Utrecht University ++")
+disp("\t++ (c)2024     HvI Utrecht University ++")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
 disp("")
 
@@ -148,8 +148,6 @@ if exist("state.out") == 2
     disp("Type \"report\" for the details on the titration steps.")
     disp("Type \"listCommands\" for a list of all available commands.")
     disp("If you got stuck during the \"calcCSP\" or \"getKD\" analysis you can now restart these commands.")
-    % tweak for Advanced BioNMR course Utrecht
-    % disp("Type \"question(11)\" and \"question(12)\" to get the final questions.")
     disp("")
 else
     if exist("system.out") == 2
@@ -182,7 +180,7 @@ else
         disp("to investigate a protein-ligand interaction.")
         disp("")
         disp("You will get your own protein and your own ligand to investigate.")
-        disp("The ligand is either a small molecule or another protein.")
+        disp("The ligand is either a small molecule, a peptide or another protein.")
         disp("")
         disp("Your goal is to determine the binding interface")
         if easyMode >=1
@@ -207,13 +205,17 @@ else
 
         initialiseSystem
         initialiseSpectrum
+
+        % define unique pulse lengths that will be fixed, also when restarting
+        trup = 7 + 5*rand();    % uniform ditribution so that higher values are equally likely
+
         % automatically write values to file to allow restart of titration
         % add debug info
         pcOctvers = version;
         pcUname   = uname();
         pcToolkit = graphics_toolkit;
         save("system.out","acronymProtein", "acronymLigand", "proteinDescriptor", "ligandDescriptor", ...
-                    "proteinMass", "ligandMass", "affinityValue", "ligandClass", ...
+                    "proteinMass", "ligandMass", "affinityValue", "ligandClass", "trup", ...
                     "koff", "affinityRange", "yourName", "dwHv", "dwNv", "wHv", "wNv", "swN", "swH", ...
                     "wHvppm", "wNvppm", "dwHvppm", "dwNvppm", "swHppm", "swNppm", "centerHppm", "centerNppm",...
                     "numSmall", "numZero", "numMed", "numBig", "aa_string", "overlap", ...
@@ -230,7 +232,6 @@ else
     % define some more variables
     expPars = "None";       % parameters set for NMR experiment
     number  = 0;            % question number identifier
-    ppmaxis   = 1;          % plot in ppm (1) or Hz (0) -- ppm still needs to be checked 
     numLvls   = 10;         % initial settings for contourplot
     cntFactor = 1.4;        % initial settings for contourplot
     startFloor= 0.05;        % initial settings for contourplot
@@ -259,6 +260,7 @@ else
     numCalibCheck  = 0;                     % to keep track of number of times calibration check was done
     numCalib       = 0;                     % to keep track of number of times calibration was done
     showHint       = 0;                     % to track if overlap hint was shown
+    pbVectorActual = [];                    % to track the actual population bound w/ pipet error
     disp("")
     disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
     disp("")

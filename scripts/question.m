@@ -6,7 +6,7 @@ function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange aa_string
 global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail atH atN numQuestions
-global dwNvppm dwHvppm numPeaks
+global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile
 
     disp("")
     if number == 1 && questionAsked(number) == 0
@@ -29,6 +29,7 @@ global dwNvppm dwHvppm numPeaks
         disp("Cheapest, most practical option is to leave the ligand unlabeled.")
         disp("The protein is best labeled with 15N, as the backbone amide chemical shifts")
         disp("are very sensitive to binding events, more so than 13C chemical shifts.")
+        disp("Labeling with 15N is also signifcantly cheaper than labeling with 13C.")
         disp("So B is the right answer.");
         disp("")
     elseif number == 2 && questionAsked(number) == 0
@@ -86,7 +87,7 @@ global dwNvppm dwHvppm numPeaks
         disp("The two protons have different chemical shifts.")
         disp("Both will give a peak at the same 15N chemical shift")
         disp("These sidechains are thus easily recognized as two signals on a horizontal line.");
-        disp("In this experiment only the backbone NH will show up as signals.")
+        disp("In the simulated spectra here only the backbone NHs will show up as signals.")
         disp("")
         junk=input("<>","s");
         clc
@@ -126,7 +127,7 @@ global dwNvppm dwHvppm numPeaks
         disp("")
         junk=input("<>","s");
         disp("")
-        disp("Now rerecord the HSQC making sure it has a good S/N and good resolution.")
+        disp("Now re-record the HSQC making sure it has a good S/N and good resolution.")
         disp("Then I have another question for you before you can really start with the titration.")
         disp("So first use \"eda\" to set-up your HSQC, then \"zg\" to run it, and \"xfb\" to process it.")
         disp("")
@@ -160,13 +161,15 @@ global dwNvppm dwHvppm numPeaks
         disp("For instance termini will be more floppy, more dynamic than the folded core of the protein.")
         disp("Floppy bits will behave like small molecules and have sharper, more intense lines.")
         disp("")
+        disp("You can now close the Figure 3 with the 3D spectrum.")
+        disp("")
         questionAsked(5) = 1;
         % now prompt student to start with titration
         disp("")
         junk=input("<>","s");
         disp("");
         % double check that resolution is sufficient
-        if atH < 0.075 || atN < 0.035
+        if atH < 0.06 || atN < 0.03
             disp("")
             disp("I just checked your acquisition parameters")
             disp("and it seems your acquisition times are still bit short.")
@@ -174,8 +177,8 @@ global dwNvppm dwHvppm numPeaks
             disp("")
             junk=input("<>","s");
             disp("")
-            disp("Use \"eda\" to set 1H acquisition time to at least 80ms and ")
-            disp("the 15N acquisition time to at least 40ms.")
+            disp("Use \"eda\" to set 1H acquisition time to at least 60ms and ")
+            disp("the 15N acquisition time to at least 30ms.")
             disp("Then record the spectrum againg with \"zg\" and process with \"xfb\".")
             disp("")
             disp("Once that is done you have your spectrum of the free protein")
@@ -211,7 +214,7 @@ global dwNvppm dwHvppm numPeaks
         junk=input("<>","s");
         disp("");
         disp("EXPLANATION:")
-        disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity")
+        disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity.")
         disp("It also depends on your protein concentration.") 
         disp("")
         disp("Imagine you have an immensely concentrated protein solution.")
@@ -224,8 +227,7 @@ global dwNvppm dwHvppm numPeaks
         junk=input("<>","s");
         disp("")
         printf("In your system the KD is in the %s range.\n", affinityRange)
-        disp("So continue the titration until you are close to 10*KD+protein concentration,")
-        disp("and/or you see no more significant changes in the spectrum")
+        disp("Continue the titration until you see no more significant changes in the spectrum.")
         disp("You can also take a peek at the %bound protein using \"report\"...")
         disp("")
         disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
@@ -249,7 +251,7 @@ global dwNvppm dwHvppm numPeaks
         junk=input("<>","s");
         disp("");
         disp("EXPLANATION:")
-        disp("In this setup ,each addition of ligand increases the volume and thus dilutes the protein.")
+        disp("In this setup,each addition of ligand increases the volume and thus dilutes the protein.")
         disp("As a result the peak intensity will decrease during the titration.")
         disp("You can minimize this by working at low protein and maximum ligand stock concentration.")
         disp("Or you could make a series of samples at constant protein but increasing ligand concentration.") 
@@ -263,12 +265,12 @@ global dwNvppm dwHvppm numPeaks
         disp("")
         junk=input("<>","s");
         disp("")
-        disp("Binding could cause of loop to become less flexible, this would then also lead to reduced")
+        disp("Binding could cause a loop to become less flexible, this would then also lead to reduced")
         disp("peak intensities.")
         disp("")
         junk=input("<>","s");
         disp("")
-        disp("The conformation exchange between free and bound can indeed cause broadening of the lines,")
+        disp("The conformational exchange between free and bound protein can indeed cause broadening of the lines,")
         disp("and thus reduction in peak intensity.")
         disp("But this will only happen if that particular residue is in different environments in")
         disp("free and bound states: there has to be a chemical shift difference.")
@@ -278,8 +280,7 @@ global dwNvppm dwHvppm numPeaks
         disp("")
         junk=input("<>","s");
         disp("")
-        disp("Now continue the titration until you are close to 10*KD+protein concentration,")
-        disp("and/or you see no more significant changes in the spectrum")
+        disp("Now continue the titration until you see no more significant changes in the spectrum.")
         disp("You can also take a peek at the %bound protein using \"report\"...")
         disp("")
         disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
@@ -306,11 +307,11 @@ global dwNvppm dwHvppm numPeaks
     elseif number == 11 && questionAsked(number) == 0
         % judge exchange regime
         % does not make sense to do all peaks, since most will be fast exchange
-        % so take smallest, median, and 2 largest CSP peaks
+        % so take smallest, median, and 2 largest CSP peaks = 4 peaks
         truCSP = sqrt((dwNvppm./(5)).^2+(dwHvppm).^2);
         [ sss, iii ] = sort(truCSP);
         smallCSP = iii(1:1);
-        medianCSP = iii(round(numPeaks/2))
+        medianCSP = iii(round(numPeaks/2));
         largeCSP = iii(numPeaks-1:numPeaks);
         questionPeaks = sort([smallCSP, medianCSP, largeCSP]);
         disp("QUESTION 11.")
@@ -321,6 +322,7 @@ global dwNvppm dwHvppm numPeaks
         disp("")
         junk=input("<>","s");
         oldScore = score;
+        % 4 peaks with 2 points each, so 2 bonus points
         score=score+2;
         disp("")
         for qp=1:length(questionPeaks)
@@ -341,6 +343,17 @@ global dwNvppm dwHvppm numPeaks
             % calculate true dw/kex ratio's; crossover = kex=dw/2 dw/kex = 2 is intermediate
             aH = abs(dwHv(p))/(2*koff);
             aN = abs(dwNv(p))/(2*koff);
+            % also calculate normalized peak intensity profile
+            normPeak  = peakIntProfile./peakIntProfile(1);
+            tp        = titrationPoint;
+            % check for dip in intensity at midpoint compared to end point
+            relMidInt = normPeak(round(tp/2))/normPeak(tp);
+            %        1   : cross-over point = intermediate
+            % 100 - 8    : slow
+            %   8 - 2    : slow intermediate
+            %   2 - 1    : intermediate
+            %   1 - 0.25 : fast intermediate    dip in intensities around midpoint
+            %   0.25 - ..: fast                 no dip in intensities around midpoint
             if abs(dwHv(p)) < 6 && abs(dwNv(p)) < 6
                 % no exchange
                 if answer11 == "A"
@@ -350,12 +363,6 @@ global dwNvppm dwHvppm numPeaks
                     disp("If there is no chemical shift difference,")
                     disp("then there is not really any exchange experienced for this peak.")
                 end
-            %         1 : cross-over point = intermediate
-            % 100 - 8    : slow
-            %   8 - 2    : slow intermediate
-            %   2 - 1    : intermediate
-            %   1 - 0.25 : fast intermediate
-            %   0.25 - ..: fast
             elseif aH > 8 || aN > 8
                 % slow exchange, should not occur
                 if answer11 == "B"
@@ -387,7 +394,7 @@ global dwNvppm dwHvppm numPeaks
                 disp("the ratio of dw (=chemical shift difference in rad s-1) to kex (the exchange rate).")
                 disp("As you can see dw is larger than kex, but not many times larger.")
                 peakInfo(p)
-            elseif aH > 1 || aN > 1
+            elseif aH > 1 || aN > 1 
                 % intermediate
                 if answer11 == "C"
                     disp("Yes, the peak intensity decreases a lot around the midpoint,")
@@ -428,8 +435,33 @@ global dwNvppm dwHvppm numPeaks
                 disp("the ratio of dw (=chemical shift difference in rad s-1) to kex (the exchange rate).")
                 disp("As you can see dw is bit smaller than kex.")
                 peakInfo(p)
+            elseif relMidInt < 0.9
+                % fast-intermediate
+                if answer11 == "C"
+                    disp("Yes, the peak intensity decreases somewhat around the midpoint,")
+                    disp("but the effect is not dramatic and also looks like the peak")
+                    disp("is just gradually shifting.")
+                    disp("So it is best to call this fast-to-intermediate exchange.")
+                    disp("Still 2 points extra.")
+                    score = score +2;
+                elseif answer11 == "E"
+                    disp("Perfect, the peak intensity decreases somewhat around the midpoint,")
+                    disp("but the effect is not dramatic and also looks like the peak")
+                    disp("is just gradually shifting.")
+                    disp("So it is indeed best to call this fast-to-intermediate exchange.")
+                    score = score +2;
+                else
+                    disp("Well, the peak intensity decreases somewhat around the midpoint,")
+                    disp("but the effect is not dramatic and also looks like the peak")
+                    disp("is just gradually shifting.")
+                    disp("So it is indeed best to call this fast-to-intermediate exchange.")
+                end
+                disp("Inspect the information below, specifically ")
+                disp("the ratio of dw (=chemical shift difference in rad s-1) to kex (the exchange rate).")
+                disp("As you can see dw is bit smaller than kex.")
+                peakInfo(p)
             else
-                % fast exchange, aH || aN less than 0.25
+                % fast exchange, aH || aN less than 0.25 and no dip in center
                 if answer11 == "D"
                     disp("Yes, the peak just gradually shifts in position with just a gradual drop")
                     disp("in intensity due to dilution. This is fast exchange.")
@@ -446,6 +478,7 @@ global dwNvppm dwHvppm numPeaks
                 disp("As you can see dw is much smaller than kex.")
                 peakInfo(p)
             end % answer options
+            disp("")
             junk=input("<>","s");
             clc
         end % peaks
@@ -506,12 +539,12 @@ global dwNvppm dwHvppm numPeaks
         junk=input("<>","s");
         clc
         disp("")
-        finalScore = 100*score/(10*numQuestions+10);
+        finalScore = 10*score/(10*numQuestions+10);
         printf("+++++++++++++++++++++++++++++++++++++++++++++++\n")
         printf("++                                           ++\n")
         printf("++     This is the end of the practical.     ++\n")
         printf("++                                           ++\n")
-        printf("++     You have a final score of %3.0f/100     ++\n", finalScore)
+        printf("++     You have a final score of %3.1f/10     ++\n", finalScore)
         printf("++     You got %3d points out of %3d         ++\n", score, numQuestions*10+10)
         printf("++                                           ++\n")
         printf("+++++++++++++++++++++++++++++++++++++++++++++++\n")

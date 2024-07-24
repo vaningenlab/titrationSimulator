@@ -83,8 +83,8 @@ INFO titrationSimulator
 6. Plot windows that are generated: 
     - figure 1: acquisition window showing FID
                 and H2O spectrum after popt pulse calibration
-    - figure 2: 2D spectrum
                 and 2D FID and partially FT spectrum 
+    - figure 2: 2D spectrum
     - figure 3: 2D spectrum in 3D mode
     - figure 4: 1D slices in 1H and 15N dimension through the processed 2D spectrum
     - figure 5: bar plot of CSPs
@@ -202,26 +202,29 @@ BUGS:
 
 % plan:
 FURTHER OPTIMISATION
-highest priority, necessary before publication 
+highest priority
 - need a bit more introduction on the setup, as ppt/pdf also to point to FAQ
 - easier way to auto-extract results for instructor 
 
 medium priority
+- question on equation for KD fitting
+- question on equation for CSP calculation
+
+low priority
 - check for matlab compatibility: certainly needs a bit work
+- make test files system.out with extreme cases for each easyMode for testing
+- different color for negative contours
+- could vary rHH in calcRelaxation rates depending on mass to reflect partial or full deuteration
+- could do TROSY for large proteins; make students select labeling
+- ased to set pwN, p1 (d1 is not accurately simulated?)
+- let user pick the field strength
+- add dataView - figure(7) scatter
 - include off-resonance effects - check implementation
      NO IS DUE TO TIMING ISSUE: t1 and INEPT delays are not compensated for evolution during pulse!
         this will obviously give problems with phase
                 - need to have simultaneous pulses coded as well.
      PFG's may also be added for more realistic simulation
 
-low priority
-- make test files system.out with extreme cases for each easyMode for testing
-- different color for negative contours
-- could vary rHH in calcRelaxation rates depending on mass to reflect partial or full deuteration
-- could do TROSY for large proteins; make students select labeling
-- ased to set pwN, p1 (d1 is not accurately simulated?)
-- let user pick the field strength NO
-- add dataView - figure(7) scatter
 
 easyMode=0 only:
 - double check easyMode is off  --- definitely needs checking!!

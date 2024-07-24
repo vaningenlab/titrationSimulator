@@ -31,6 +31,6 @@ elseif strcmp(expPars,"find90")
 elseif strcmp(expPars,"popt")
     SrH2O = processFID(McH2O, zfH2O, 0, 0, 0, 0, swH2O);
     % add zeros here to seperate spectra better
-    SrH2O = [ SrH2O' zeros(1,1000)];
+    SrH2O = [ SrH2O' zeros(1,2000)];
     allH2O = [allH2O SrH2O];
 end

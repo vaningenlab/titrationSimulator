@@ -2,8 +2,8 @@
 
 function showSlices(peakNumber, dimension)
 
-    global titrationPoint peakStoreX peakStoreY asN asH wHv dwHv wNv dwNv zfH zfN swH swN plotPoints ppmaxis asHppm asNppm
-    global aa_string easyMode
+    global titrationPoint peakStoreX peakStoreY asN asH wHv dwHv wNv dwNv zfH zfN swH swN plotPoints asHppm asNppm
+    global aa_string easyMode peakIntProfile
     
 
     if nargin < 2
@@ -65,6 +65,7 @@ function showSlices(peakNumber, dimension)
         if endIdxH > length(asH)
             endIdxH = length(asH);
         end
+        peakIntProfile = zeros(1,titrationPoint);
         for kk=1:titrationPoint
             % extract 2D FID for peak
             peakFIDX = peakStoreX(:,:,peakNumber, kk);
@@ -75,6 +76,7 @@ function showSlices(peakNumber, dimension)
             peakSr  = processFID(SpHX + sqrt(-1)*SpHY, zfN, 0, 0, 0, 0, swN);
             % extract ROI
             subSpec = peakSr(strIdxN:endIdxN,strIdxH:endIdxH);
+            peakIntProfile(kk) = max(max(subSpec));
             % now sum
             colorIdx = mod(kk-1,length(colorPlot))+1;
             if dimension == "b"
@@ -112,29 +114,19 @@ function showSlices(peakNumber, dimension)
                 title(sprintf('1D projection peak %s 15N dimension', peakLabel), 'fontweight', 'bold')
             elseif dimension == "N"
                 peakProj = sum(subSpec,2);
-                if ppmaxis == 1
-                    plot(asNppm(strIdxN:endIdxN),peakProj, 'color',colorPlot(colorIdx,:))
-                    xlabel('15N (ppm)')
-                    axis([asNppm(strIdxN) asNppm(endIdxN)])
-                    set(gca,'XDir','reverse')
-                else
-                    plot(asN(strIdxN:endIdxN),peakProj, 'color',colorPlot(colorIdx,:))
-                    xlabel('15N (Hz)')
-                end
+                plot(asNppm(strIdxN:endIdxN),peakProj, 'color',colorPlot(colorIdx,:))
+                xlabel('15N (ppm)')
+                axis([asNppm(strIdxN) asNppm(endIdxN)])
+                set(gca,'XDir','reverse')
                 ylabel('intensity')
                 peakLabel = strcat(aa_string(peakNumber),num2str(peakNumber));
                 title(sprintf('1D projection peak %s', peakLabel), 'fontweight', 'bold')
             else
                 peakProj = sum(subSpec, 1);
-                if ppmaxis == 1
-                    plot(asHppm(strIdxH:endIdxH), peakProj, 'color',colorPlot(colorIdx,:))
-                    xlabel('1H (ppm)')
-                    axis([asHppm(endIdxH) asHppm(strIdxH)])
-                    set(gca,'XDir','reverse')
-                else
-                    plot(asH(strIdxH:endIdxH), peakProj, 'color',colorPlot(colorIdx,:))
-                    xlabel('1H (Hz)')
-                end
+                plot(asHppm(strIdxH:endIdxH), peakProj, 'color',colorPlot(colorIdx,:))
+                xlabel('1H (ppm)')
+                axis([asHppm(endIdxH) asHppm(strIdxH)])
+                set(gca,'XDir','reverse')
                 ylabel('intensity')
                 peakLabel = strcat(aa_string(peakNumber),num2str(peakNumber));
                 title(sprintf('1D projection peak %s', peakLabel), 'fontweight', 'bold')

@@ -18,6 +18,7 @@
 % conditions to catch
 %   - unAdd can only be done directly after titrate.m, before zg/xfb/process2D
 %       thus titrationPoint has been incremented, but plotPoints has not!
+% ! need to remove actual addition (i.e. w pipet error) not the intended addition!
 
 if titrationPoint > plotPoints && titrationPoint > 1
     % go ahead and undo
@@ -60,7 +61,7 @@ else
     disp("Now you cannot undo that anymore.")
     disp("")
     disp("If you really want to change the titration,")
-    disp("You have to start from scratch and make a new sample by typing \"makeSample\" at the prompt.")
+    disp("you will have to start from scratch and make a new sample by typing \"makeSample\" at the prompt.")
     disp("Otherwise, just continue the titration by typing \"titrate\".")
     disp("")
 end

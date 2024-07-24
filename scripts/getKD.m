@@ -6,6 +6,7 @@
 % easyMode = 2 : this is question 7
 % easyMode = 3 : this is question 6
 
+continueKDQuestion = "y";
 if easyMode == 0
     disp("")
     disp("This analysis won't work in your case most likely.")
@@ -87,19 +88,11 @@ else
             figure(2)
             peakNumberKD = str2num(peakSelect);
             % calculate proper box for zooming and display zoomed region
-            if ppmaxis == 1
-                pcHp = wHvppm(peakNumberKD) - 0.5*dwHvppm(peakNumberKD);       % 1H  peak center of free and bound state
-                pcNp = wNvppm(peakNumberKD) - 0.5*dwNvppm(peakNumberKD);       % 15N peak center of free and bound state
-                boxHp = abs(0.5*dwHvppm(peakNumberKD)) + 0.05;
-                boxNp = abs(0.5*dwNvppm(peakNumberKD)) + 1.00;
-                axis([pcHp-boxHp pcHp+boxHp pcNp-boxNp pcNp+boxNp]);
-            else
-                pcH = (wHv(peakNumberKD) + 0.5*dwHv(peakNumberKD))/(2*my_pi);       % 1H  peak center of free and bound state
-                pcN = (wNv(peakNumberKD) + 0.5*dwNv(peakNumberKD))/(2*my_pi);       % 15N peak center of free and bound state
-                boxH = abs(0.5*dwHv(peakNumberKD)/(2*my_pi)) + 100;
-                boxN = abs(0.5*dwNv(peakNumberKD)/(2*my_pi)) + 100;
-                axis([pcH-boxH pcH+boxH pcN-boxN pcN+boxN]);
-            end
+            pcHp = wHvppm(peakNumberKD) - 0.5*dwHvppm(peakNumberKD);       % 1H  peak center of free and bound state
+            pcNp = wNvppm(peakNumberKD) - 0.5*dwNvppm(peakNumberKD);       % 15N peak center of free and bound state
+            boxHp = abs(0.5*dwHvppm(peakNumberKD)) + 0.05;
+            boxNp = abs(0.5*dwNvppm(peakNumberKD)) + 1.00;
+            axis([pcHp-boxHp pcHp+boxHp pcNp-boxNp pcNp+boxNp]);
             disp("The spectrum plot is now zoomed in on this peak.")
             disp("Each spectrum of the titration will be shown, one at a time.")
             disp("")
@@ -123,21 +116,13 @@ else
                 % display only the spectrum of this titration point
                 hold off
                 colorIdx = mod(ss-1,length(colorPlot))+1;
-                if ppmaxis == 1
-                    contour(asHppm, asNppm, plotSpectra(:,:,ss), cntLvls, 'linecolor',colorPlot(colorIdx,:));
-                    axis([pcHp-boxHp pcHp+boxHp pcNp-boxNp pcNp+boxNp]);
-                    grid on
-                    xlabel('1H (ppm)')
-                    ylabel('15N (ppm)')
-                    set(gca,'XDir','reverse')
-                    set(gca,'YDir','reverse')
-                else
-                    contour(asH, asN, plotSpectra(:,:,ss), cntLvls, 'linecolor',colorPlot(colorIdx,:));
-                    axis([pcH-boxH pcH+boxH pcN-boxN pcN+boxN]);
-                    grid on
-                    xlabel('1H (Hz)')
-                    ylabel('15N (Hz)')
-                end
+                contour(asHppm, asNppm, plotSpectra(:,:,ss), cntLvls, 'linecolor',colorPlot(colorIdx,:));
+                axis([pcHp-boxHp pcHp+boxHp pcNp-boxNp pcNp+boxNp]);
+                grid on
+                xlabel('1H (ppm)')
+                ylabel('15N (ppm)')
+                set(gca,'XDir','reverse')
+                set(gca,'YDir','reverse')
                 % pick centre peak, return x y
                 disp("")
                 printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,:))
@@ -149,11 +134,7 @@ else
                 % store coordinates in vector
                 H_CSP = x_s - x_f;
                 N_CSP = y_s - y_f;
-                if ppmaxis == 1
-                    CSP_o   = [ CSP_o sqrt(H_CSP^2 + (N_CSP/5)^2)];
-                else
-                    CSP_o   = [ CSP_o sqrt(H_CSP^2 + N_CSP^2)];
-                end
+                CSP_o   = [ CSP_o sqrt(H_CSP^2 + (N_CSP/5)^2)];
             end
             disp("")
             disp("Extracting binding curve ...")
@@ -167,11 +148,7 @@ else
             axis([0 1.05*max(lConcv) 0 1.1*max(CSP_o)])
             % double-check units of ligand concentration is in mM -- see titrate.m
             xlabel("ligand concentration (mM)")
-            if ppmaxis == 1
-                ylabel("weighted chemical shift perturbation (ppm)")
-            else
-                ylabel("peak displacement (Hz)")
-            end
+            ylabel("weighted chemical shift perturbation (ppm)")
             title("binding curve","fontweight","bold")
             hold on
             disp("The binding curve is shown in Figure 6.")
@@ -191,7 +168,7 @@ else
             disp("Done! The best-fit curve will be shown in blue.")
             disp("")
             fitCurve
-            plot(lConcv, CSP_c, 'b-;fit;')
+            plot(lConcv, CSP_f, 'b-;fit;')
             h = legend("location", "southeast");
             disp("")
             disp("Best-fit value for the dissociation constant is:")
@@ -223,17 +200,18 @@ else
             disp("")
             % !!! this is assuming fast exchange !!!
             disp("The actual binding curve is shown in green.")
-            if ppmaxis == 1
-                CSP_p = cConcv./pConcv.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/(5))^2 ) );
-            else
-                CSP_p = cConcv./pConcv.*( sqrt( (dwHv(peakNumberKD)/(2*my_pi))^2 + (dwNv(peakNumberKD)/(2*my_pi))^2 ) );
-            end
-            plot(lConcv, CSP_p, 'g-;actual;')
+            % this has to be based on actual addition!!
+            % 
+            CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) );
+            % also scale to observed CSP
+            plot(lConcv, CSP_s, 'g-;actual;')
             disp("")
             if getkdTime == 0 && (easyMode >=1 && questionAsked(kdq) == 0 )
                 if abs((KD_fit - KD_real)/KD_real) < 0.5
                     disp("Good job, you are within 2-fold of the true KD. You get 10 points.")
                     score = score + 10;
+                    questionAsked(kdq)=1;
+                    getkdTime = getkdTime + 1;
                 else
                     if ligandClass == 1 && koff < 5000 && beNice == 1
                         disp("")
@@ -244,10 +222,20 @@ else
                     else
                         disp("The KD determined from the fit is a bit off unfortunately.")
                         disp("Ask your instructor to have a look at it.")
-                        
+                        disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
                     end
-                    disp("Still 10 points for the effort.")
-                    score = score + 10;
+                    disp("")
+                    continueKDQuestion = input("Do you want to redo the KD analysis? y/n: ","s");
+                    if continueKDQuestion != "n" && continueKDQuestion != "y"
+                        continueKDQuestion = input("Please type y if you want to redo the analyis:","s");
+                        if continueKDQuestion != "n" && continueKDQuestion != "y"
+                            continueKDQuestion = "n";
+                        end
+                    end
+                    if continueKDQuestion == "n"
+                        disp("OK, still 5 points for the effort.")
+                        score = score + 5;
+                    end
                 end
             else
                 if abs((KD_fit - KD_real)/KD_real) < 0.5
@@ -259,12 +247,10 @@ else
                     disp("Ask your instructor to have a look at it.")
                 end
             end
-            getkdTime = getkdTime + 1;
             disp("")
             junk=input("<>","s");
             clc
             disp("")
-            questionAsked(kdq)=1;
             if easyMode == 1
                 disp("Now I still have two questions for you.")
                 disp("First, type \"question(11)\" at the command prompt.")

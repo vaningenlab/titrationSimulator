@@ -39,6 +39,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("")
         end
         buildExchangeMatrix                 % derive exchange matrix for this point
+        pbVectorActual = [pbVectorActual pb];  % store actual pb
         totalFIDX = zeros(npN,npH);
         totalFIDY = zeros(npN,npH);
         % pre-calculate signal and noise scaling factors
@@ -393,6 +394,8 @@ elseif strcmp(expPars, "popt")
         end
         disp("")
         allH2O = [];
+        xtickVector=[];
+        xtickLabelVector=[];
         figure(1)
         hold off
         printf("\tp1 ")
@@ -410,9 +413,13 @@ elseif strcmp(expPars, "popt")
             title("1H pulse calibration - popt", 'fontweight', 'bold')
             xlabel('experiment')
             ylabel('intensity')
-            axis("ticy")
+            xtickVector = [xtickVector 0.5*zfH2O+(ee-1)*length(SrH2O)];
+            xtickLabelVector = [xtickLabelVector ee];
+            xticks(xtickVector)
+            xticklabels(xtickLabelVector)
             drawnow()
         end
+        
         printf("\n")
         %pause (0.5);
         nu = time();
@@ -422,17 +429,17 @@ elseif strcmp(expPars, "popt")
         if numCalib == 0
             disp("")
             disp("You see here all spectra plotted straight after each other.")
+            disp("")
             printf("The first spectrum is recorded with p1 is %.2f microseconds.\n", pS)
             printf("The second spectrum is recorded with p1 is %.2f microseconds.\n", pS+pI)
             printf("The third with %.2f microseconds, etc.\n", pS + 2*pI)
             if pS == 0
+                disp("")
                 disp("Note that there is no signal in the first spectrum, since p1 is zero")
             end
             disp("To identify the zero-crossing, find a spectrum close to it, then count ")
             disp("to find the corresponding p1 value, using the information above.")
-            disp("Note that you cannot use the mouse the identify the spectrum number.")
             disp("")
-            junk=input("<>","s");
         end
         numCalib = numCalib + 1;
         disp("")
