@@ -3,12 +3,12 @@ HISTORY titrationSimulator
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
 test
- - Windows: Octave 8.4.0 - Qt (computer room)
-            Octave 9.2.0 - Qt (latest)
- - Mac    : Octave 6.2.0 - Qt (octave.app)
+ - Windows: Octave 8.4.0 - Qt (computer room)   easyMode 1 
+            Octave 9.2.0 - Qt (latest)          easyMode 3 
+ - Mac    : Octave 6.2.0 - Qt (octave.app)      easyMode 2 OK
             Octave 9.2.0 - Qt (latest)          easyMode 1 OK
 
-before ICMRBS/2024 BMSB course:
+v17 before ICMRBS/2024 BMSB course:
 - seperate INFO and HISTORY file DONE
 - syntax fix for 8.4.0 in initialiseSystem DONE
 - adjust Windows BAT file to use octave-gui and qt toolkit to have fancier graphics
@@ -30,15 +30,18 @@ before ICMRBS/2024 BMSB course:
 - add Blackboard option in sending in results DONE
 - save systemInfo automatically in new saveResults.m DONE
 - fixed unAdd for correct handling of real (w/ error) vs intended (w/o error) addition DONE
+- checked numPoints for easyMode = 2 (8 Q + pulse calib = 90 points) DONE
+
 TO DO:
-- check numPoints for easyMode = 2,3
+- check numPoints for easyMode = 3
 - remove showFID2.m and saveFigure.m
+- update calcCSP text to indicate possibility to zoom and pick if works under Windows 
 
 % HISTORY:
 ========================================================================
 
 v16 after BMI track 2023
-- added saving backup in each xfb to make restaring afer crash more easy
+- added saving backup in each xfb to make restarting afer crash more easy
 - added p1 in system.out so that after restart have same pulse lengh
 - limited steps in getKD to 200
 - added warning against changing window size in calcCSP 

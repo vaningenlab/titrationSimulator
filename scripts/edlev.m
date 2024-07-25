@@ -58,10 +58,10 @@ function edlev(numLvls_, cntFactor_, startFloor_);
             disp("")
         else
             baseLevel=startFloor*peakHeight;
-            % 2. check against noiselevel (defined in plot2D, executed as part of xfb)
-            if baseLevel < 3*noiseLevel
+            % 2. check against noiselevel (defined in plot2D as 3*RMS, executed as part of xfb)
+            if baseLevel < noiseLevel*1
                 disp("Resetting base level to be 3*noise level...")
-                baseLevel = 3*noiseLevel;                     % reset to minimally the noiseFloor
+                baseLevel = noiseLevel*1;                     % reset to minimally the noiseFloor
             end
             % 3. construct cntLvls
             posCntLvls=[baseLevel];

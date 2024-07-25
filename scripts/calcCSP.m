@@ -266,7 +266,11 @@ else % enough titrationPoints
             simCSP(p)  = sqrt(simCSPH^2 + (simCSPN/5)^2);
             % checking absolute value allows swapping free and bound!
             % strict checking for scoring
-            if abs(CSP(p) - pb*simCSP(p)) < 0.1
+            % scaling by pb is only valid in fast exchange regime!
+            % this may not be true for all peaks, so also allow that
+            if abs(CSP(p) - pb*simCSP(p)) < 0.125
+                corrCSP(p) = 1;
+            elseif abs(CSP(p) - simCSP(p)) < 0.125
                 corrCSP(p) = 1;
             else
                 errList = [errList p];

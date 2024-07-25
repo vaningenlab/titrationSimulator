@@ -3,7 +3,7 @@
 
 function question(number)
 
-global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affinityRange yourName cq
+global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affinityRange yourName cq sendEmail
 
     disp("")
     if number == 1 && questionAsked(number) == 0

@@ -5,7 +5,7 @@
 function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange
-global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail
+global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail sendEmail
 
     disp("")
     if number == 1 && questionAsked(number) == 0
