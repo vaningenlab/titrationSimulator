@@ -227,14 +227,20 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("First, make sure the whole spectrum is shown (do \"zoomFull\" if necessary).")
         disp("Then make sure all spectra and peak labels are visible (do \"plotAll\" if necessary)")
         disp("")
-        disp("Then print your HSQCs and the binding curve with the \"saveFigure\" command.")
-        disp("It will put two figures in your working directory.")
+        disp("Now save your results with the \"saveResults\" command.")
+        disp("It will put two figures and a text file in your working directory.")
         disp("")
         disp("Please do not use the save option from the figure window!")
-        disp("Send these figures, together with the output from the \"systemInfo\" command")
-        printf("to: %s", instructorMail)
+        if sendEmail == 1
+            disp("Send these files to:")
+            disp("")
+            printf("        %s\n", instructorMail)
+        else
+            disp("Upload these files in the assignment in the electronic learning environment")
+            disp("as indicated by your instructor")
+         end
         disp("")
-        disp("Once you have sent the figures and output you can close this program by typing \"goodbye\"")
+        disp("Once you have sent the files you can close this program by typing \"goodbye\"")
         disp("")
         questionAsked(number) = 1;
     elseif questionAsked(number) == 1

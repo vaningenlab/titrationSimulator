@@ -234,7 +234,7 @@ a=1;
 while time() < nu + 2
     a=a+1;
 end 
-disp("Setting up some stuff ....")
+disp("Setting up the machine ....")
 nu = time();
 a=1;
 while time() < nu + 2

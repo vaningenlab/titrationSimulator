@@ -16,7 +16,7 @@ disp("      - report            : print overview of titration steps")
 disp("      - titrate           : add more ligand to your sample")
 disp("      - calcCSP           : calculate chemical shift perturbations")
 disp("      - getKD             : fit the dissociation constant")
-disp("      - saveFigure        : save overlay of the HSQCs to a PNG file")
+disp("      - saveResults       : save the final results")
 disp("      - unAdd             : remove the last ligand addition to the sample")
 disp("      - saveState         : save all titration data")
 if easyMode < 2

@@ -369,14 +369,20 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         disp("Make sure the whole spectrum is shown (issue \"zoomFull\" if this is not the case).")
         disp("Make sure all spectra and peak labels are visible (issue \"edlev\" if this is not the case).")
         disp("")
-        disp("Now print your HSQCs with the \"saveFigure\" command.")
-        disp("It will put a figure in your working directory.")
+        disp("Now save your results with the \"saveResults\" command.")
+        disp("It will put two figures and a text file in your working directory.")
         disp("")
         disp("Please do not use the save option from the figure window!")
-        disp("Send this figure, together with the output from the \"systemInfo\" command")
-        printf("to: %s", instructorMail)
+        if sendEmail == 1
+            disp("Send these files to:")
+            disp("")
+            printf("        %s\n", instructorMail)
+        else
+            disp("Upload these files in the assignment in the electronic learning environment")
+            disp("as indicated by your instructor")
+         end
         disp("")
-        disp("Once you have sent the figure and output you can close this program by typing \"goodbye\"")
+        disp("Once you have sent the files you can close this program by typing \"goodbye\"")
         disp("")
         questionAsked(10) = 1;
     elseif questionAsked(number) == 1

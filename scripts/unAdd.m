@@ -7,14 +7,15 @@
 % parameters that need updating
 %   tp  - titration point index
 %   parameters of current sample:
-%       - totalVolume
-%       - pConc
-%       - lConc
-%       - molEq
+%       - totalVolume / totalVolumeReal
+%       - pConc / pConcReal
+%       - lConc / lConcReal
+%       - molEq / molEqReal
 %   vectors storing titration series:
 %       - pConcv
 %       - lConcv
 %       - molEqv
+%       - pbVectorActual (zg)
 % conditions to catch
 %   - unAdd can only be done directly after titrate.m, before zg/xfb/process2D
 %       thus titrationPoint has been incremented, but plotPoints has not!
@@ -28,10 +29,13 @@ if titrationPoint > plotPoints && titrationPoint > 1
     disp("")
     titrationPoint = titrationPoint-1;
     tp = titrationPoint;
+    % reset the vectors
     pConcv = pConcv(1:tp);
     lConcv = lConcv(1:tp);
     molEqv = molEqv(1:tp);
     cConcv = cConcv(1:tp);
+    pbVectorActual = pbVectorActual(1:tp);
+    % reset the intended values (w/o pipetting errors)
     pConc  = pConcv(tp);
     lConc  = lConcv(tp);
     molEq  = molEqv(tp);
@@ -48,6 +52,12 @@ if titrationPoint > plotPoints && titrationPoint > 1
         disp("")
     end
     totalVolume = totalVolume - volAdd;
+    % reset the actual values (w/ pipetting errors)
+    totalVolumeReal = totalVolumeReal - volAddReal;
+    molEqReal  = molEqReal - molAddReal;
+    proteinDilutionReal = initialVolume/totalVolumeReal;
+    pConcReal = proteinDilutionReal*proteinConc;
+    lConcReal = ligandStock*(totalVolumeReal-initialVolume)/totalVolumeReal;
     disp("The addition has been undone.")
     disp("Double check by issuing \"report\".");
     disp("Then redo your addition by typing \"titrate\" at the command prompt.")

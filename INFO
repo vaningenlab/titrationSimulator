@@ -80,7 +80,7 @@ INFO titrationSimulator
     - peakInfo
     - systemInfo
 
-6. Plot windows that are generated: 
+6. Plot windows that are generated (easyMode 1): 
     - figure 1: acquisition window showing FID
                 and H2O spectrum after popt pulse calibration
                 and 2D FID and partially FT spectrum 

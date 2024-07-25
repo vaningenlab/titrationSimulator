@@ -2,11 +2,11 @@ HISTORY titrationSimulator
 
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
-test easyMode = 1 / 12 questions:
+test
  - Windows: Octave 8.4.0 - Qt (computer room)
             Octave 9.2.0 - Qt (latest)
  - Mac    : Octave 6.2.0 - Qt (octave.app)
-            Octave 9.2.0 - Qt (latest)
+            Octave 9.2.0 - Qt (latest)          easyMode 1 OK
 
 before ICMRBS/2024 BMSB course:
 - seperate INFO and HISTORY file DONE
@@ -27,8 +27,12 @@ before ICMRBS/2024 BMSB course:
 - redo getKD if really bad DONE
 - fix issue w. overestimation CSP in getKD DONE
 - corrected numPoints for easyMode = 1 (12 Q + pulse calib = 130 points) DONE
-- check unAdd for correct handling of real (w/ error) vs intended (w/o error) addition
-
+- add Blackboard option in sending in results DONE
+- save systemInfo automatically in new saveResults.m DONE
+- fixed unAdd for correct handling of real (w/ error) vs intended (w/o error) addition DONE
+TO DO:
+- check numPoints for easyMode = 2,3
+- remove showFID2.m and saveFigure.m
 
 % HISTORY:
 ========================================================================

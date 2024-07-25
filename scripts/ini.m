@@ -49,6 +49,8 @@ diary nmrsim.log
 %set (0, "defaulttextfontsize", 14);
 
 % first some important and adjustable variables
+sendEmail      = 1;                     % 1 = use instructor email to send results
+                                        % 0 = use electronic learning environment such as Blackboard
 instructorMail = "h.vaningen@uu.nl";    % email where to send output
 easyMode       = 1;                     % [0 | 1 | 2 | 3] 
                                         % 1 = easy = only use intermediate and fast exchange and no big protein assemblies

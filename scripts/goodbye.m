@@ -26,8 +26,8 @@ else
 	% apparently all questions were asked
 	disp("")
 	disp("Just double checking:")
-	disp("Did you send the figures of your all titration spectra and the binding curve")
-	disp("together with the output of the \"systemInfo\" command?")
+	disp("Did you send/upload the figures of your all titration spectra and the binding curve")
+	disp("and the system details file?")
 	disp("")
 	junk=input("<>","s");
 	disp("")
@@ -35,17 +35,22 @@ else
 	disp("")
 	disp("If not, make sure the whole spectrum is shown (do \"zoomFull\" if necessary).")
 	disp("Then make sure all spectra and peak labels are visible (do \"plotAll\" if necessary).")
-	disp("Then print your HSQCs and the bindingcurve with the \"saveFigure\" command.")
-	disp("It will put two figures in your working directory.")
+	disp("Then generate the final output files using the \"saveResults\" command.")
+	disp("It will put three files in your working directory.")
 	disp("")
-	disp("Send these figures, together with the output from the \"systemInfo\" command")
-	printf("to: %s\n", instructorMail)
+	if sendEmail == 1
+		disp("Send these files")
+		printf("to: %s\n", instructorMail)
+	else
+		disp("Upload these files in the assignment in the electronic learning environment")
+		disp("as indicated by your instructor")
+	end
 	disp("")
 	% save everything for debugging when students have weird results
 	disp("Saving the titration into \"state.out\" ...")
 	save "state.out"
 	disp("Done!")
 	disp("")
-	disp("Once you have sent the figures and output you can close this program by typing \"exit\"")
+	disp("Once you have sent the files you can close this program by typing \"exit\"")
 	disp("")
 end
