@@ -22,6 +22,15 @@ if tp == 1
     sino = peakHeight/noiseLevel;
     disp("")
     printf("Signal-to-noise ratio for the strongest peak is ~ %.1f\n", sino)
+    if sino < 20
+        disp("")
+        disp("The signal-to-noise is quite low.")
+        disp("Would be best if you re-record the spectrum with more scans.")
+        disp("")
+        disp("To do this: type \"eda\" at the command prompt and change ns")
+        disp("Then start acquisition again \"zg\".")
+        disp("")
+    end
     % if very noisy should switch to dataview
     baseLevel=startFloor*peakHeight;
     if baseLevel < 3*noiseLevel

@@ -99,13 +99,14 @@ else % enough titrationPoints
         disp("Look carefully at each peak to identify where they go.")
         disp("Make sure you have the whole spectrum with all peaks visible.")
         disp("")
-        disp("It can help to make spectrum larger.")
+        disp("It can help to make spectrum window larger.")
         disp("Make sure the zoom tool and the rotate tool are NOT activated")
         if strcmp(graphics_toolkit,"qt") == 1
+            % blue on windows, gray on mac
             disp("If the tool is active the background color is slightly gray.")
         end
         disp("")
-        disp("If you cannot see the peak labels well, issue \"edlev\" at the command prompt.")
+        disp("If you cannot see the peak labels well, issue \"plotAll\" at the command prompt.")
         if titrationPoint > maxSpectra % have set this to be more than 15
             disp("Since you have many overlaid spectra , first simplify this using")
             disp("the \"reduceOverlay\" command.")
@@ -268,9 +269,9 @@ else % enough titrationPoints
             % strict checking for scoring
             % scaling by pb is only valid in fast exchange regime!
             % this may not be true for all peaks, so also allow that
-            if abs(CSP(p) - pb*simCSP(p)) < 0.125
+            if abs(CSP(p) - pb*simCSP(p)) < 0.1
                 corrCSP(p) = 1;
-            elseif abs(CSP(p) - simCSP(p)) < 0.125
+            elseif abs(CSP(p) - simCSP(p)) < 0.1
                 corrCSP(p) = 1;
             else
                 errList = [errList p];

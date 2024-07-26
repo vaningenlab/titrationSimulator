@@ -3,10 +3,13 @@ HISTORY titrationSimulator
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
 test
- - Windows: Octave 8.4.0 - Qt (computer room)   easyMode 1 
-            Octave 9.2.0 - Qt (latest)          easyMode 3 
- - Mac    : Octave 6.2.0 - Qt (octave.app)      easyMode 2 OK
-            Octave 9.2.0 - Qt (latest)          easyMode 1 OK
+ - Windows 10: Octave 8.4.0 - Qt (computer room)   easyMode 1 OK
+               Octave 9.2.0 - Qt (latest)          easyMode 3 OK
+                    coneView rotation very slow! on VM
+                    coneView zoom does not work! on VM
+                    2D zoom is OK, but also weird at times on VM
+ - MacOS 13.6: Octave 6.2.0 - Qt (octave.app)      easyMode 2 OK
+               Octave 9.2.0 - Qt (latest)          easyMode 1 OK
 
 v17 before ICMRBS/2024 BMSB course:
 - seperate INFO and HISTORY file DONE
@@ -26,16 +29,26 @@ v17 before ICMRBS/2024 BMSB course:
 - fix issue in peak positions DONE
 - redo getKD if really bad DONE
 - fix issue w. overestimation CSP in getKD DONE
+  still issue of axis calibration! synchronization issue? DONE
 - corrected numPoints for easyMode = 1 (12 Q + pulse calib = 130 points) DONE
 - add Blackboard option in sending in results DONE
 - save systemInfo automatically in new saveResults.m DONE
 - fixed unAdd for correct handling of real (w/ error) vs intended (w/o error) addition DONE
 - checked numPoints for easyMode = 2 (8 Q + pulse calib = 90 points) DONE
+- fix copy question file for easyMode = 3 DONE
+- update calcCSP to point to plotAll to put labels on top DONE
+- double check scaling of actual KD plot DONE
+- added quality check of extracted binding curve, if really poor then allow redo DONE
+- adjust feedback if really poor binding curve DONE
+- fix undefined exchangeClass, added to system.out DONE
+- added mM ligand information in titrate DONE
+- add pointer to increase number of scans when signal-to-noise is low
 
 TO DO:
-- check numPoints for easyMode = 3
+- check numPoints for easyMode = 3 (7 Q -no pulse calib = 70 points) 
 - remove showFID2.m and saveFigure.m
 - update calcCSP text to indicate possibility to zoom and pick if works under Windows 
+
 
 % HISTORY:
 ========================================================================

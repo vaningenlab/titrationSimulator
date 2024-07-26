@@ -22,6 +22,8 @@ elseif easyMode == 2
 else
     kdq = 6;
 end
+% save score at start of this analysis
+oriScore = score;
 % check whether done before
 if questionAsked(kdq) == 1 && easyMode >=1
     disp("")
@@ -49,7 +51,7 @@ elseif affinityValue*1e3 < proteinConc && molEq < 1.5
     disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
     disp("")
 else
-    if questionAsked(kdq) == 0
+    if questionAsked(kdq) == 0 && getkdTime == 1
         clc
         disp("")
         printf("QUESTION %d.\n", kdq)
@@ -60,7 +62,9 @@ else
         disp("This is done by using the peak displacement as function of ligand to extract a binding curve")
         disp("and fit it to get the dissociation constant, KD.")
         disp("")
-        disp("To do this, identify a peak that has a clear step-wise displacement during the titration,")
+        disp("You can get maximum 5 points when you get a good fit and maximum 5 more points if it the fitted KD is good.")
+        disp("")
+        disp("To start, identify a peak that has a clear step-wise displacement during the titration,")
         disp("and can be seen at all titration steps.")
         disp("")
         disp("When asked for a peak to focus on, specify the residue number only!")
@@ -70,6 +74,7 @@ else
         disp("First, make sure you see all spectra again by typing \"overlayAll\" at the prompt.")
         disp("")
     else
+        disp("")
         peakSelect = input("For which peak to do you want to extract a binding curve? ","s");
         if length(regexp(peakSelect,'[.\d]')) < length(peakSelect) || length(peakSelect)==0
             disp("")
@@ -164,10 +169,10 @@ else
             while time() <= nu + 2
                 a = a + 1;
             end
+            fitCurve
             disp("")
             disp("Done! The best-fit curve will be shown in blue.")
             disp("")
-            fitCurve
             plot(lConcv, CSP_f, 'b-;fit;')
             h = legend("location", "southeast");
             disp("")
@@ -178,11 +183,30 @@ else
                 printf("\t  KD = %.0f uM\n", KD_fit*1e3)
             else
                 printf("\t  KD = %.0f nM\n", KD_fit*1e6)
-                disp("")
-                disp("As you can see, the affinity is too high to get a reliable estimate from this data.")
-                disp("In this case explicit fitting of the line broadening during the titration")
-                disp("would be necessary to get accurate KD estimate.")
             end
+            disp("")
+            if redChi2 < 1
+                disp("Great job, the quality of the fit is very good!")
+                disp("You get the maximum 5 points")
+                score = score + 5;
+                getkdTime = getkdTime + 1;
+            elseif redChi2 < 2
+                disp("Good job, the quality of the fit is ok!")
+                disp("You get 4 points")
+                score = score + 4;
+                getkdTime = getkdTime + 1;
+            elseif redChi2 >= 3
+                disp("Hmmm, seems somthing went wrong here...")
+                disp("The quality of the fit is very low.")
+                disp("Maybe the peak picking went wrong.")
+            else
+                disp("Ok, the quality of the fit could be better, but let's continue anyway.")
+                disp("You get 2 points")
+                score = score + 2;
+                getkdTime = getkdTime + 1;
+            end
+            disp("")
+            disp("Now let's check against the expected result..")
             disp("")
             junk=input("<>","s");
             disp("")
@@ -199,32 +223,81 @@ else
             end
             disp("")
             % !!! this is assuming fast exchange !!!
-            disp("The actual binding curve is shown in green.")
+            disp("The expected binding curve is shown in green.")
             % this has to be based on actual addition!!
             % 
             CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) );
             % also scale to observed CSP
-            plot(lConcv, CSP_s, 'g-;actual;')
+            plot(lConcv, CSP_s*max(CSP_f)/max(CSP_s), 'g-;expected;')
             disp("")
-            if getkdTime == 0 && (easyMode >=1 && questionAsked(kdq) == 0 )
-                if abs((KD_fit - KD_real)/KD_real) < 0.5
-                    disp("Good job, you are within 2-fold of the true KD. You get 10 points.")
-                    score = score + 10;
-                    questionAsked(kdq)=1;
-                    getkdTime = getkdTime + 1;
-                else
-                    if ligandClass == 1 && koff < 5000 && beNice == 1
+            if easyMode >=1 && questionAsked(kdq) == 0
+                if redChi2 < 3
+                    % good enough fit
+                    if abs((KD_fit - KD_real)/KD_real) < 0.2
+                        disp("Excellent work, you are within 20% of the true KD. You get 5 more points.")
                         disp("")
-                        disp("Because your titration is close to intermediate exchange, ")
-                        disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
-                        disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                        score = score + 5;
+                        questionAsked(kdq)=1;
+                        continueKDQuestion = 'n';
+                    elseif abs((KD_fit - KD_real)/KD_real) < 0.5
+                        disp("Good job, you are within 50% of the true KD. You get 3 more points.")
                         disp("")
+                        score = score + 3;
+                        questionAsked(kdq)=1;
+                        continueKDQuestion = 'n';
                     else
-                        disp("The KD determined from the fit is a bit off unfortunately.")
-                        disp("Ask your instructor to have a look at it.")
-                        disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                        if ligandClass == 1 && koff < 5000 && beNice == 1
+                            disp("")
+                            disp("Because your titration is close to intermediate exchange, ")
+                            disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
+                            disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                            disp("")
+                        else
+                            disp("The KD determined from the fit is a bit off unfortunately.")
+                            disp("Ask your instructor to have a look at it.")
+                            disp("You can try to do the anaysis again.")
+                        end
+                        disp("")
+                        disp("Still, 1 point for the effort.")
+                        disp("")
+                        score = score + 1;
+                        questionAsked(kdq)=1;
                     end
-                    disp("")
+                else
+                    % poor fit
+                    if abs((KD_fit - KD_real)/KD_real) < 0.2
+                        disp("Interesting, you are still within 20% of the true KD! You get 5 more points.")
+                        disp("Probably the power of compensating random errors...")
+                        disp("Ask your instructor to have a look at this surprising result!")
+                        score = score + 5;
+                        questionAsked(kdq)=1;
+                        continueKDQuestion = 'n';
+                    elseif abs((KD_fit - KD_real)/KD_real) < 0.5
+                        disp("Interesting, you are still within 50% of the true KD. You get 3 more points.")
+                        disp("Ask your instructor to have a look at this surprising result!")
+                        score = score + 3;
+                        questionAsked(kdq)=1;
+                        continueKDQuestion = 'n';
+                    else
+                        if ligandClass == 1 && koff < 5000 && beNice == 1
+                            disp("")
+                            disp("Because your titration is close to intermediate exchange, ")
+                            disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
+                            disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                            disp("")
+                        else
+                            disp("The KD determined from the fit is a bit off unfortunately.")
+                            disp("Ask your instructor to have a look at it.")
+                            disp("You can try to do the anaysis again.")
+                            disp("")
+                        end
+                        % no points
+                        questionAsked(kdq) = 1;
+                    end % poor fit
+                end % fit quality
+                % check whether to redo the analysis in case result was very poor
+                if continueKDQuestion == 'y'
+                    % we need to check whether to redo
                     continueKDQuestion = input("Do you want to redo the KD analysis? y/n: ","s");
                     if continueKDQuestion != "n" && continueKDQuestion != "y"
                         continueKDQuestion = input("Please type y if you want to redo the analyis:","s");
@@ -232,32 +305,42 @@ else
                             continueKDQuestion = "n";
                         end
                     end
-                    if continueKDQuestion == "n"
-                        disp("OK, still 5 points for the effort.")
-                        score = score + 5;
+                    if continueKDQuestion == 'y'
+                        questionAsked(kdq) =0;
+                        getkdTime =0;
+                        score = oriScore;
+                        disp("")
+                        disp("Type \"getKD\" again to redo the analysis.")
+                        disp("")
+                    end
+                else
+                    % no redo, done here
+                    disp("")
+                    disp("Ok, you did a good job.")
+                    disp("")
+                    junk=input("<>","s");
+                    clc
+                    disp("")
+                    if easyMode == 1
+                        disp("Now I still have two questions for you.")
+                        disp("First, type \"question(11)\" at the command prompt.")
+                    else
+                        printf("Now it is time for the final question. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                    end
+                end % check redo
+            else
+                % already done the analysis no point and little feedback, should not happen, only easyMode 0
+                if easyMode == 0
+                    if abs((KD_fit - KD_real)/KD_real) < 0.5
+                        disp("Good job, you are within 50% of the true KD which is good enough for now.")
+                        disp("To get accurate KDs one best analyzes the lineshapes and peak displacements")
+                        disp("together, and of course the protein and ligand concentrations need to be correct.")
+                    else
+                        disp("The KD determined from the fit is a bit off unfortunately.")
+                        disp("Ask your instructor to have a look at it.")
                     end
                 end
-            else
-                if abs((KD_fit - KD_real)/KD_real) < 0.5
-                    disp("Good job, you are within 2-fold of the true KD which is good enough for now.")
-                    disp("To get accurate KDs one best analyzes the lineshapes and peak displacements")
-                    disp("together, and of course the protein and ligand concentrations need to be correct.")
-                else
-                    disp("The KD determined from the fit is a bit off unfortunately.")
-                    disp("Ask your instructor to have a look at it.")
-                end
             end
-            disp("")
-            junk=input("<>","s");
-            clc
-            disp("")
-            if easyMode == 1
-                disp("Now I still have two questions for you.")
-                disp("First, type \"question(11)\" at the command prompt.")
-            else
-                printf("Now it is time for the final question. Type \"question(%d)\" at the command prompt.", kdq+1)
-            end
-            disp("")
         end
     end
 end

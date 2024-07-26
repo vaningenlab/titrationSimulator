@@ -78,7 +78,8 @@ else
         disp("")
     end
     % below happens for all points
-    printf("Your sample now contains %.2f equivalents of ligand\n", molEq)
+    printf("Your sample now contains %.2f mM of ligand\n", lConc)
+    printf("this is %.2f equivalents of ligand compared to protein\n", molEq)
     molAdd = input("How many molar equivalents of ligand do you want to add? ","s");
     if length(regexp(molAdd,'[.\d]')) < length(molAdd) || length(molAdd)==0
         disp("")

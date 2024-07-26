@@ -52,17 +52,17 @@ diary nmrsim.log
 sendEmail      = 1;                     % 1 = use instructor email to send results
                                         % 0 = use electronic learning environment such as Blackboard
 instructorMail = "h.vaningen@uu.nl";    % email where to send output
-easyMode       = 2;                     % [0 | 1 | 2 | 3] 
+easyMode       = 1;                     % [0 | 1 | 2 | 3] 
                                         % 1 = easy = only use intermediate and fast exchange and no big protein assemblies
                                         %     this option is best for students in NMR courses
                                         % 2 = super easy = with 1H pulse calibration, no acq. times, fewer questions, only fast exchange
                                         %      only few KD/koff combinations that should always give a perfect result
                                         %      also more coaching to choose NMR sample concentrations
                                         %      best for students in courses where NMR theory is not the focus
-                                        % 3 = super easy = no pulse calibration, no acq. times, fewer questions, only fast exchange
+                                        % 3 = super super easy = no pulse calibration, no acq. times, fewer questions, only fast exchange
                                         %      only few KD/koff combinations that should always give a perfect result
                                         %      also more coaching to choose NMR sample concentrations
-                                        %      best for students in courses where NMR theory is not the focus
+                                        %      best for students in courses where NMR theory is not the focus and limited time
                                         % 0 = original = could generate systems that does not result in saturated complex, could be slow exchange
                                         %      not recommended as it requires high frustration tolerance of students
 
@@ -100,9 +100,9 @@ elseif easyMode  == 2
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
 else
     if ispc()
-        copyfile("question.2.m", "question.m");
+        copyfile("question.3.m", "question.m");
     else
-        copyfile("scripts/question.2.m", "scripts/question.m");
+        copyfile("scripts/question.3.m", "scripts/question.m");
     end
     numQuestions   = 7;                 % super easy mode 3 has even fewer questions to get faster to the titration
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
@@ -217,7 +217,7 @@ else
         pcUname   = uname();
         pcToolkit = graphics_toolkit;
         save("system.out","acronymProtein", "acronymLigand", "proteinDescriptor", "ligandDescriptor", ...
-                    "proteinMass", "ligandMass", "affinityValue", "ligandClass", "trup", ...
+                    "proteinMass", "ligandMass", "affinityValue", "ligandClass", "exchangeClass", "trup", ...
                     "koff", "affinityRange", "yourName", "dwHv", "dwNv", "wHv", "wNv", "swN", "swH", ...
                     "wHvppm", "wNvppm", "dwHvppm", "dwNvppm", "swHppm", "swNppm", "centerHppm", "centerNppm",...
                     "numSmall", "numZero", "numMed", "numBig", "aa_string", "overlap", ...
