@@ -122,10 +122,14 @@ end
 
 fclose(fid)
 
+if sendEmail == 1
+    disp("Send these files")
+    printf("to: %s\n", instructorMail)
+else
+    disp("Upload these files in the assignment in the electronic learning environment")
+    disp("as indicated by your instructor")
+end
 
-disp("Send these figures, together with the output from the \"systemInfo\" command to:")
-disp("")
-printf("        %s\n", instructorMail)
 disp("")
 disp("Check the output above to see in which directory the figures are saved!")
 disp("")
