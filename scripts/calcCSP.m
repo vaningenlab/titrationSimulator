@@ -223,7 +223,18 @@ else % enough titrationPoints
                 %break  -- do not do this anymore 
             end % check bad pick free state
             % pick bound state peak, return x y
-            printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(titrationPoint,:))
+            % check whether we have more points than colors:
+            if tp <= length(colorNamesLong)
+                printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(titrationPoint,:))
+            elseif tp <= 2*length(colorNamesLong)
+                % wrap around: there are 11 colors, tp 12 will be color 1
+                cp = tp - length(colorNamesLong);
+                printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,:))
+            else
+                % wrap around 2x: there are 11 colors, tp 12 will be color 1
+                cp = tp - 2*length(colorNamesLong);
+                printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,:))
+            end
             [x_b, y_b, buttons] = ginput(1);
             % IMPORTANT! this check only works when (enough) fully bound!
             % need to have approximate peak positions in final spectrum

@@ -175,6 +175,31 @@ else
                 printf("Concentration protein      : %.2f (mM)\n", pConc)
                 printf("Concentration ligand       : %.2f (mM)\n", lConc)
                 printf("Molar ratio protein/ligand : %.2f     \n", molEq)
+                % now calculate new concentrations
+                calcEquilibriumConcSingleSite       % calculate free/bound protein (pa/pb)
+                cConcv(titrationPoint) = C;         % store concentration complex
+                if cConcv(titrationPoint) > pConcv(titrationPoint)
+                    disp("")
+                    disp("Hmm, wait a second, something is wrong here...")
+                    printf("[complex] is %.3f\n",cConcv(titrationPoint))
+                    printf("[protein] is %.3f\n",pConcv(titrationPoint))
+                    disp("Go ask your instructor.")
+                    disp("")
+                    junk=input("<>","s");
+                    disp("")
+                end
+                if cConcv(titrationPoint) == 0 && titrationPoint > 1
+                    disp("")
+                    disp("Hmm, wait a second, something is wrong here...")
+                    printf("[complex] is %.3f\n",cConcv(titrationPoint))
+                    printf("[ligand] is %.3f\n",lConcv(titrationPoint))
+                    disp("Go ask your instructor.")
+                    disp("")
+                    junk=input("<>","s");
+                    disp("")
+                end
+                buildExchangeMatrix % update exchange matrix
+                pbVectorActual = [pbVectorActual pb];  % store actual pb -- only update after titrate!
                 if proteinDilution < 0.3 || pConc < 0.1 && easyMode > 1
                     disp("")
                     disp("Now start the HSQC experiment again.")

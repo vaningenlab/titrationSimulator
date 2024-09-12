@@ -130,7 +130,18 @@ else
                 set(gca,'YDir','reverse')
                 % pick centre peak, return x y
                 disp("")
-                printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,:))
+                % check whether we have more points than colors:
+                if ss <= length(colorNamesLong)
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,:))
+                elseif ss <= 2*length(colorNamesLong)
+                    % wrap around: there are 11 colors, tp 12 will be color 1
+                    cp = ss - length(colorNamesLong);
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                else
+                    % wrap around 2x: there are 11 colors, tp 12 will be color 1
+                    cp = ss - 2*length(colorNamesLong);
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                end
                 [x_s, y_s, buttons] = ginput(1);
                 if ss == 1
                     x_f = x_s;
@@ -252,16 +263,22 @@ else
                             disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
                             disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
                             disp("")
+                            disp("")
+                            disp("Still, 5 points for the effort.")
+                            disp("")
+                            score = score + 5;
+                            questionAsked(kdq)=1;
+                            end
                         else
                             disp("The KD determined from the fit is a bit off unfortunately.")
                             disp("Ask your instructor to have a look at it.")
                             disp("You can try to do the anaysis again.")
-                        end
-                        disp("")
-                        disp("Still, 1 point for the effort.")
-                        disp("")
-                        score = score + 1;
-                        questionAsked(kdq)=1;
+                            disp("")
+                            disp("Still, 2 points for the effort.")
+                            disp("")
+                            score = score + 2;
+                            questionAsked(kdq)=1;
+                            end
                     end
                 else
                     % poor fit

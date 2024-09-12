@@ -198,6 +198,7 @@ titrationPoint = 1;     % initialise counter of titration steps
 tp = titrationPoint;
 initialVolume=500;
 molEq =0;
+lConc =0;                     
 molEqReal = 0;
 totalVolume = initialVolume;
 totalVolumeReal = initialVolume;
@@ -208,7 +209,10 @@ pConcv(1) = pConc;
 lConcv(1) = 0;
 cConcv(1) = 0;
 molEqv(1) = 0;
+pbVectorActual = 0;     % to track the actual population bound w/ pipet error
 allSpectra = [];        % reset container for all spectra when making new sample
+calcEquilibriumConcSingleSite % initialize
+buildExchangeMatrix     % initialize for first spectrum of free protein
 
 % echo result back
 clc

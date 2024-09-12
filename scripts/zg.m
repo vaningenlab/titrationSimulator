@@ -16,30 +16,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         disp("Starting HSQC experiment, takes ~1 min depending on")
         disp("your number of a scans and 1H/15N acquisition times....")
         disp("Note that in real life such experiment would take ~10 min to 1 hr.")
-        calcEquilibriumConcSingleSite       % calculate free/bound protein (pa/pb)
-        cConcv(titrationPoint) = C;         % store concentration complex
-        if cConcv(titrationPoint) > pConcv(titrationPoint)
-            disp("")
-            disp("Hmm, wait a second, something is wrong here...")
-            printf("[complex] is %.3f\n",cConcv(titrationPoint))
-            printf("[protein] is %.3f\n",pConcv(titrationPoint))
-            disp("Go ask your instructor.")
-            disp("")
-            junk=input("<>","s");
-            disp("")
-        end
-        if cConcv(titrationPoint) == 0 && titrationPoint > 1
-            disp("")
-            disp("Hmm, wait a second, something is wrong here...")
-            printf("[complex] is %.3f\n",cConcv(titrationPoint))
-            printf("[ligand] is %.3f\n",lConcv(titrationPoint))
-            disp("Go ask your instructor.")
-            disp("")
-            junk=input("<>","s");
-            disp("")
-        end
         buildExchangeMatrix                 % derive exchange matrix for this point
-        pbVectorActual = [pbVectorActual pb];  % store actual pb
         totalFIDX = zeros(npN,npH);
         totalFIDY = zeros(npN,npH);
         % pre-calculate signal and noise scaling factors

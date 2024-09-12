@@ -166,6 +166,7 @@ else
         disp("Whenever you see this symbol: <> press return/enter to continue!")
         if ispc()
             disp("For windows users: you sometimes need to press twice ...")
+            disp("First to (re)activate the window, then to actually continue.")
         end
         disp("")
         disp("Whenever you see this symbol: :)] you have to enter a command.")
@@ -262,7 +263,6 @@ else
     numCalibCheck  = 0;                     % to keep track of number of times calibration check was done
     numCalib       = 0;                     % to keep track of number of times calibration was done
     showHint       = 0;                     % to track if overlap hint was shown
-    pbVectorActual = [];                    % to track the actual population bound w/ pipet error
     disp("")
     disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
     disp("")

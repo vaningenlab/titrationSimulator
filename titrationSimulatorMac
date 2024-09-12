@@ -23,7 +23,6 @@ resize -s 30 100 >& /dev/null
 # Automagically find path to octave installation
 if [ ! -z $( command -v octave 2> /dev/null ) ]; then
   OCTAVE=$( command -v octave )
-  OCTAVE="/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
 elif [ ! -z $( ls /Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
   OCTAVE="/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
 elif [ ! -z $( ls ~/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
