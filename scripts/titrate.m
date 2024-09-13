@@ -32,7 +32,7 @@ elseif titrationPoint > 1 && length(size(allSpectra)) == 3 && size(allSpectra)(l
     disp("Then you can do a new addition.")
     disp("")
 elseif titrationPoint >= 1 && max(max(allSpectra(:,:,titrationPoint))) == 0
-    % added something but did not record or process the spectrum succesfully
+    % check for empty spectrum - should check all spectra as well
     disp("")
     disp("Something is wrong. Your spectrum is empty. Check with your instructor.")
     disp("It seems you still need to record and process the HSQC of the current sample.")
@@ -41,7 +41,18 @@ elseif titrationPoint >= 1 && max(max(allSpectra(:,:,titrationPoint))) == 0
     disp("")
 else
     % proceed to actual titration
-    clc
+    if plotPoints > 1 && min(max(max(allSpectra))) == 0
+        % catch empty spectra: two or more spectra should be plotted and one has max of zero
+        disp("")
+        disp("Something is wrong. One of your spectrum is empty.")
+        printf("You have %d spectra recorded, below the maximum for each:\n",plotPoints)
+        max(max(allSpectra))
+        disp("Check with your instructor.")
+        disp("You can simply continue, although the analysis won't work as well.")
+        disp("You could also restart the titration by making a new sample (\"makeSample\")")
+        disp("")
+    end
+    %clc
     disp("***      5. Titration with ligand      ***")
     disp("")
     if titrationPoint == 1 && plotPoints == 1
@@ -71,6 +82,15 @@ else
             disp("This is important to get a proper estimate for the KD")
             disp("Remember that you need to add increasingly more ligand to get all the protein bound to ligand.")
             disp("You can use the \"report\" command to keep track of where you are in the titration.")
+            disp("")
+        end
+        if titrationPoint > 10 && pb < 0.7
+            disp("")
+            disp("I see you're doing a careful job, great work!")
+            disp("Still, is good to increase the amount of ligand you add")
+            disp("to speed up the titration.")
+            disp("Remember that the binding curve will flatten out toward the end")
+            disp("So you'll need to add more and more ligand for the same increase in bound protein.")
             disp("")
         end
         disp("")
@@ -110,6 +130,12 @@ else
             disp("Don't use more than 10% for the first step. Better to use few % only for the first steps.")
             disp("Do \"titrate\" again and use fewer equivalents.")
             disp("")
+        elseif str2num(molAdd) > 0.5 && beNice == 1 && titrationPoint == 1
+            disp("")
+            disp("Wow, slow down, don't add too much in one shot")
+            disp("Don't use more than 20% for the first step. Better to use few % only for the first steps.")
+            disp("Do \"titrate\" again and use fewer equivalents.")
+            disp("")
         elseif molEq + str2num(molAdd) > (1+easyMode)*100/(proteinConc*initialVolume*ligandMass/1e3)
             % this should pop up when more than x mol of ligand is used
             % total moles (mu mol)= Eq*ProteinConc (mM) *VolumeSample (uL)
@@ -121,7 +147,6 @@ else
             disp("")
             printf("Ah, you ran out of ligand....you don't have more than %d mg of ligand.\n", (1+easyMode)*100)
             disp("You stop here, analyze the titration using \"report\" and \"calcCSP\",")
-            disp("or restart the titration by making a new sample (\"makeSample\").")
             disp("")
         else
             % sensible input so proceed
@@ -158,7 +183,7 @@ else
                 disp("Either stop the titration here, and analyze the results")
                 disp("using \"report\" and \"calcCSP\" commands,")
                 disp("or start again by making a more concentrated sample")
-                disp("using \"makeSample\"")
+                disp("using \"makeSample\" and then redoing the titration.")
                 disp("")
             else
                 % dilution is OK so proceed

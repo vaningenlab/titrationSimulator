@@ -13,6 +13,8 @@ lowS2       = 0.3 + 0.3*rand(1,2);
 mediumS2    = 0.6 + 0.2*rand(1,2);
 bigS2       = 0.8 + 0.2*rand(1,5);
 S2Values    = [ lowS2 mediumS2 bigS2 ];
+[val, minS2peak] = min(S2Values);
+[val, maxS2peak] = max(S2Values);
 % does not matter if ordered since peak positions are random anyways
 % but need to check that min and max are assigned to overlapping peaks!
 % so peak 1 2 or 3 is min and should not overlap with peak 7 or 8 9

@@ -6,17 +6,30 @@ function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange aa_string
 global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail atH atN numQuestions
-global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile finalScore sendEmail
+global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile finalScore sendEmail ligandClass
 
     disp("")
     if number == 1 && questionAsked(number) == 0
         disp("")
+        if ligandClass > 0
+            disp("You're investigating an interaction between two proteins.")
+        else
+            disp("You're investigating the interaction between a protein and a smaller molecule.")
+        end
+        disp("")
         disp("QUESTION 1.")
         disp("What labeling strategy is best to use? Also consider costs.")
-        disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
-        disp("    B. The ligand should be unlabeled, the protein 15N-labeled.")
-        disp("    C. The ligand should be unlabeled, the protein 13C-labeled.")
-        disp("    D. The ligand should be 13C-labeled, the protein 15N-labeled.")
+        if ligandClass ==  0
+            disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
+            disp("    B. The ligand should be unlabeled, the protein 15N-labeled.")
+            disp("    C. The ligand should be unlabeled, the protein 13C-labeled.")
+            disp("    D. The ligand should be 13C-labeled, the protein 15N-labeled.")
+        else
+            disp("    A. Both proteins should be 15N-labeled.")
+            disp("    B. One of the protein should be 15N-labeled.")
+            disp("    C. Both proteins should be 13C-labeled.")
+            disp("    D. One of the proteins should be 13C-labeled.")
+        end
         disp("")
         answer1 = input("Enter your answer: ","s");
         answer1 = checkAnswer(answer1);
@@ -25,11 +38,15 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         junk=input("<>","s");
         disp("");
         disp("EXPLANATION:")
-        disp("As we want to follow the peaks of the protein, it should be isotope labeled.")
-        disp("Cheapest, most practical option is to leave the ligand unlabeled.")
+        if ligandClass == 0
+            disp("As we want to follow the peaks of the protein, it should be isotope labeled.")
+            disp("Cheapest, most practical option is to leave the ligand unlabeled.")
+        else
+            disp("To map the binding site of one protein on the other, only one should be labeled")
+            disp("otherwise you will get a complicated mixture of the NMR signals of both proteins.")
+        end
         disp("The protein is best labeled with 15N, as the backbone amide chemical shifts")
         disp("are very sensitive to binding events, more so than 13C chemical shifts.")
-        disp("Labeling with 15N is also signifcantly cheaper than labeling with 13C.")
         disp("So B is the right answer.");
         disp("")
     elseif number == 2 && questionAsked(number) == 0
@@ -90,7 +107,7 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("In the simulated spectra here only the backbone NHs will show up as signals.")
         disp("")
         junk=input("<>","s");
-        clc
+        %clc
         disp("")
         disp("***      4. Protein HSQC      ***")
         disp("")
@@ -280,7 +297,7 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("")
         junk=input("<>","s");
         disp("")
-        disp("Now continue the titration until you see no more significant changes in the spectrum.")
+        disp("Now continue the titration (\"titrate\") until you see no more significant changes in the spectrum.")
         disp("You can also take a peek at the %bound protein using \"report\"...")
         disp("")
         disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
@@ -480,7 +497,7 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
             end % answer options
             disp("")
             junk=input("<>","s");
-            clc
+            %clc
         end % peaks
         % summary on score, max is 10 points
         disp("")
@@ -537,58 +554,9 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("")
         questionAsked(number)=1;
         junk=input("<>","s");
-        clc
         disp("")
-        finalScore = 10*score/(10*numQuestions+10);
-        printf("+++++++++++++++++++++++++++++++++++++++++++++++\n")
-        printf("++                                           ++\n")
-        printf("++     This is the end of the practical.     ++\n")
-        printf("++                                           ++\n")
-        printf("++     You have a final score of %3.1f/10     ++\n", finalScore)
-        printf("++     You got %3d points out of %3d         ++\n", score, numQuestions*10+10)
-        printf("++                                           ++\n")
-        printf("+++++++++++++++++++++++++++++++++++++++++++++++\n")
-        disp("")
-        if finalScore > 80
-            printf("Awesome %s, you did a really great job.\n", yourName)
-        elseif finalScore > 60
-            printf("Good job %s! You made it to the end and passed it!\n",yourName)
-        else
-            printf("Alright %s, you made it to the end...\n", yourName)
-        end
-        disp("You have seen how changes in peak positions can be used to")
-        disp("determine the binding interface and binding affinity in")
-        disp("protein-ligand interactions.")
-        disp("")
-        disp("Hope you enjoyed it!")
-        disp("")
-        disp("One more thing:")
-        disp("")
-        junk=input("<>","s");
-        clc
-        disp("")
-        disp("Send a figure of your titration spectra, the binding curve and the details of your system")
-        disp("to your instructor.")
-        disp("")
-        disp("First, make sure the whole spectrum is shown (do \"zoomFull\" if necessary).")
-        disp("Then make sure all spectra and peak labels are visible (do \"plotAll\" if necessary)")
-        disp("")
-        disp("Now save your results with the \"saveResults\" command.")
-        disp("It will put two figures and a text file in your working directory.")
-        disp("")
-        disp("Please do not use the save option from the figure window!")
-        if sendEmail == 1
-            disp("Send these files to:")
-            disp("")
-            printf("        %s\n", instructorMail)
-        else
-            disp("Upload these files in the assignment in the electronic learning environment")
-            disp("as indicated by your instructor")
-         end
-        disp("")
-        disp("Once you have sent the files you can close this program by typing \"goodbye\"")
-        disp("")
-    elseif questionAsked(number) == 1
+        checkFinished
+  elseif questionAsked(number) == 1
         disp("")
         disp("Ha! We don't play that way.")
         disp("You already answered this question ...")

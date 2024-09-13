@@ -18,10 +18,11 @@ else
         disp("")
         disp("The signal-to-noise is too low in this spectrum")
         disp("Do one of the following:")
-        disp("\t - make a new sample with a higher protein concentration")
-        disp("\t   by typing \"makeSample\" at the command prompt")
         disp("\t - increase the number of scans (ns) and rerun the HSQC")
         disp("\t   by typing \"eda\" at the command prompt")
+        disp("\t - or make a new sample with a higher protein concentration")
+        disp("\t   by typing \"makeSample\" at the command prompt")
+        disp("\t   note that in this case you need to redo the titration!")
         disp("")
     else
         disp("")
@@ -68,8 +69,6 @@ else
                 printf("When you think you're ready for the question, type \"question(4)\" at the command prompt.\n")
                 disp("")
             elseif questionAsked(cq) == 0
-                [val, minS2peak] = min(S2Values);
-                [val, maxS2peak] = max(S2Values);
                 printf("QUESTION %d.\n", cq)
                 disp("Now activate the 3D plot of the your HSQC by typing \"coneView\" at the command prompt and")
                 disp("compare it to the contourplot:")
@@ -110,47 +109,32 @@ else
                 junk=input("<>","s");
             end
             % could ask dilution question here;
-            if easyMode == 1
-                if proteinDilution < 0.7 && questionAsked(7) == 0
-                    disp("")
-                    disp("Time for another question...")
-                    disp("Take a good look at how the peak intensity changes during the titration.")
-                    disp("You can zoom in on one peak using \"zoomPeak\" or")
-                    disp("you can extract a 1D slice through one peak using \"showSlices\".")
-                    disp("If you are ready for the question, type \"question(7)\".")
-                    disp("")
-                    junk=input("<>","s");
-                elseif pb > 0.7 && questionAsked(7) == 0
-                    % what if dilution is less than 0.7? do it just before calcCSP can be done 0.8
-                    disp("")
-                    disp("Time for another question...")
-                    disp("Take a good look at how the peak intensity changes during the titration.")
-                    disp("You can zoom in on one peak using \"zoomPeak\" or")
-                    disp("you can extract a 1D slice through one peak using \"showSlices\".")
-                    disp("")
-                    disp("If you are ready for the question, type \"question(7)\".")
-                    disp("")
-                    junk=input("<>","s");
-                end
+            if easyMode == 1 && pb > 0.7 && questionAsked(7) == 0
+                disp("")
+                disp("Time for another question...")
+                disp("Take a good look at how the peak intensity changes during the titration.")
+                disp("You can zoom in on one peak using \"zoomPeak\" or")
+                disp("you can extract a 1D slice through one peak using \"showSlices\".")
+                disp("If you are ready for the question, type \"question(7)\".")
+                disp("")
+            else
+                disp("")
+                disp("Next, type at the command prompt one of the following commands:")
+                disp("")
+                disp("\t - report        (print overview of titration steps)")
+                disp("\t - titrate       (to add more ligand to your sample)")
+                disp("\t - calcCSP       (calculate chemical shift perturbations)")
+                disp("\t - edlev         (to change contouring of the spectra)")
+                disp("\t                 (this will also redraw the peak numbers if you've lost them)")
+                disp("\t - listCommands  (show all commands available)")
+                %disp("\t - showFID       (to show the free induction decay)")
+                %disp("\t - reduceOverlay (reduce the number of spectra in the overlay")
+                %disp("\t - showSlices    (show 1D projections for a peak)")
+                %disp("\t - zoomPeak      (to zoom in on a peak in the spectra)")
+                %disp("\t - zoomFull      (to show full spectrum after zooming in)")
+                %disp("\t - coneView      (show a 3D mesh plot of current spectrum)")
+                %disp("\t - saveFigure    (save current view of the HSQCs to a PNG file)")
             end
-            disp("")
-            disp("Next, type at the command prompt one of the following commands:")
-            disp("")
-            disp("\t - report        (print overview of titration steps)")
-            disp("\t - titrate       (to add more ligand to your sample)")
-            disp("\t - calcCSP       (calculate chemical shift perturbations)")
-            disp("")
-            disp("\t - edlev         (to change contouring of the spectra)")
-            disp("\t                 (this will also redraw the peak numbers if you've lost them)")
-            %disp("\t - zoomPeak      (to zoom in on a peak in the spectra)")
-            %disp("\t - zoomFull      (to show full spectrum after zooming in)")
-            %disp("\t - coneView      (show a 3D mesh plot of current spectrum)")
-            %disp("\t - saveFigure    (save current view of the HSQCs to a PNG file)")
-            disp("\t - listCommands  (show all commands available)")
-            %disp("\t - showFID       (to show the free induction decay)")
-            %disp("\t - reduceOverlay (reduce the number of spectra in the overlay")
-            % showSlices should wait until calcCSP has been done
-            %disp("\t - showSlices   (show 1D projections for a peak)")
         end
     end
 end

@@ -52,7 +52,7 @@ elseif affinityValue*1e3 < proteinConc && molEq < 1.5
     disp("")
 else
     if questionAsked(kdq) == 0 && getkdTime == 1
-        clc
+        %clc
         disp("")
         printf("QUESTION %d.\n", kdq)
         disp("")
@@ -137,9 +137,11 @@ else
                     % wrap around: there are 11 colors, tp 12 will be color 1
                     cp = ss - length(colorNamesLong);
                     printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
-                else
-                    % wrap around 2x: there are 11 colors, tp 12 will be color 1
+                elseif ss <= 3*length(colorNamesLong)
                     cp = ss - 2*length(colorNamesLong);
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                else
+                    cp = ss - 4*length(colorNamesLong);
                     printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
                 end
                 [x_s, y_s, buttons] = ginput(1);
@@ -170,7 +172,7 @@ else
             disp("The binding curve is shown in Figure 6.")
             disp("")
             junk=input("<>","s");
-            clc
+            %clc
             disp("")
             disp("Now type any key to start fitting this curve...")
             disp("")
@@ -268,7 +270,6 @@ else
                             disp("")
                             score = score + 5;
                             questionAsked(kdq)=1;
-                            end
                         else
                             disp("The KD determined from the fit is a bit off unfortunately.")
                             disp("Ask your instructor to have a look at it.")
@@ -278,7 +279,7 @@ else
                             disp("")
                             score = score + 2;
                             questionAsked(kdq)=1;
-                            end
+                        end
                     end
                 else
                     % poor fit
@@ -336,13 +337,15 @@ else
                     disp("Ok, you did a good job.")
                     disp("")
                     junk=input("<>","s");
-                    clc
+                    %clc
                     disp("")
                     if easyMode == 1
                         disp("Now I still have two questions for you.")
                         disp("First, type \"question(11)\" at the command prompt.")
+                        disp("")
                     else
                         printf("Now it is time for the final question. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                        disp("")
                     end
                 end % check redo
             else

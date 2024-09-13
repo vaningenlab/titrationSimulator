@@ -205,10 +205,14 @@ FURTHER OPTIMISATION
 highest priority
 - need a bit more introduction on the setup, as ppt/pdf also to point to FAQ
 - easier way to auto-extract results for instructor 
+- windows pictures look weird?
+
 
 medium priority
 - question on equation for KD fitting
 - question on equation for CSP calculation
+- avoid starting program from within zip file   -- check directory name?
+
 
 low priority
 - check for matlab compatibility: certainly needs a bit work

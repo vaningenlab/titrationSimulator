@@ -2,7 +2,7 @@
 
 % start an NMR experiment
 % upon completion it needs to be processed and visualized
-clc
+%clc
 disp("")
     
 if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
@@ -232,6 +232,11 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("Type \"showFID\" at the command prompt to take a look at the FID.")
         elseif titrationPoint == 1 && fidShown == 0 && easyMode == 1
             disp("")
+            disp("Saving a backup of your work before continuing ...")
+            save "state.out"
+            disp("")
+            disp("Backup saved!")
+            disp("")
             disp("Let's take a closer look at how the plotted FIDs are transformed to a 2D spectrum.")
             disp("")
             junk=input("<>","s");
@@ -252,6 +257,11 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("")
             showFID
         elseif easyMode == 2 && fidShown == 0 && titrationPoint == 4
+            disp("")
+            disp("Saving a backup of your work before continuing ...")
+            save "state.out"
+            disp("")
+            disp("Backup saved!")
             disp("")
             disp("Time for a little intermezzo!")
             disp("")
@@ -424,7 +434,7 @@ elseif strcmp(expPars, "popt")
         disp("")
         if questionAsked(2) == 0 && easyMode < 3   % this is no longer skipped in easyMode == 2; since it helps to understand what goes on
             question(2)
-            clc
+            %clc
             disp("")
             disp("To continue the calibration, type \"zg\" the command prompt")
             disp("to adapt the range and number of experiments")
@@ -440,7 +450,7 @@ elseif strcmp(expPars, "popt")
             disp("\t   for example if you find the 360 zero crossing at 32 us:")
             disp("\t   \tp1 = 8")
             disp("\t   \tor p1 = 32/4")
-            disp("\t   ==> note it is p-one not p-el or p-i! <==")
+            disp("\t   ==> note it is \"p-one\" not \"p-el\" or \"p-i\"! <==")
             disp("")	
             disp("To proceed to the next step, make sure to have set p1 correctly")
             disp("Then load the parameters of the HSQC experiment, by typing:")

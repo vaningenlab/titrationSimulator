@@ -67,7 +67,13 @@ else % enough titrationPoints
     end % not saturated
     if continueCalcQuestion == "y" && calcCSPintro == 1
         % give intro how to use it
-        clc
+        %%clc
+        disp("")
+        disp("Wait a sec, saving a backup of your work before continuing ...")
+        save "state.out"
+        disp("")
+        disp("Backup saved!")
+        disp("")
         disp("*** Chemical shift perturbation analysis *** ")
         disp("")
         printf("QUESTION %d.", cspq)
@@ -198,6 +204,7 @@ else % enough titrationPoints
             % actualPosH = centerHppm - (wHvppm(p)-centerHppm);
             % actualPosN = centerNppm - (wNvppm(p)-centerNppm);
             % ginput reports directly in ppm units
+            % hitting will also count as input but 
             if abs(x_f - wHvppm(p)) > cspBoxHppm || abs(y_f - wNvppm(p)) > cspBoxNppm
                 peakErr=peakErr+1;
                 if peakErr < 3
@@ -230,10 +237,15 @@ else % enough titrationPoints
                 % wrap around: there are 11 colors, tp 12 will be color 1
                 cp = tp - length(colorNamesLong);
                 printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,:))
-            else
+            elseif tp <= 3*length(colorNamesLong)
                 % wrap around 2x: there are 11 colors, tp 12 will be color 1
                 cp = tp - 2*length(colorNamesLong);
                 printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,:))
+            else
+                % wrap around 3x: there are 11 colors, tp 12 will be color 1
+                cp = tp - 3*length(colorNamesLong);
+                printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,:))
+
             end
             [x_b, y_b, buttons] = ginput(1);
             % IMPORTANT! this check only works when (enough) fully bound!
@@ -412,7 +424,7 @@ else % enough titrationPoints
             disp("Now you're ready for the final questions.")
             disp("")
             junk=input("<>","s");
-            clc
+            %clc
             disp("")
             if easyMode == 0
                 disp("QUESTION 9.")

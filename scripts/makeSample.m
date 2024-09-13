@@ -17,7 +17,7 @@
 
 % echo to student
 
-clc
+%clc
 disp("")
 disp("***      2. Your NMR sample      ***")
 disp("")
@@ -68,7 +68,7 @@ if questionAsked(1)==0
     disp("")
 end
 
-continueQuestion = "y";
+continueQuestion = "y"; % continue 
 while continueQuestion == "y"
     continueQuestion = "n";
     % read input as string to be able to check whether input is a number
@@ -157,37 +157,69 @@ while continueQuestion == "y"
         %                                        compounds to 2 mM 
         % with easyMode is 2 this should never pop up; (it should be possible to make a perfect sample).
         % so assuming 1mM sample, 40mM stock, KD = 40/13 = 3 mM maximum.
-        if ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && continueQuestion == "n"
+        if ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 0
             disp("")
             disp("Just one thing:")
-            disp("With these concentration you will have difficulty to fully saturate the protein.")
-            disp("This means you will need to add a large volume of ligand to see significant binding,")
+            disp("")
+            disp("With these concentration you will have difficulty to fully saturate the protein,")
+            disp("i.e. to get all protein molecules bound to a ligand.")
+            disp("")
+            disp("You will need to add a large volume of ligand to see significant binding,")
             disp("causing significant dilution of your protein, which further complicates saturation.")
             disp("")
-            disp("Increase the concentration of your ligand stock solution if possible.")
-            disp("Or lower your protein concentration (especially when you have micromolar KD).")
-            disp("")
-            if easyMode != 0
-                disp("The minimum reasonable protein concentration is 0.1 mM.")
+            showSaturationTip = 1;
+            % check if ligandStock less then maximum:
+            if (ligandClass == 1 && ligandStock < 5 + 5*easyMode) || (ligandClass == 0 && ligandStock < 20+max((easyMode-1),0)*20)
+                disp("You could increase the concentration of your ligand stock solution.")
+                disp("This will help to reach a high ligand concentration to saturate the protein.")
                 if ligandClass == 0
                     printf("The maximum ligand stock you can use is %d mM.\n", 20+max((easyMode-1),0)*20)
                 else
                     printf("The maximum ligand stock you can use is %d mM.\n", 5 + 5*easyMode)
                 end
+                continueQuestion = 'y';
+                disp("")
             end
+            if proteinConc >= 0.1 && affinityValue < 2e-3
+                % lower protein conc only useful for sub-millimolar 
+                disp("You can decrease the concentration of your protein solution.")
+                disp("This will help to get a high molar excess of protein.")
+                disp("The minimum reasonable protein concentration is 0.1 mM.")
+                continueQuestion = 'y';
+                disp("")
+            end
+            % ask to update or continue
+            disp("It would be best to update your concentrations before continuing.")
             disp("")
-            junk=input("<>","s");
-            disp("")
-            continueInvQuestion = input("Do you want to continue WITHOUT updating your concentrations? y/n: ","s");
-            if continueInvQuestion != "n" && continueInvQuestion != "y"
-                continueInvQuestion = input("Please type y/n: do you want to continue WITHOUT updating your concentrations?:","s");
-                if continueInvQuestion !="n" && continueInvQuestion != "y"
-                    continueInvQuestion = "y";
+            if continueQuestion == 'y'
+                cqInput = input("Do you want to update your concentrations before continuing? y/n: ","s");
+                if cqInput != "n" && cqInput != "y"
+                    cqInput = input("Please type y/n: do you want to update your concentrations before continuing?:","s");
+                    if cqInput !="n" && cqInput != "y"
+                        % no valid input, ask for new concentrations
+                        continueQuestion = "y";
+                    end
                 end
+                if cqInput == "y"
+                    continueQuestion = "y";
+                else
+                    continueQuestion = "n";
+                    disp("")
+                    disp("OK, just work with the samples you have now.")
+                    disp("Try to add enough ligand in your titration to get at least 80% of the protein bound to ligand.")
+                    disp("")
+                end
+            else
+                disp("")
+                disp("OK, just work with the samples you have now.")
+                disp("Try to add enough ligand in your titration to get at least 80% of the protein bound to ligand.")
+                disp("")
             end
-            if continueInvQuestion == "n"
-                continueQuestion = "y";
-            end
+        elseif ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 1
+            disp("")
+            disp("OK, just work with the samples you have now.")
+            disp("Try to add enough ligand in your titration to get at least 80% of the protein bound to ligand.")
+            disp("")
         end
         disp("")
     end % check input
@@ -215,7 +247,7 @@ calcEquilibriumConcSingleSite % initialize
 buildExchangeMatrix     % initialize for first spectrum of free protein
 
 % echo result back
-clc
+%clc
 disp("")
 disp("OK, your sample is ready.")
 disp("")
@@ -229,19 +261,19 @@ disp("")
 disp("Walking to the NMR ....")
 nu = time();
 a=1;
-while time() < nu + 2
+while time() < nu + 1.5
     a=a+1;
 end 
 disp("Putting the sample in the magnet ....")
 nu = time();
 a=1;
-while time() < nu + 2
+while time() < nu + 1.5
     a=a+1;
 end 
 disp("Setting up the machine ....")
 nu = time();
 a=1;
-while time() < nu + 2
+while time() < nu + 1.5
     a=a+1;
 end 
 disp("Ready to proceed!")

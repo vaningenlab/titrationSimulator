@@ -20,7 +20,7 @@ function rpar(expName)
         end
         disp("")
     else
-        clc
+        %clc
         % double check for quotes -- not possible
         if strcmp(expName,"HSQC")
             expPars = "HSQC";

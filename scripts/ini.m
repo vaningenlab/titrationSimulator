@@ -23,7 +23,7 @@ clear -all
 
 global swH swN wHv wNv dwHv dwNv titrationPoint allSpectra asHppm asNppm
 global numLvls cntFactor baseLevel expPars plotSpectra cntLvls
-global acronymProtein acronymLigand proteinMass ligandMass affinityRange
+global acronymProtein acronymLigand proteinMass ligandMass affinityRange ligandClass
 global gH gN B0 asH asN swH swN p1 beNice noiseX ns McX finalScore
 global peakStoreX peakStoreY zfH zfN koff questionPoints questionAsked
 global score S2Values plotPoints numPeaks yourName trup easyMode cq numPeaks
@@ -52,7 +52,7 @@ diary nmrsim.log
 sendEmail      = 0;                     % 1 = use instructor email to send results
                                         % 0 = use electronic learning environment such as Blackboard
 instructorMail = "h.vaningen@uu.nl";    % email where to send output
-easyMode       = 1;                     % [0 | 1 | 2 | 3] 
+easyMode       = 2;                     % [0 | 1 | 2 | 3] 
                                         % 1 = easy = only use intermediate and fast exchange and no big protein assemblies
                                         %     this option is best for students in NMR courses
                                         % 2 = super easy = with 1H pulse calibration, no acq. times, fewer questions, only fast exchange
@@ -146,10 +146,45 @@ if exist("state.out") == 2
     load("state.out")
     disp("Done!")
     disp("")
-    disp("Type \"plotAll\" to plot all previous titration spectra.")
-    disp("Type \"report\" for the details on the titration steps.")
-    disp("Type \"listCommands\" for a list of all available commands.")
-    disp("If you got stuck during the \"calcCSP\" or \"getKD\" analysis you can now restart these commands.")
+    % check which questions have been answered
+    disp("Checking your progress ...")
+    for q=1:numQuestions
+        if questionAsked(q) == 0
+            printf("    You have not yet answered question %d.\n", q)
+        end
+    end
+    disp("")
+    disp("Some tips on how to continue:")
+    if plotPoints  == 0
+        % no spectrum plotted yet, so crash before rotate FID?
+        disp("It seems you have not recorded or processed a 2D HSQC spectrum yet.")
+        disp("Type \"eda\" to setup, \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
+        disp("")
+        disp("If the program crashed when rotating the 3D plot of the FID, then don't rotate anymore!")
+        disp("")
+    elseif plotPoints == 1
+        % one spectum only plotted, so still before the titration, maybe question coneview crashed
+        disp("It seems you have not started the titration yet.")
+        disp("Type \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
+    else
+        % at least two spectra were plotted, so doing the titration
+        disp("Type \"report\" for the details on your titration steps.")
+        disp("Type \"plotAll\" to show the overlay of all spectra.")
+        disp("Type \"titrate\" to continue the titration.")
+        disp("Type \"listCommands\" for a list of all available commands.")
+        disp("Type \"question(x)\" to answer question x.")
+        disp("   (you may have to ignore the instructions at the end of the question on how to continue).")
+        disp("")
+        disp("If you got stuck during the \"calcCSP\" or \"getKD\" analysis you can now restart these commands.")
+        % check whether last spectrum is empty
+        spectrumSignal = max(max(plotSpectra(:,:,plotPoints)));
+        if spectrumSignal == 0
+            disp("It seems something is wrong with your last spectrum.")
+            disp("Type \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
+            disp("If there's still no signal for the new spectrum, ask your instructor for help.")
+            disp("If all is ok, then continue w/ the above commands")
+        end
+    end
     disp("")
 else
     if exist("system.out") == 2
@@ -198,6 +233,12 @@ else
         disp("")
         printf("There are %d multiple choice questions along the way.\n", numQuestions)
         disp("These will be automatically evaluated and scored.")
+        disp("")
+        disp("It is ok to take notes while doing this practical.")
+        disp("You will get a PDF with answers to the questions at the end.")
+        disp("")
+        disp("During your experiment some plots will be generated.")
+        disp("Keep the figure windows next to this text window so you can see both at the same time.")
         disp("")
         junk=input("<>","s");
         clc
@@ -263,6 +304,7 @@ else
     numCalibCheck  = 0;                     % to keep track of number of times calibration check was done
     numCalib       = 0;                     % to keep track of number of times calibration was done
     showHint       = 0;                     % to track if overlap hint was shown
+    showSaturationTip = 0;                  % to track if saturation hint was shown
     disp("")
     disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
     disp("")

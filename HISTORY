@@ -1,5 +1,35 @@
 HISTORY titrationSimulator
 
+test
+ - MacOS 13.6: Octave 9.2.0 - Qt (latest)          easyMode 1 OK
+ - windows 10: Octave 8.4.0 - Qt                   easyMode 2 OK
+        (rotating plot is very slow)
+        (PDF output indeed ugly)
+
+v18 Sep 12/13 2024 --- after BMSB course:
+- new checkFinished.m command to check progress DONE
+- moved update of concentrations and exchange matrix to titrate.m, fix lConc error DONE
+- fixed long color names if more titration points than colors DONE
+- fixed copy-paste mistake in getKD  DONE
+- save backup of program state before examining 2D FID and before starting calcCSP DONE
+- make sure restarting from backup is smooth DONE
+- streamline instructions further, especially at end when students are getting tired (of it) IN PROGRESS
+- double-check prompt to start a new sample DONE
+- maybe prompt student if taking really many points > 20 DONE
+- update ligand question if ligand is another protein DONE
+- prompt students to take notes DONE
+- removed clc commands to allow to scroll back at all times DONE
+- added comment segmental labeling DONE
+- check loop of adjusting concentrations DONE
+- added check for empty spectrum before continuing w/ titrate DONE
+- students skip question 7 a lot - fixed prompt  DONE
+- check error of empty spectrum at calcCSP if hitting enter at wrong moment -- does not happen, added FAQ DONE
+- check crash of Octave upon rotating 2D FID -- not on Mac -- backup save so can restart DONE
+- fix eda bug causing empty spectra DONE
+- add questions-answers PDF question 1 DONE 2 DONE 3 DONE
+- quotations to fix p-one confusion DONE
+
+
 2024: moved to GitHub changes tracked there, but also here for larger changes
 
 test

@@ -71,7 +71,7 @@ else
     disp("Now you cannot undo that anymore.")
     disp("")
     disp("If you really want to change the titration,")
-    disp("you will have to start from scratch and make a new sample by typing \"makeSample\" at the prompt.")
+    disp("you will have to restart from scratch and make a new sample by typing \"makeSample\" at the prompt.")
     disp("Otherwise, just continue the titration by typing \"titrate\".")
     disp("")
 end

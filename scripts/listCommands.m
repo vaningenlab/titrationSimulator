@@ -19,6 +19,7 @@ disp("      - getKD             : fit the dissociation constant")
 disp("      - saveResults       : save the final results")
 disp("      - unAdd             : remove the last ligand addition to the sample")
 disp("      - saveState         : save all titration data")
+disp("      - checkFinished     : check whether you have completed all questions")
 if easyMode < 2
 disp("      - qfp               : process a 1D spectrum")
 disp("      - eda               : edit the acquisition parameters")

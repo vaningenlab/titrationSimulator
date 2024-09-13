@@ -10,6 +10,9 @@ Rem spaces in variable is OK
 
 set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.4.0
 
+Rem Double-check whether script is started from within ZIP archive
+Rem if "zip" in (~dp0)
+
 Rem User will need to activate pushd command below in case users are logged in from network drive
 Rem Remove "Rem" in line below:
 Rem pushd %~dp0

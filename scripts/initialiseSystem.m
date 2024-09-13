@@ -10,7 +10,7 @@
 % echo to student
 
 %disp("\t**** NMR titration simulator ****")
-clc
+%clc
 disp("")
 disp("***      1. Your protein and ligand       ***")
 disp("")
@@ -242,7 +242,10 @@ disp("")
 printf("\t%s factor %s ( %.1f kDa) with\n", proteinDescriptor, acronymProtein, proteinMass)
 printf("\t%s %s ( %.1f kDa)\n", ligandDescriptor, acronymLigand, ligandMass)
 disp("")
-printf("The amino acid squence of %s is %s\n", acronymProtein, aa_string)
+printf("The protein %s has been isotope-labeled using segmental labeling.\n", acronymProtein)
+printf("Only %d residues are labeled and show up in the spectrum.\n", numPeaks)
+printf("The amino acid squence of the labeled part is %s.\n", aa_string)
+printf("For simplicity these residues will be numbered 1-%d.\n", numPeaks)
 disp("")
 junk=input("<>","s");
 disp("")
