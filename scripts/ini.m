@@ -52,7 +52,7 @@ diary nmrsim.log
 sendEmail      = 0;                     % 1 = use instructor email to send results
                                         % 0 = use electronic learning environment such as Blackboard
 instructorMail = "h.vaningen@uu.nl";    % email where to send output
-easyMode       = 2;                     % [0 | 1 | 2 | 3] 
+easyMode       = 1;                     % [0 | 1 | 2 | 3] 
                                         % 1 = easy = only use intermediate and fast exchange and no big protein assemblies
                                         %     this option is best for students in NMR courses
                                         % 2 = super easy = with 1H pulse calibration, no acq. times, fewer questions, only fast exchange
