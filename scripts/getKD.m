@@ -52,9 +52,7 @@ elseif affinityValue*1e3 < proteinConc && molEq < 1.5
     disp("")
 else
     if questionAsked(kdq) == 0 && getkdTime == 1
-        %clc
-        disp("")
-        printf("QUESTION %d.\n", kdq)
+        clc
         disp("")
         disp("Super, you're ready for the second and last objective,")
         disp("that is determination of the binding affinity.")
@@ -85,6 +83,9 @@ else
             disp("")
             disp("This residue is in slow or intermediate exchange or experiences too much broadening.")
             disp("Type \"getKD\" again and choose another peak.")
+            disp("")
+            disp("Best to take a peak that a large but gradual peak displacement during the titration,")
+            disp("and can be seen at all titration steps.")
             disp("")
         else
             disp("")
@@ -117,7 +118,7 @@ else
             junk=input("<>","s");
             disp("")
             CSP_o =[];
-            for ss=1:tp
+            for ss=1:titrationPoint
                 % display only the spectrum of this titration point
                 hold off
                 colorIdx = mod(ss-1,length(colorPlot))+1;
@@ -132,17 +133,17 @@ else
                 disp("")
                 % check whether we have more points than colors:
                 if ss <= length(colorNamesLong)
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,:))
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
                 elseif ss <= 2*length(colorNamesLong)
                     % wrap around: there are 11 colors, tp 12 will be color 1
                     cp = ss - length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
                 elseif ss <= 3*length(colorNamesLong)
                     cp = ss - 2*length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
                 else
                     cp = ss - 4*length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(cp,:))
+                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
                 end
                 [x_s, y_s, buttons] = ginput(1);
                 if ss == 1
@@ -226,7 +227,7 @@ else
             % check with actual perfect data
             disp("The actual dissociation constant was:")
             % also convert to mM
-            KD_real = affinityValue*1e3;
+            KD_real = affinityValue*1e3
             if KD_real > 1
                 printf("\t  KD = %.2f mM\n", KD_real)
             elseif KD_real < 1e-4
@@ -239,7 +240,11 @@ else
             disp("The expected binding curve is shown in green.")
             % this has to be based on actual addition!!
             % 
-            CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) );
+            pbVectorActual
+            dwHvppm
+            dwNvppm
+            peakNumberKD
+            CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) )
             % also scale to observed CSP
             plot(lConcv, CSP_s*max(CSP_f)/max(CSP_s), 'g-;expected;')
             disp("")
@@ -264,6 +269,7 @@ else
                             disp("Because your titration is close to intermediate exchange, ")
                             disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
                             disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                            disp("Otherwise just continue.")
                             disp("")
                             disp("")
                             disp("Still, 5 points for the effort.")
@@ -273,7 +279,7 @@ else
                         else
                             disp("The KD determined from the fit is a bit off unfortunately.")
                             disp("Ask your instructor to have a look at it.")
-                            disp("You can try to do the anaysis again.")
+                            disp("You can try to do the anaysis again, or just continue.")
                             disp("")
                             disp("Still, 2 points for the effort.")
                             disp("")
@@ -282,7 +288,7 @@ else
                         end
                     end
                 else
-                    % poor fit
+                    % very poor fit
                     if abs((KD_fit - KD_real)/KD_real) < 0.2
                         disp("Interesting, you are still within 20% of the true KD! You get 5 more points.")
                         disp("Probably the power of compensating random errors...")
@@ -302,18 +308,19 @@ else
                             disp("Because your titration is close to intermediate exchange, ")
                             disp("this type of binding curve analysis is not exact and your fitted KD is quite off.")
                             disp("You can try to do the anaysis again using a peak that is more in fast exchange.")
+                            disp("Otherwise just continue.")
                             disp("")
                         else
                             disp("The KD determined from the fit is a bit off unfortunately.")
                             disp("Ask your instructor to have a look at it.")
-                            disp("You can try to do the anaysis again.")
+                            disp("You can try to do the anaysis again, or just continue.")
                             disp("")
                         end
                         % no points
                         questionAsked(kdq) = 1;
                     end % poor fit
                 end % fit quality
-                % check whether to redo the analysis in case result was very poor
+                % check whether to ask to redo the analysis in case result was very poor
                 if continueKDQuestion == 'y'
                     % we need to check whether to redo
                     continueKDQuestion = input("Do you want to redo the KD analysis? y/n: ","s");
@@ -330,6 +337,10 @@ else
                         disp("")
                         disp("Type \"getKD\" again to redo the analysis.")
                         disp("")
+                    else
+                        disp("")
+                        printf("OK, now it is time for the final questions. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                        disp("")
                     end
                 else
                     % no redo, done here
@@ -337,16 +348,9 @@ else
                     disp("Ok, you did a good job.")
                     disp("")
                     junk=input("<>","s");
-                    %clc
                     disp("")
-                    if easyMode == 1
-                        disp("Now I still have two questions for you.")
-                        disp("First, type \"question(11)\" at the command prompt.")
-                        disp("")
-                    else
-                        printf("Now it is time for the final question. Type \"question(%d)\" at the command prompt.\n", kdq+1)
-                        disp("")
-                    end
+                    printf("Now it is time for the final questions. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                    disp("")
                 end % check redo
             else
                 % already done the analysis no point and little feedback, should not happen, only easyMode 0
@@ -359,6 +363,10 @@ else
                         disp("The KD determined from the fit is a bit off unfortunately.")
                         disp("Ask your instructor to have a look at it.")
                     end
+                else
+                    disp("")
+                    printf("To continue to the final questions, type \"question(%d)\" at the command prompt.\n", kdq+1)
+                    disp("")
                 end
             end
         end

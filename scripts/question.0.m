@@ -8,13 +8,16 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
     disp("")
     if number == 1 && questionAsked(number) == 0
         disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         if ligandClass > 0
             disp("You're investigating an interaction between two proteins.")
         else
             disp("You're investigating the interaction between a protein and a smaller molecule.")
         end
         disp("")
-        disp("QUESTION 1.")
         disp("What labeling strategy is best to use? Also consider costs.")
         if ligandClass ==  0
             disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
@@ -47,7 +50,11 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         disp("So B is the right answer.");
         disp("")
     elseif number == 2 && questionAsked(number) == 0
-        disp("QUESTION 2.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("For which flip-angles of the pulse will you observe zero signal and for which maximum positive signal?")
         disp("    A. Zero at 180, 360 etc., and maximum at 90, 270, 450 degree  ...")
         disp("    B. Zero at 180, 360 etc., and maximum at 90, 450 degree...")
@@ -73,7 +80,10 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         questionAsked(2)=1;
     elsef number == 3 && questionAsked(number) == 0
         disp("")
-        disp("QUESTION 3.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 3 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("The polarization transfer element in the HSQC is the INEPT, which contains this")
         disp("spin-echo element: tau-180(1H)/180(15N)-tau. What is the optimal value of tau?")
         disp("The 1JNH coupling constant is -92 Hz for backbone amides in proteins.")
@@ -106,7 +116,11 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         disp("Now enter the acquisition times:")
         disp("")
     elseif number == 4 && questionAsked(number) == 0
-        disp("QUESTION 4.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 4 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Which statement is true?")
         disp("    A. Increasing the length of the acquisition time, decreases the resolution.")
         disp("       Increasing the number of scans by factor of 2, increases the signal-to-noise by 2.")
@@ -139,7 +153,11 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
     elseif number == 5 && questionAsked(number) == 0
         [val, minS2peak] = min(S2Values);
         [val, maxS2peak] = max(S2Values);
-        disp("QUESTION 5.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 5 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         printf("Peak %d has a higher intensity than peak %d. How can this be explained?\n", minS2peak, maxS2peak)
         %printf("    A. Peak %d has a higher intensity, because it has a bigger linewidth, which means\n", minS2peak)
         %printf("       that for this amide J(0) is smaller, which means it experiences a smaller\n")
@@ -177,65 +195,75 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         disp("Floppy bits will behave like small molecules and have sharper, more intense lines.")
         questionAsked(5) = 1;
     elseif number == 6 && questionAsked(number) == 0
-            disp("You are about to exceed 1 molar equivalent of ligand added.")
-            disp("Time to consider how much you should add to have that all binding sites on the protein")
-            disp("are fully occupied with ligand.")
-            disp("")
-            disp("QUESTION 6.")
-            disp("What ligand concentration is needed to (completely) saturate the protein?")
-            disp("    A. Depends on the affinity and the protein concentration.")
-            disp("    B. Depends on the affinity")
-            disp("    C. Depends on the protein concentration.")
-            disp("    D. Depends on the association-rate.")
-            disp("")
-            answer6 = input("Enter your answer: ","s");
-            answer6 = checkAnswer(answer6);
-            score   = calcScore(answer6, score, "A", questionPoints);
-            junk=input("<>","s");
-            disp("");
-            disp("EXPLANATION:")
-            %disp("First: P+L <-> PL, KD = [P][L]/[PL]")
-            %disp("Suppose 90% saturation: [PL] = 0.9Ptot and [P]=0.1*Ptot,")
-            %disp("where Ptot is the total protein concentration [P]+[PL].")
-            %disp("Then KD = 0.1*Ptot*[L]/(0.9*Ptot) or [L] = 9*KD.")
-            %disp("Since [L]=Ltot-[PL] is follows that Ltot=9*KD + 0.9*Ptot.")
-            %disp("Thus, one needs to add approximately 9*KD + protein concentration")
-            %disp("to get 90% of all binding-sites occupied.")
-            %disp("So A is the right answer.");
-            disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity.")
-            disp("It also depends on your protein concentration.")
-            disp("Imagine you have an immensely concentrated protein solution.")
-            disp("Then you also need to add more ligand to bind all proteins compared to a situation")
-            disp("where you have very little protein.")
-            disp("Using the power of math, you can derive that one needs to add")
-            disp("approximately 9*KD + protein concentration to get 90% of all binding-sites occupied.")
-            disp("So A is the right answer.");
-            disp("")
-            junk=input("<>","s");
-            disp("")
-            printf("In your system the KD is in the %s range.\n", affinityRange)
-            disp("So continue the titration until you are close to 10*KD+protein concentration,")
-            disp("and/or you see no more significant changes in the spectrum")
-            disp("You can also take a peek at the %bound protein using \"report\"...")
-            disp("")
-            disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
-            disp("")
-            junk=input("<>","s");
-            questionAsked(6)=1;
-    % calcCSP has question 7 and 8
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 6 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
+        disp("You are about to exceed 1 molar equivalent of ligand added.")
+        disp("Time to consider how much you should add to have that all binding sites on the protein")
+        disp("are fully occupied with ligand.")
+        disp("")
+        disp("What ligand concentration is needed to (completely) saturate the protein?")
+        disp("    A. Depends on the affinity and the protein concentration.")
+        disp("    B. Depends on the affinity")
+        disp("    C. Depends on the protein concentration.")
+        disp("    D. Depends on the association-rate.")
+        disp("")
+        answer6 = input("Enter your answer: ","s");
+        answer6 = checkAnswer(answer6);
+        score   = calcScore(answer6, score, "A", questionPoints);
+        junk=input("<>","s");
+        disp("");
+        disp("EXPLANATION:")
+        %disp("First: P+L <-> PL, KD = [P][L]/[PL]")
+        %disp("Suppose 90% saturation: [PL] = 0.9Ptot and [P]=0.1*Ptot,")
+        %disp("where Ptot is the total protein concentration [P]+[PL].")
+        %disp("Then KD = 0.1*Ptot*[L]/(0.9*Ptot) or [L] = 9*KD.")
+        %disp("Since [L]=Ltot-[PL] is follows that Ltot=9*KD + 0.9*Ptot.")
+        %disp("Thus, one needs to add approximately 9*KD + protein concentration")
+        %disp("to get 90% of all binding-sites occupied.")
+        %disp("So A is the right answer.");
+        disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity.")
+        disp("It also depends on your protein concentration.")
+        disp("Imagine you have an immensely concentrated protein solution.")
+        disp("Then you also need to add more ligand to bind all proteins compared to a situation")
+        disp("where you have very little protein.")
+        disp("Using the power of math, you can derive that one needs to add")
+        disp("approximately 9*KD + protein concentration to get 90% of all binding-sites occupied.")
+        disp("So A is the right answer.");
+        disp("")
+        junk=input("<>","s");
+        disp("")
+        printf("In your system the KD is in the %s range.\n", affinityRange)
+        disp("So continue the titration until you are close to 10*KD+protein concentration,")
+        disp("and/or you see no more significant changes in the spectrum")
+        disp("You can also take a peek at the %bound protein using \"report\"...")
+        disp("")
+        disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
+        disp("")
+        junk=input("<>","s");
+        questionAsked(6)=1;
+    %calcCSP has question 7 and 8
     elseif number == 7 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionCSP
     elseif number == 8 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 8 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionInterface
     elseif number == 9 && questionAsked(number) == 0
-        % judge exchange regime
-        disp("QUESTION 9.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 9 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         disp("I will now ask you to classify for each peak whether it is ")
         disp("fast, intermediate or slow exchange.")
@@ -300,7 +328,11 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         questionAsked(9) = 1;
     elseif number == 10 && questionAsked(number) == 0;
         % estimate off rate now directly and fixed ranges.
-        disp("QUESTION 10.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 10 (of %d)                    +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Estimate the off-rate, koff, using an educated guess.")
         disp("    A. koff is < 50 s-1")
         disp("    B. koff is between 100 and 5000 s-1")

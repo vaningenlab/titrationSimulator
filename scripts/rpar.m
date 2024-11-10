@@ -133,8 +133,11 @@ function rpar(expName)
                     if loadHSQC == 1
                         disp("")
                         junk=input("<>","s");
+                        clc
                         disp("")
-                        disp("***      4. Protein HSQC      ***")
+                        disp("*----------------------------------------------------------*")
+                        disp("***         STEP 4 of 6: PROTEIN FREE STATE SPECTRUM     ***")
+                        disp("*----------------------------------------------------------*")
                         disp("")
                         disp("Loading experimental setup for {1H-15N}-HSQC experiment ...")
                         nu = time();
@@ -142,7 +145,9 @@ function rpar(expName)
                         while time() < nu + 1
                             a=a+1;
                         end 
-                        disp("Loaded! Now setup the acquisition parameters by typing \"eda\" at the command prompt")
+                        disp("Loaded! Now setup the acquisition parameters by typing \"eda\" at the command prompt.")
+                        disp("")
+                        disp("( Remember the command prompt is when you see :)]), the <> symbol is pause where all input is ignored )
                         disp("")
                             numCalibCheck = 1;
                         disp("")
@@ -151,7 +156,11 @@ function rpar(expName)
                     end
                 end
             elseif easyMode == 3 || ( easyMode < 3 && numCalibCheck == 1)
-                disp("***      4. Protein HSQC      ***")
+                clc
+                disp("")
+                disp("*----------------------------------------------------------*")
+                disp("***         STEP 3 of 5: PROTEIN FREE STATE SPECTRUM     ***")
+                disp("*----------------------------------------------------------*")
                 disp("")
                 disp("Loading experimental setup for {1H-15N}-HSQC experiment ...")
                 nu = time();
@@ -164,8 +173,11 @@ function rpar(expName)
             end % checks HSQC
         elseif strcmp(expName,"find90")
             expPars = "find90";
+            clc
             disp("")
-            disp("***      3. Pulse calibration      ***")
+            disp("*----------------------------------------------------------*")
+            disp("***         STEP 3 of 6: PULSE CALIBRATION               ***")
+            disp("*----------------------------------------------------------*")
             disp("")
             disp("Loading 1H 90 degree pulse calibration experiment ...")
             nu = time();
@@ -199,8 +211,11 @@ function rpar(expName)
             disp("")
         elseif strcmp(expName,"popt")
             expPars = "popt";
+            clc
             disp("")
-            disp("***      3. Pulse calibration      ***")
+            disp("*----------------------------------------------------------*")
+            disp("***         STEP 3 of 6: PULSE CALIBRATION               ***")
+            disp("*----------------------------------------------------------*")
             disp("")
             disp("Loading 1H 90 degree pulse calibration experiment ...")
             nu = time();
@@ -225,7 +240,7 @@ function rpar(expName)
                 junk=input("<>","s");
                 disp("")
                 disp("The goal is that you determine at what duration of the pulse (called p1)")
-                disp("you get a 90 degree rotation of the magnetization.")
+                disp("you get a 90 degree rotation of the magnetization and thus maximum signal.")
                 disp("")
                 disp("The 1H 90 degree pulse length varies usually between 7 and 12 microseconds, ")
                 disp("depending on the saltiness of your sample buffer.")

@@ -7,7 +7,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
     global numLvls cntFactor baseLevel asH asN cntLvls;
     global acronymProtein ligandMass proteinMass acronymLigand;
     global swH swN noiseX ns plotPoints labelShift labelSize gH gN B0 centerHppm centerNppm;
-    global noiseLevel aa_string numPeaks
+    global noiseLevel aa_string numPeaks startFloor
     
     if nargin == 0
         disp("")

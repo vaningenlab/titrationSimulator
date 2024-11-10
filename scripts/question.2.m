@@ -10,13 +10,16 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
     disp("")
     if number == 1 && questionAsked(number) == 0
         disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         if ligandClass > 0
             disp("You're investigating an interaction between two proteins.")
         else
             disp("You're investigating the interaction between a protein and a smaller molecule.")
         end
         disp("")
-        disp("QUESTION 1.")
         disp("What labeling strategy is best to use? Also consider costs.")
         if ligandClass ==  0
             disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
@@ -49,7 +52,11 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("So B is the right answer.");
         disp("")
     elseif number == 2 && questionAsked(number) == 0
-        disp("QUESTION 2.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Examine the pulse calibration plot. When do you see no signal?")
         disp("    A. If you don't apply a pulse")
         disp("    B. If the magnetization is along the z-axis")
@@ -79,7 +86,11 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
     elseif number == 3 && questionAsked(number) == 0
         [val, minS2peak] = min(S2Values);
         [val, maxS2peak] = max(S2Values);
-        disp("QUESTION 3.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 3 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Peak intensity is related to molecular size.")
         disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
         disp("")
@@ -118,11 +129,15 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("Type \"titrate\" at the command prompt.")
         disp("")
     elseif number == 4 && questionAsked(number) == 0
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 4 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("You are about to exceed 1 molar equivalent of ligand added.")
         disp("Time to consider how much you should add to have that all binding sites on the protein")
         disp("are fully occupied with ligand.")
         disp("")
-        disp("QUESTION 4.")
         disp("What ligand concentration is needed to (completely) saturate the protein?")
         disp("    A. Depends on the affinity and the protein concentration.")
         disp("    B. Depends on the affinity")
@@ -155,23 +170,32 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         questionAsked(number)=1;
     elseif number == 5 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 5 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionCSP
     elseif number == 6 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 6 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionInterface
     elseif number == 7 && questionAsked(number) == 0
         disp("")
-        disp("Seems you did not determine the KD.")
-        disp("Type \"getKD\" at the command prompt to start the analysis.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        getKD
     elseif number == 8 && questionAsked(number) == 0
         % summary of the practical
         disp("")
-        disp("QUESTION 8.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 8 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         printf("How would you proceed to model the interaction between %s and %s?\n", acronymProtein, acronymLigand)
         disp("(Assuming you have structures for both...)")
         disp("    A. Use the residues with the largest CSPs to drive a docking calculation")

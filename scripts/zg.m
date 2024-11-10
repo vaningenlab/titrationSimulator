@@ -7,7 +7,6 @@ disp("")
     
 if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
     if exist("npN") && exist("pConc")
-        disp("***      4. Protein HSQC      ***")
         disp("")
         if ((tau < 0.002 || tau > 0.004) && beNice == 1)
             disp("Your tau value is quite off. This is not going to work properly. You'll see.")
@@ -38,6 +37,8 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         xlabel('acquistion time (sec)')
         ylabel('intensity')
         drawnow
+        peakSino = 100;
+        peakDissappearCheck = 100;
         for peak = 1:numPeaks
             printf("%d ",numPeaks-peak+1);   % fake count down
             buildRelaxationMatrix           % depends on S2, but not on titration point
@@ -53,6 +54,16 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             % add FID of peak to peakStore -- still need to add noise
             peakStoreX(:,:,peak, titrationPoint) = signalSf*McX + noiseSf*noiseX;
             peakStoreY(:,:,peak, titrationPoint) = signalSf*McY + noiseSf*noiseY;
+            % check for signal-to-noise 
+            % first point should be higher than 3-6*noise, only signal in X part
+            peakSignal = sum(abs(signalSf*McX(1,:)));
+            peakNoise  = sum(abs(noiseSf*noiseX(1,:)));
+            peakSino_p = peakSignal / peakNoise;
+            % save lowest peakSino for peakDissappearCheck in xfb.m
+            if peakSino_p < peakSino
+                peakSino = peakSino_p;
+                peakDissappearCheck = peakSino;
+            end
         end
         % add signal and noise
         McX = signalSf*totalFIDX + noiseSf*noiseX;
@@ -289,7 +300,6 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         disp("")
     end
 elseif strcmp(expPars, "find90")
-    disp("***      3. Pulse calibration      ***")
     disp("")
     if p1 > 0 && p1 < 1000
         printf("Recording water 1D with 4xp1 (p1= %.1f microseconds), takes ~1 sec....\n", p1)
@@ -322,7 +332,6 @@ elseif strcmp(expPars, "find90")
     end
 elseif strcmp(expPars, "popt")
     promptForReEnter = 0;
-    disp("***      3. Pulse calibration      ***")
     disp("")
     if numCalib == 0
         disp("Just hit enter at the questions below to use the default values")
@@ -424,17 +433,17 @@ elseif strcmp(expPars, "popt")
                 disp("")
                 disp("Note that there is no signal in the first spectrum, since p1 is zero")
             end
-            disp("To identify the zero-crossing, find a spectrum close to it, then count ")
-            disp("to find the corresponding p1 value, using the information above.")
+            disp("")
+            disp("While you can determine the 90-degree pulse length directly by")
+            disp("identifying the p1 value where you get maximum signal, in practice it is")
+            disp("more accurate to determine the p1 value for a zero-crossing of the intensity.")
             disp("")
         end
         numCalib = numCalib + 1;
-        disp("")
         junk=input("<>","s");
         disp("")
         if questionAsked(2) == 0 && easyMode < 3   % this is no longer skipped in easyMode == 2; since it helps to understand what goes on
             question(2)
-            %clc
             disp("")
             disp("To continue the calibration, type \"zg\" the command prompt")
             disp("to adapt the range and number of experiments")
@@ -445,14 +454,14 @@ elseif strcmp(expPars, "popt")
             disp("to adapt the range and number of experiments")
             disp("")
             disp("Once you found the p1 value to get a zero-crossing, set p1 to")
-            disp("the pulse length needed for a 90-degree rotation:")
-            disp("\t - enter the value at the command prompt by typing,")
-            disp("\t   for example if you find the 360 zero crossing at 32 us:")
+            disp("the pulse length needed for a 90-degree rotation.")
+            disp("For example if you find the 360 zero crossing at 32 us,")
+            disp("then enter the p1 value at the command prompt, when you see :)], like this:")
             disp("\t   \tp1 = 8")
             disp("\t   \tor p1 = 32/4")
             disp("\t   ==> note it is \"p-one\" not \"p-el\" or \"p-i\"! <==")
             disp("")	
-            disp("To proceed to the next step, make sure to have set p1 correctly")
+            disp("To proceed to the next step, first make sure to have set p1 correctly.")
             disp("Then load the parameters of the HSQC experiment, by typing:")
             disp("")
             disp("rpar(\"HSQC\")")

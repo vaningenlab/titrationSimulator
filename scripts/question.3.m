@@ -10,13 +10,16 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
     disp("")
     if number == 1 && questionAsked(number) == 0
         disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         if ligandClass > 0
             disp("You're investigating an interaction between two proteins.")
         else
             disp("You're investigating the interaction between a protein and a smaller molecule.")
         end
         disp("")
-        disp("QUESTION 1.")
         disp("What labeling strategy is best to use? Also consider costs.")
         if ligandClass ==  0
             disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
@@ -51,7 +54,11 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
     elseif number == 2 && questionAsked(number) == 0
         [val, minS2peak] = min(S2Values);
         [val, maxS2peak] = max(S2Values);
-        disp("QUESTION 2.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Peak intensity is related to molecular size.")
         disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
         disp("")
@@ -90,60 +97,73 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("Type \"titrate\" at the command prompt.")
         disp("")
     elseif number == 3 && questionAsked(number) == 0
-            disp("You are about to exceed 1 molar equivalent of ligand added.")
-            disp("Time to consider how much you should add to have that all binding sites on the protein")
-            disp("are fully occupied with ligand.")
-            disp("")
-            disp("QUESTION 3.")
-            disp("What ligand concentration is needed to (completely) saturate the protein?")
-            disp("    A. Depends on the affinity and the protein concentration.")
-            disp("    B. Depends on the affinity")
-            disp("    C. Depends on the protein concentration.")
-            disp("    D. Depends on the association-rate.")
-            disp("")
-            answer3 = input("Enter your answer: ","s");
-            answer3 = checkAnswer(answer3);
-            score   = calcScore(answer3, score, "A", questionPoints);
-            junk=input("<>","s");
-            disp("");
-            disp("EXPLANATION:")
-            disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity")
-            disp("It also depends on your protein concentration.") 
-            disp("Imagine you have an immensely concentrated protein solution.")
-            disp("Then you need to add more ligand to bind all proteins compared to when you have very little protein.")
-            disp("Using the power of math, you can derive that approximately 9*KD + protein concentration is needed")
-            disp("to get 90% of all binding-sites occupied.")
-            disp("So A is the right answer.");
-            disp("")
-            junk=input("<>","s");
-            disp("")
-            %printf("In your system the KD is in the %s range.\n", affinityRange)
-            disp("Continue the titration until you see no more significant changes in the spectrum")
-            disp("You can also take a peek at the %bound protein using \"report\"...")
-            disp("")
-            disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
-            disp("")
-            junk=input("<>","s");
-            questionAsked(3)=1;
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
+        disp("You are about to exceed 1 molar equivalent of ligand added.")
+        disp("Time to consider how much you should add to have that all binding sites on the protein")
+        disp("are fully occupied with ligand.")
+        disp("")
+        disp("What ligand concentration is needed to (completely) saturate the protein?")
+        disp("    A. Depends on the affinity and the protein concentration.")
+        disp("    B. Depends on the affinity")
+        disp("    C. Depends on the protein concentration.")
+        disp("    D. Depends on the association-rate.")
+        disp("")
+        answer3 = input("Enter your answer: ","s");
+        answer3 = checkAnswer(answer3);
+        score   = calcScore(answer3, score, "A", questionPoints);
+        junk=input("<>","s");
+        disp("");
+        disp("EXPLANATION:")
+        disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity")
+        disp("It also depends on your protein concentration.") 
+        disp("Imagine you have an immensely concentrated protein solution.")
+        disp("Then you need to add more ligand to bind all proteins compared to when you have very little protein.")
+        disp("Using the power of math, you can derive that approximately 9*KD + protein concentration is needed")
+        disp("to get 90% of all binding-sites occupied.")
+        disp("So A is the right answer.");
+        disp("")
+        junk=input("<>","s");
+        disp("")
+        %printf("In your system the KD is in the %s range.\n", affinityRange)
+        disp("Continue the titration until you see no more significant changes in the spectrum")
+        disp("You can also take a peek at the %bound protein using \"report\"...")
+        disp("")
+        disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
+        disp("")
+        junk=input("<>","s");
+        questionAsked(3)=1;
     elseif number == 4 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 4 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionCSP
     elseif number == 5 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 5 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionInterface
     elseif number == 6 && questionAsked(number) == 0
         disp("")
-        disp("Seems you did not determine the KD.")
-        disp("Type \"getKD\" at the command prompt to start the analysis.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 6 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        getKD
     elseif number == 7 && questionAsked(number) == 0
         % summary of the practical
         disp("")
-        disp("QUESTION 7.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         printf("How would you proceed to model the interaction between %s and %s?\n", acronymProtein, acronymLigand)
         disp("(Assuming you have structures for both...)")
         disp("    A. Use the residues with the largest CSPs to drive a docking calculation")

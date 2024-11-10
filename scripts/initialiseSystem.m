@@ -9,10 +9,16 @@
 
 % echo to student
 
-%disp("\t**** NMR titration simulator ****")
-%clc
+clc
+
 disp("")
-disp("***      1. Your protein and ligand       ***")
+disp("*----------------------------------------------------------*")
+if easyMode == 3
+    disp("***         STEP 1 of 5: YOUR PROTEIN & LIGAND           ***")
+else
+    disp("***         STEP 1 of 6: YOUR PROTEIN & LIGAND           ***")
+end
+disp("*----------------------------------------------------------*")
 disp("")
 disp("The program will now ask you a few simple questions")
 disp("in order to select a system for you.")

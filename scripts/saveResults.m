@@ -4,7 +4,7 @@
 if sum(questionAsked) == numQuestions
     % questions answered, we can assume done
     disp("")
-    disp("Ok, saving all your results: plots of the spectrum and bindingcurve and details on your system")
+    disp("Ok, saving all your results: plots of the spectrum and binding curve and details on your system")
 
     % save HSQCs
     disp("")

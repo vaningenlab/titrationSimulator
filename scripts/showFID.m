@@ -106,7 +106,7 @@ ylabel('intensity')
 axis([0 length(dim1FIDY)])
 set(gca,'XDir','normal')
 
-disp("The first step to get the 2D spectrum is to sort all FIDs as a 2D maxtrix")
+disp("The first step to get the 2D spectrum is to sort all FIDs as a 2D matrix")
 
 disp("")
 junk=input("<>","s");

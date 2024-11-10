@@ -52,22 +52,33 @@ else
         disp("You could also restart the titration by making a new sample (\"makeSample\")")
         disp("")
     end
-    %clc
-    disp("***      5. Titration with ligand      ***")
-    disp("")
     if titrationPoint == 1 && plotPoints == 1
         % first point additional info
-        if easyMode > 1
-            disp("Try to space your additions such that in about 7 steps you go from 0% bound to 90-95% bound.")
-        else
-            disp("Try to space your additions such that in about 7 to 10 steps you go from 0% bound to 90-95% bound.")
-        end
-        disp("Take a look at the \"report\" command output after each addition to judge how much you need to add.")
+        clc
         disp("")
-        disp("IRL you obviously don't have this information and you would only judge the change in the spectra.")
+        disp("*----------------------------------------------------------*")
+        if easyMode == 3
+            disp("***         STEP 4 of 5: TITRATE TO BOUND STATE          ***")
+        else
+            disp("***         STEP 5 of 6: TITRATE TO BOUND STATE          ***")
+        end
+        disp("*----------------------------------------------------------*")
+        disp("")
+        disp("You will now add ligand to the protein sample in steps,")
+        disp("and record the protein fingerprint spectrum at each step until the protein is fully bound.")
+        disp("")
         disp("Keep repeating adding ligand (\"titrate\"), recording and processing the spectrum (\"zg\", \"xfb\"")
         disp("until you do not see significant changes in the spectrum anymore.")
-        if affinityValue < 1e-4 && easyMode > 0
+        disp("")
+        disp("To make this a bit easier for you, you can take a look at the output from the \"report\" command")
+        disp("to see how much bound state protein you have and to judge how much you need to add.")
+        disp("")
+        disp("Try to space your additions such that in about 7 to 10 steps you go from 0% bound to 85-95% bound.")
+        disp("A progress bar will also roughly show how far your in the titration.")
+        disp("")
+        disp("Note that it may be impossible to reach beyond 90% or 95% bound protein, depending on your system.")
+        disp("IRL you obviously don't have this information and you would only judge the change in the spectra.")
+           if affinityValue < 1e-4 && easyMode > 0
             disp("")
             disp("Since the affinity for you system is rather high, do the following:")
             disp("Make sure to record spectra after adding each time 10 or 20% ligand")
@@ -98,8 +109,25 @@ else
         disp("")
     end
     % below happens for all points
+    disp("")
+    % progress bar to show % bound state protein in 10% steps
+    percentBound = 100*cConcv(titrationPoint)/pConc;
+    progressTitration = round(percentBound/10);
+    emptyBits         = 10 - progressTitration;
+      disp("      0                              100% complete titration")
+    printf("     [")
+    for i = 1:progressTitration
+        printf("---")
+    end
+    printf("%2.0f",round(percentBound/5)*5)
+    for i = 1:emptyBits
+        printf("   ")
+    end
+    printf("]\n")
+    disp("")
     printf("Your sample now contains %.2f mM of ligand\n", lConc)
     printf("this is %.2f equivalents of ligand compared to protein\n", molEq)
+    disp("")
     molAdd = input("How many molar equivalents of ligand do you want to add? ","s");
     if length(regexp(molAdd,'[.\d]')) < length(molAdd) || length(molAdd)==0
         disp("")

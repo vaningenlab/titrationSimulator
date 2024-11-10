@@ -40,7 +40,7 @@ function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
         if answerTwo == correctAnswer
             disp("Indeed!")
         else
-            disp("Sorry that's still not correct...")
+            disp("Sorry that's still not correct... please check the explanation below.")
         end
         disp("");
     end

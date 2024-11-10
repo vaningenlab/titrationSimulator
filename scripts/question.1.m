@@ -5,19 +5,25 @@
 function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange aa_string
-global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail atH atN numQuestions
+global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail atH atN numQuestions pb
 global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile finalScore sendEmail ligandClass
+global colorNamesLong wHvppm wNvppm tp cspTime numBig numSmall simCSP affinityValue proteinConc getkdTime
+global plotPoints lConcv pbVectorActual colorPlot asHppm asNppm plotSpectra cntLvls
+global pConcv lConcv molEqv CSP_o CSP_f dwHvppm dwNvppm
 
     disp("")
     if number == 1 && questionAsked(number) == 0
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         if ligandClass > 0
             disp("You're investigating an interaction between two proteins.")
         else
             disp("You're investigating the interaction between a protein and a smaller molecule.")
         end
-        disp("")
-        disp("QUESTION 1.")
+        
         disp("What labeling strategy is best to use? Also consider costs.")
         if ligandClass ==  0
             disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
@@ -30,6 +36,9 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
             disp("    C. Both proteins should be 13C-labeled.")
             disp("    D. One of the proteins should be 13C-labeled.")
         end
+        disp("")
+        disp("Please note that you can only enter your answer wwhen prompted.")
+        disp("Anything that you type when you see <> is ignored.")
         disp("")
         answer1 = input("Enter your answer: ","s");
         answer1 = checkAnswer(answer1);
@@ -50,7 +59,11 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("So B is the right answer.");
         disp("")
     elseif number == 2 && questionAsked(number) == 0
-        disp("QUESTION 2.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Examine the pulse calibration plot. When do you see no signal?")
         disp("    A. If you don't apply a pulse")
         disp("    B. If the magnetization is along the z-axis")
@@ -80,7 +93,10 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         questionAsked(2)=1;
     elseif number == 3 && questionAsked(number) == 0
         disp("")
-        disp("QUESTION 3.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 3 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("The HSQC experiment is a two dimensional experiment")
         disp("that shows a signal for all NH groups in a protein.")
         disp("")
@@ -107,15 +123,17 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("In the simulated spectra here only the backbone NHs will show up as signals.")
         disp("")
         junk=input("<>","s");
-        %clc
         disp("")
-        disp("***      4. Protein HSQC      ***")
+        disp("NEXT:")
         disp("")
-        disp("")
-        disp("Now enter the acquisition times:")
+        disp("Now set up the HSQC experiment by entering the desired acquisition times:")
         disp("")
     elseif number == 4 && questionAsked(number) == 0
-        disp("QUESTION 4.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 4 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Which statement is true?")
         disp("    A. Increasing the length of the acquisition time, decreases the resolution.")
         disp("       Increasing the number of scans by factor of 2, increases the signal-to-noise by 2.")
@@ -152,7 +170,11 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
     elseif number == 5 && questionAsked(number) == 0
         [val, minS2peak] = min(S2Values);
         [val, maxS2peak] = max(S2Values);
-        disp("QUESTION 5.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 5 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Peak intensity is related to molecular size.")
         disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
         disp("")
@@ -218,7 +240,10 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("Time to consider how much you should add to have that all binding sites on the protein")
         disp("are fully occupied with ligand.")
         disp("")
-        disp("QUESTION 6.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 6 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("What ligand concentration is needed to (completely) saturate the protein?")
         disp("    A. Depends on the affinity and the protein concentration.")
         disp("    B. Depends on the affinity")
@@ -253,7 +278,10 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         questionAsked(6)=1;
     elseif number == 7 && questionAsked(number) == 0
         disp("")
-        disp("QUESTION 7.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         disp("Consider the following factors:")
         disp("    A. sample dilution")
         disp("    B. interconversion between free and bound protein")
@@ -304,23 +332,27 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         disp("")
         junk=input("<>","s");
         questionAsked(7)=1;
-    % calcCSP has question 8 and 9
-    % getKD has question 10
     elseif number == 8 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 8 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionCSP
     elseif number == 9 && questionAsked(number) == 0
         disp("")
-        disp("Seems you have not completed the CSP analysis.")
-        disp("Type \"calcCSP\" at the command prompt to start it.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 9 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        questionInterface
     elseif number == 10 && questionAsked(number) == 0
         disp("")
-        disp("Seems you did not determine the KD.")
-        disp("Type \"getKD\" at the command prompt to start the analysis.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 10 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
+        getKD
     elseif number == 11 && questionAsked(number) == 0
         % judge exchange regime
         % does not make sense to do all peaks, since most will be fast exchange
@@ -331,7 +363,10 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
         medianCSP = iii(round(numPeaks/2));
         largeCSP = iii(numPeaks-1:numPeaks);
         questionPeaks = sort([smallCSP, medianCSP, largeCSP]);
-        disp("QUESTION 11.")
+        disp("")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 11 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         disp("I will now ask you to classify for a few peaks whether it is ")
         disp("fast, intermediate or slow exchange.")
@@ -510,13 +545,16 @@ global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile fina
             printf("That was hard right? You still got %d points though.\n", pointScored)
         end
         disp("")
-        disp("Time for the final question: type \"question(12)\".")
+        disp("Time for the last question: type \"question(12)\".")
         disp("")
         questionAsked(11) = 1;
     elseif number == 12 && questionAsked(number) == 0
         % summary of the practical
         disp("")
-        disp("QUESTION 12.")
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        printf("+++               QUESTION 12 (of %d)                     +++\n",numQuestions)
+        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+        disp("")
         printf("How would you proceed to model the interaction between %s and %s?\n", acronymProtein, acronymLigand)
         disp("(Assuming you have structures for both...)")
         disp("    A. Use the residues with the largest CSPs to drive a docking calculation")

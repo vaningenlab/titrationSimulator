@@ -6,8 +6,6 @@
 %clc
 promptForReEnter = 0;
 disp("")
-disp("***      4. Acquisition parameters protein HSQC      ***")
-disp("")
 if questionAsked(3) == 0 && easyMode < 2
     question(3)     % question on length of INEPT or on NH2 appearance
 end

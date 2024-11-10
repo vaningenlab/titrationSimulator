@@ -21,15 +21,15 @@
 
 clear -all
 
-global swH swN wHv wNv dwHv dwNv titrationPoint allSpectra asHppm asNppm
-global numLvls cntFactor baseLevel expPars plotSpectra cntLvls
-global acronymProtein acronymLigand proteinMass ligandMass affinityRange ligandClass
-global gH gN B0 asH asN swH swN p1 beNice noiseX ns McX finalScore
-global peakStoreX peakStoreY zfH zfN koff questionPoints questionAsked
-global score S2Values plotPoints numPeaks yourName trup easyMode cq numPeaks
-global pConcv lConcv cConcv molEqv CSP_o CSP_s CSP_f labelShift labelSize peakIntProfile
-global wHvppm wNvppm centerHppm centerNppm ligandDescriptor numQuestions dwHvppm dwNvppm
-global instructorMail noiseLevel my_pi numCalibCheck numCalib atH atN aa_string my_pi offResonance laN_Av laN_Bv
+global aa_string acronymProtein acronymLigand proteinMass ligandMass ligandDescriptor affinityRange affinityValue koff ligandClass 
+global instructorMail my_pi offResonance numQuestions questionPoints questionAsked 
+global titrationPoint cspTime getkdTime numPeaks numCalib numCalibCheck easyMode cq beNice
+global proteinConc pConcv lConcv cConcv molEqv pb pbVectorActual trup p1 expPars score yourName
+global allSpectra plotSpectra peakStoreX peakStoreY plotPoints peakIntProfile labelShift labelSize 
+global numLvls cntFactor baseLevel cntLvls startFloor noiseX colorNamesLong colorPlot
+global gH gN B0 atH atN swH swN wHv wNv dwHv dwNv asHppm asNppm laN_Av laN_Bv wHvppm wNvppm dwHvppm dwNvppm
+global asH asN asHppm asNppm centerHppm centerNppm zfH zfN 
+global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f 
 
 % reset octave prompt
 PS1(":)] ");
@@ -148,14 +148,18 @@ if exist("state.out") == 2
     disp("")
     % check which questions have been answered
     disp("Checking your progress ...")
+    unansweredQ = [];
     for q=1:numQuestions
         if questionAsked(q) == 0
-            printf("    You have not yet answered question %d.\n", q)
+            unansweredQ = [unansweredQ q];
         end
     end
     disp("")
     disp("Some tips on how to continue:")
-    if plotPoints  == 0
+    if titrationPoint == 0
+        disp("Ah you have no sample yet.")
+        disp("Type \"makeSample\" to continue")
+    elseif plotPoints  == 0
         % no spectrum plotted yet, so crash before rotate FID?
         disp("It seems you have not recorded or processed a 2D HSQC spectrum yet.")
         disp("Type \"eda\" to setup, \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
@@ -166,16 +170,53 @@ if exist("state.out") == 2
         % one spectum only plotted, so still before the titration, maybe question coneview crashed
         disp("It seems you have not started the titration yet.")
         disp("Type \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
-    else
-        % at least two spectra were plotted, so doing the titration
-        disp("Type \"report\" for the details on your titration steps.")
+        disp("Then start the titration with \"titrate\" command.")
+    elseif pb < 0.85
+        % at least two spectra were plotted, so doing the titration and not saturated
+        disp("Ah, you were in the middle of the titration experiment")
+        disp("Below you see the output of the \"report\" command with")
+        disp("all the details on your titration steps.")
+        disp("")
+        report
+        disp("")
+        junk=input("<>","s");
+        disp("")
+        disp("Now do the following at the command prompt:")
         disp("Type \"plotAll\" to show the overlay of all spectra.")
         disp("Type \"titrate\" to continue the titration.")
-        disp("Type \"listCommands\" for a list of all available commands.")
-        disp("Type \"question(x)\" to answer question x.")
-        disp("   (you may have to ignore the instructions at the end of the question on how to continue).")
-        disp("")
-        disp("If you got stuck during the \"calcCSP\" or \"getKD\" analysis you can now restart these commands.")
+    else
+        % already enough bound state (>0.85%) to start analysis
+        disp("It seems you completed the titration experiment.")
+        if questionAsked(cspq) == 0
+            disp("You can continue with the data analysis.")
+            disp("Now do the following at the command prompt:")
+            disp("Type \"plotAll\" to show the overlay of all spectra.")
+            disp("Type \"calcCSP\" to start the chemical shift perturbation analysis.")
+        elseif questionAsked(cspq+1) == 0
+            disp("You can continue with the determination of the binding interface.")
+            disp("Now do the following at the command prompt:")
+            disp("Type \"plotAll\" to show the overlay of all spectra.")
+            printf("Then type \"restoreCSP\" and then type \"question(%d).\n", cspq+1)
+        elseif questionAsked(kdq) == 0
+            disp("You already did the CSP analysis.")
+            disp("Now continue with the binding affinity determination.")
+            disp("Now do the following at the command prompt:")
+            disp("Type \"plotAll\" to show the overlay of all spectra.")
+            printf("Type \"restoreCSP\" and then type \"question(%d).\n", kdq)
+        elseif sum(questionAsked) == numQuestions
+            disp("Ah it seems you were actually done!")
+            disp("Type \"restoreAll\" to restore all Figures,")
+            disp("Then type \"checkFinished\" to complete the practical.")
+        else
+            disp("It seems you completed also the data analysis,")
+            disp("but still a few final questions left to answer.")
+            disp("Below you see which question you still need to answer.")
+            disp("")
+            checkFinished
+            disp("")
+            disp("Type \"question(x)\" to answer question x.")
+            disp("   (you may have to ignore the instructions at the end of the question on how to continue).")
+        end
         % check whether last spectrum is empty
         spectrumSignal = max(max(plotSpectra(:,:,plotPoints)));
         if spectrumSignal == 0
@@ -300,11 +341,12 @@ else
     getkdTime      = 0;                     % to keep track of number of times analysis was done
     fidShown       = 0;                     % to skip showFID instruction after first time
     plotPoints     = 0;                     % to keep track of how many spectra are plotted
-    titrationPoints= 0;                     % to keep of number of titration steps
+    titrationPoint = 0;                     % to keep of number of titration steps
     numCalibCheck  = 0;                     % to keep track of number of times calibration check was done
     numCalib       = 0;                     % to keep track of number of times calibration was done
     showHint       = 0;                     % to track if overlap hint was shown
     showSaturationTip = 0;                  % to track if saturation hint was shown
+    peakDissappearCheck = 0;                % to track if peaks could have dissapeared below contour level
     disp("")
     disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
     disp("")

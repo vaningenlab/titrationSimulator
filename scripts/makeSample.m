@@ -17,9 +17,15 @@
 
 % echo to student
 
-%clc
+clc
 disp("")
-disp("***      2. Your NMR sample      ***")
+disp("*----------------------------------------------------------*")
+if easyMode == 3
+    disp("***         STEP 2 of 5: YOUR SAMPLE                     ***")
+else
+    disp("***         STEP 2 of 6: YOUR SAMPLE                     ***")
+end
+disp("*----------------------------------------------------------*")
 disp("")
 
 if questionAsked(1)==0

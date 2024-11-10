@@ -1,5 +1,5 @@
 % fitCurve.m
-% sciprt to fit bindingcurve extarcted by student to 1;1 binding model
+% script to fit binding curve extracted by student to 1:1 binding model
 
 disp("")
 disp("Fitting ....")
