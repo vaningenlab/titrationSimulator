@@ -59,9 +59,9 @@ else
     end
     resList2 = justNumbers(1:numBig); % a simple string of numbers (first three of input)
     % check result % also if free state has been mis-identified!
-    simCSPH = dwHvppm(p);
-    simCSPN = dwHvppm(p);
-    simCSP(p)  = sqrt(simCSPH^2 + (simCSPN/5)^2);
+    simCSPH = dwHvppm;
+    simCSPN = dwHvppm;
+    simCSP  = sqrt(simCSPH.^2 + (simCSPN/5).^2);
     [ sss, iii ] = sort(simCSP);
     % sometimes a fourth residue is actually close, so include 9-3 = 6,7,8,9
     if sss(numPeaks-numBig+1) - sss(numPeaks-numBig) < 0.1
