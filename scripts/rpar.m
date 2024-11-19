@@ -147,9 +147,9 @@ function rpar(expName)
                         end 
                         disp("Loaded! Now setup the acquisition parameters by typing \"eda\" at the command prompt.")
                         disp("")
-                        disp("( Remember the command prompt is when you see :)]), the <> symbol is pause where all input is ignored )
+                        disp("( Remember, the command prompt is when you see :)], the <> symbol is a pause where all input is ignored )")
                         disp("")
-                            numCalibCheck = 1;
+                        numCalibCheck = 1;
                         disp("")
                         junk=input("<>","s");
                         disp("")
