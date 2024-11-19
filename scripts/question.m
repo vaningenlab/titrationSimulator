@@ -37,6 +37,9 @@ global pConcv lConcv molEqv CSP_o CSP_f dwHvppm dwNvppm
             disp("    D. One of the proteins should be 13C-labeled.")
         end
         disp("")
+        disp("Please note that you can only enter your answer wwhen prompted.")
+        disp("Anything that you type when you see <> is ignored.")
+        disp("")
         answer1 = input("Enter your answer: ","s");
         answer1 = checkAnswer(answer1);
         score   = calcScore(answer1, score, "B", questionPoints);

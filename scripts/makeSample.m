@@ -54,6 +54,7 @@ if questionAsked(1)==0
         if ligandClass == 0
             disp("For small molecule compounds, this is typically 10 times")
             disp("the expected dissocation constant (KD), so somewhere between 10 and 40 mM.")
+            disp("This maximum concentration will depend on the solubility of your ligand.")
         else
             disp("For protein ligands, this is typically limited by their solubility,")
             disp("so somewhere between 5 and 15 mM.")
@@ -62,6 +63,7 @@ if questionAsked(1)==0
         if ligandClass == 0
             disp("For small molecule compounds, this is typically 10-20 times")
             disp("the expected dissocation constant (KD), so somewhere between 10 and 40 mM.")
+            disp("This maximum concentration will depend on the solubility of your ligand.")
         else
             disp("For protein ligands, this is typically limited by their solubility,")
             disp("luckily yours can be concentrated to 10 mM.")
