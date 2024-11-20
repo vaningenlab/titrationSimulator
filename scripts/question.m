@@ -9,7 +9,7 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail 
 global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile finalScore sendEmail ligandClass
 global colorNamesLong wHvppm wNvppm tp cspTime numBig numSmall simCSP affinityValue proteinConc getkdTime
 global plotPoints lConcv pbVectorActual colorPlot asHppm asNppm plotSpectra cntLvls
-global pConcv lConcv molEqv CSP_o CSP_f dwHvppm dwNvppm
+global pConcv lConcv molEqv CSP_o CSP_f dwHvppm dwNvppm molEq
 
     disp("")
     if number == 1 && questionAsked(number) == 0

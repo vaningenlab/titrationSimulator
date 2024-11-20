@@ -120,7 +120,7 @@ if sum(questionAsked) == numQuestions
             end
         end
     if easyMode == 1
-        fprintf(fid, "Your final score          : %d out of 10 points\n", finalScore);
+        fprintf(fid, "Your final score          : %d out of 10 points\n", score);
     elseif easyMode < 3
         fprintf(fid, "Your final score          : %d out of %d points\n", score, numQuestions*questionPoints+10);
     else
