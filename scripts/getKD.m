@@ -51,7 +51,7 @@ elseif affinityValue*1e3 < proteinConc && molEq < 1.5
     disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
     disp("")
 else
-    if questionAsked(kdq) == 0 && getkdTime == 1
+    if questionAsked(kdq) == 0 && getkdTime == 0
         clc
         disp("")
         disp("Super, you're ready for the second and last objective,")
@@ -73,7 +73,7 @@ else
         disp("")
     else
         disp("")
-        peakSelect = input("For which peak to do you want to extract a binding curve? ","s");
+        peakSelect = input("For which peak do you want to extract a binding curve? (Enter number only)","s");
         if length(regexp(peakSelect,'[.\d]')) < length(peakSelect) || length(peakSelect)==0
             disp("")
             disp("Please enter a positive number without units!")
@@ -111,7 +111,7 @@ else
             disp("Be sure that the cursor is in selection mode, visible as big white plus sign.")
             disp("Sometimes the cursor changes to zoom mode by itself, visible as blue plus sign inside a circle.")
             disp("If that happens, first deactivate the zoom mode by clicking zoom button in the figure menu bar.")
-            disp("When the cursor is back in selection mode is shows up as a big white plus sign.")
+            disp("When the cursor is back in selection mode it shows up as a big white plus sign.")
             disp("")
             disp("And click slowly!")
             disp("")
@@ -133,18 +133,19 @@ else
                 disp("")
                 % check whether we have more points than colors:
                 if ss <= length(colorNamesLong)
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
-                elseif ss <= 2*length(colorNamesLong)
+                    colorSpec = regexprep(colorNamesLong(ss,:), '\W', "");
+                 elseif ss <= 2*length(colorNamesLong)
                     % wrap around: there are 11 colors, tp 12 will be color 1
                     cp = ss - length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
+                    colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
                 elseif ss <= 3*length(colorNamesLong)
                     cp = ss - 2*length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
+                    colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
                 else
                     cp = ss - 4*length(colorNamesLong);
-                    printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorNamesLong(ss,1:length(colorNamesLong(ss,:)-1)))
+                    colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
                 end
+                printf("Pick the center of peak %d in spectrum no. %d  (%s) \n", peakNumberKD, ss, colorSpec)
                 [x_s, y_s, buttons] = ginput(1);
                 if ss == 1
                     x_f = x_s;
@@ -227,7 +228,7 @@ else
             % check with actual perfect data
             disp("The actual dissociation constant was:")
             % also convert to mM
-            KD_real = affinityValue*1e3
+            KD_real = affinityValue*1e3;
             if KD_real > 1
                 printf("\t  KD = %.2f mM\n", KD_real)
             elseif KD_real < 1e-4
@@ -239,12 +240,7 @@ else
             % !!! this is assuming fast exchange !!!
             disp("The expected binding curve is shown in green.")
             % this has to be based on actual addition!!
-            % 
-            pbVectorActual
-            dwHvppm
-            dwNvppm
-            peakNumberKD
-            CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) )
+            CSP_s = pbVectorActual.*( sqrt( (dwHvppm(peakNumberKD))^2 + (dwNvppm(peakNumberKD)/5)^2 ) );
             % also scale to observed CSP
             plot(lConcv, CSP_s*max(CSP_f)/max(CSP_s), 'g-;expected;')
             disp("")
@@ -344,8 +340,6 @@ else
                     end
                 else
                     % no redo, done here
-                    disp("")
-                    disp("Ok, you did a good job.")
                     disp("")
                     junk=input("<>","s");
                     disp("")

@@ -78,7 +78,9 @@ else
                 disp("compare it to the contourplot:")
                 disp("\t - identify each of the peaks in both spectra")
                 disp("\t - use these different views of the spectrum to compare the intensities of different peaks")
-                printf("\t   Take a good look at peak %d vs. peak %d\n", minS2peak, maxS2peak);
+                peakLabel1 = strcat(aa_string(minS2peak),num2str(minS2peak));
+                peakLabel2 = strcat(aa_string(maxS2peak),num2str(maxS2peak));
+                printf("\t   Take a good look at peak of residue %s vs. %s\n", peakLabel1, peakLabel2);
                 disp("\t - Think about a reason for any differences in peak intensities")
                 disp("")
                 junk=input("<>","s");
@@ -125,6 +127,22 @@ else
                 disp("If you are ready for the question, type \"question(7)\".")
                 disp("")
             else
+                % progress bar to show % bound state protein in 5% steps
+                percentBound = 100*cConcv(titrationPoint)/pConc;
+                progressTitration = round(percentBound/5);
+                emptyBits         = 20 - progressTitration;
+                disp("          * titration progress bar (in steps of 5%) *")
+                disp("       0%                                   100% complete")
+                printf("     [")
+                for i = 1:progressTitration
+                    printf("--")
+                end
+                printf("%2.0f",round(percentBound/5)*5)
+                for i = 1:emptyBits
+                    printf("  ")
+                end
+                printf("]\n")
+                disp("")
                 disp("")
                 disp("Next, type at the command prompt one of the following commands:")
                 disp("")

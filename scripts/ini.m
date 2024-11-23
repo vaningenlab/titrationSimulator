@@ -29,7 +29,7 @@ global allSpectra plotSpectra peakStoreX peakStoreY plotPoints peakIntProfile la
 global numLvls cntFactor baseLevel cntLvls startFloor noiseX colorNamesLong colorPlot
 global gH gN B0 atH atN swH swN wHv wNv dwHv dwNv asHppm asNppm laN_Av laN_Bv wHvppm wNvppm dwHvppm dwNvppm
 global asH asN asHppm asNppm centerHppm centerNppm zfH zfN 
-global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f 
+global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq
 
 % reset octave prompt
 PS1(":)] ");

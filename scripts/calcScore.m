@@ -23,13 +23,10 @@ function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
         disp("")
         if pp == 0
             answerTwo = input("Ah too bad...Second guess?? ","s");
-            answerTwo = checkAnswer(answerTwo);
         elseif pp == 1
             answerTwo = input("No, that's is not right...reconsider? ","s");
-            answerTwo = checkAnswer(answerTwo);
         else
             answerTwo = input("No unfortunately...give it another thought... ","s");
-            answerTwo = checkAnswer(answerTwo);
         end
         % take first word from input
         answerTwo = strsplit(strtrim(answerTwo), " ");
@@ -39,6 +36,7 @@ function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
         answerTwo = toupper(answerTwo);
         if answerTwo == correctAnswer
             disp("Indeed!")
+            newScore = newScore + round(0.25*questionPoints);
         else
             disp("Sorry that's still not correct... please check the explanation below.")
         end

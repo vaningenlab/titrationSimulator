@@ -31,41 +31,42 @@ disp("")
 if questionAsked(1)==0
     printf("OK, now you need to prepare an NMR sample of your protein %s (%.1f kDa),\n", acronymProtein, proteinMass)
     printf("and a stock solution of your ligand %s (%.1f kDa).\n", acronymLigand, ligandMass)
-    printf("The goal is to follow the peaks of the protein upon titrating in the ligand.\n")
+    disp("")
+    disp("Once you have these two samples, you will add the ligand in steps to your NMR sample")
+    disp("and monitor the changes in chemical shift of the protein upon binding of the ligand.")
     disp("")
     junk=input("<>","s");
     question(1)
     junk=input("<>","s");
     disp("")
-    disp("NEXT:")
-    disp("Now you need to define the protein concentration of your sample.")
-    if easyMode >= 2
-        disp("This is typically 0.5 to 1 mM.")
-    elseif easyMode == 1
-        disp("This is typically 0.1 to 1 mM.")
-    else
-        disp("This is usually somewhere between tens of micromolar (uM) and few millimolar (mM).")
-    end
+    disp("To make the samples, you simply need to define the protein concentration of your NMR sample,")
+    disp("and the concentration of your ligand stock solution.")
     disp("")
-    disp("Also, you need to define the concentration of your ligand stock solution.")
-    disp("Since you add the ligand in steps to your NMR sample, ")
-    disp("this stock solution should be as concentrated as possible to reduce dilution effects.")
+    if easyMode >= 2
+        disp("The protein concentration in an NMR sample is typically 0.5 to 1 mM.")
+    elseif easyMode == 1
+        disp("TThe protein concentration in an NMR sample is typically 0.1 to 1 mM.")
+    else
+        disp("The protein concentration in an NMR sample is usually somewhere between tens of micromolar (uM) and few millimolar (mM).")
+    end
+    disp("The ligand stock solution needs to be as concentrated as possible to avoid diluting the protein sample too much.")
+    disp("")
     if easyMode >= 2
         if ligandClass == 0
-            disp("For small molecule compounds, this is typically 10 times")
+            disp("For small molecule ligands, the stock concentration is typically 10 times")
             disp("the expected dissocation constant (KD), so somewhere between 10 and 40 mM.")
             disp("This maximum concentration will depend on the solubility of your ligand.")
         else
-            disp("For protein ligands, this is typically limited by their solubility,")
+            disp("For protein ligands, the stock concentration is typically limited by their solubility,")
             disp("so somewhere between 5 and 15 mM.")
         end
     elseif easyMode == 1
         if ligandClass == 0
-            disp("For small molecule compounds, this is typically 10-20 times")
+            disp("For small molecule ligands, the stock concentration is typically 10-20 times")
             disp("the expected dissocation constant (KD), so somewhere between 10 and 40 mM.")
             disp("This maximum concentration will depend on the solubility of your ligand.")
         else
-            disp("For protein ligands, this is typically limited by their solubility,")
+            disp("For protein ligands, the stock concentration is typically limited by their solubility,")
             disp("luckily yours can be concentrated to 10 mM.")
         end
     end

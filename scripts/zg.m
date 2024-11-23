@@ -417,14 +417,14 @@ elseif strcmp(expPars, "popt")
         end
         
         printf("\n")
+        disp("")
         %pause (0.5);
         nu = time();
         while time() < nu + 1
             a = 1+1;
         end
         if numCalib == 0
-            disp("")
-            disp("You see here all spectra plotted straight after each other.")
+            disp("You see here all spectra plotted, one after each other.")
             disp("")
             printf("The first spectrum is recorded with p1 is %.2f microseconds.\n", pS)
             printf("The second spectrum is recorded with p1 is %.2f microseconds.\n", pS+pI)
@@ -460,11 +460,17 @@ elseif strcmp(expPars, "popt")
             disp("\t   \tp1 = 8")
             disp("\t   \tor p1 = 32/4")
             disp("\t   ==> note it is \"p-one\" not \"p-el\" or \"p-i\"! <==")
-            disp("")	
-            disp("To proceed to the next step, first make sure to have set p1 correctly.")
-            disp("Then load the parameters of the HSQC experiment, by typing:")
             disp("")
-            disp("rpar(\"HSQC\")")
+            disp("Once you have defined the correct value for p1,")
+            disp("you can proceed to record the HSQC protein fingerprint spectrum.")
+            disp("")
+            junk=input("<>","s");
+            disp("")
+            disp("To proceed do the following:")
+            disp("\t - continue with the calibration (\"zg\") until you identified the zero-crossing.")
+            disp("\t - set p1 to the correct value (e.g. \"p1 = 32/4\" ")
+            disp("\t - load the parameters of the protein fingerprint experiment, by typing:")
+            disp("\t      rpar(\"HSQC\")")
             disp("")
         end
     end

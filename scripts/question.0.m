@@ -4,6 +4,7 @@
 function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affinityRange yourName cq sendEmail ligandClass
+global molEq beNice
 
     disp("")
     if number == 1 && questionAsked(number) == 0
@@ -49,6 +50,9 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked affin
         disp("are very sensitive to binding events, more so than 13C chemical shifts.")
         disp("So B is the right answer.");
         disp("")
+        disp("NEXT:")
+        disp("")
+        disp("Now you need to make your protein NMR sample and ligand stock solution.")
     elseif number == 2 && questionAsked(number) == 0
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")

@@ -97,10 +97,13 @@ else % enough titrationPoints
     simCSP = zeros(1,numPeaks);
     errList =[];
     for p=1:numPeaks
+        peakErrApo = 0; % to check correct apo position
+        peakErrBnd = 0; % to check correct bound position
         % pick free state peak, return x y
         disp("")
         peakLabel = strcat(aa_string(p),num2str(p));
-        printf("Pick the center of peak %s in the free spectrum (%s)\n", peakLabel, colorNamesLong(1,1:length(colorNamesLong(1,:)-1)))
+        colorSpec = regexprep(colorNamesLong(1,:), '\W', "");
+        printf("Pick the center of peak %s in the free spectrum (%s)\n", peakLabel, colorSpec)
         [x_f, y_f, buttons] = ginput(1);
         % ginput is source of problems
         %         v7 after installing Windows and Octave4.4.1 for Windows
@@ -113,7 +116,8 @@ else % enough titrationPoints
         % hitting will also count as input but 
         if abs(x_f - wHvppm(p)) > cspBoxHppm || abs(y_f - wNvppm(p)) > cspBoxNppm
             peakErr=peakErr+1;
-            if peakErr < 3
+            peakErrApo = 1;
+            if peakErr < 4
                 disp("")
                 disp("Ai, that is too far from the actual peak...")
                 disp("For the next time, double check that you are looking at the right peak!")
@@ -124,7 +128,8 @@ else % enough titrationPoints
                 disp("")
                 disp("There seems to be something going wrong here...")
                 disp("You can continue but also decide to retry it.")
-                disp("If you want to retry, type Ctrl-C until you see the prompt, set cspTime to 0 and restart the analysis.")
+                disp("If you want to retry, type Ctrl-C until you see the prompt,")
+                printf("set cspTime to 0 (\"cspTime=0\") and restart the analysis (\"question(%d)\".\n",cspq)
                 disp("Ask your instructor to have a look and help you. ")
                 disp("")
                 junk=input("<>","s");
@@ -137,21 +142,23 @@ else % enough titrationPoints
         end % check bad pick free state
         % pick bound state peak, return x y
         % check whether we have more points than colors:
+        tp = titrationPoint;
         if tp <= length(colorNamesLong)
-            printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(titrationPoint,1:length(colorNamesLong(titrationPoint,:)-1)))
+            colorSpec = regexprep(colorNamesLong(tp,:), '\W', "");
         elseif tp <= 2*length(colorNamesLong)
             % wrap around: there are 11 colors, tp 12 will be color 1
             cp = tp - length(colorNamesLong);
-            printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,1:length(colorNamesLong(cp,:)-1)))
+            colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
         elseif tp <= 3*length(colorNamesLong)
             % wrap around 2x: there are 11 colors, tp 12 will be color 1
             cp = tp - 2*length(colorNamesLong);
-            printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,1:length(colorNamesLong(cp,:)-1)))
+            colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
         else
             % wrap around 3x: there are 11 colors, tp 12 will be color 1
             cp = tp - 3*length(colorNamesLong);
-            printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorNamesLong(cp,1:length(colorNamesLong(cp,:)-1)))
+            colorSpec = regexprep(colorNamesLong(cp,:), '\W', "");
         end
+        printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorSpec)
         [x_b, y_b, buttons] = ginput(1);
         % IMPORTANT! this check only works when (enough) fully bound!
         % need to have approximate peak positions in final spectrum
@@ -160,11 +167,13 @@ else % enough titrationPoints
             %newPosH = actualPosH - dwHvppm(p);
             %newPosN = actualPosN - dwNvppm(p);
             % fix for Windows / FLTK / CLI 
+            % !double check minus sign!
             newPosH = wHvppm(p) - dwHvppm(p);
             newPosN = wNvppm(p) - dwNvppm(p);
             if abs(x_b - newPosH) > cspBoxHppm || abs(y_b - newPosN) > cspBoxNppm
                 peakErr=peakErr+1;
-                if peakErr < 3
+                peakErrBnd = 1;
+                if peakErr < 4
                     disp("")
                     disp("Ai, you clicked too far from the peak...")
                     disp("For the next time, double check that you are looking at the right peak!")
@@ -175,7 +184,8 @@ else % enough titrationPoints
                     disp("")
                     disp("There seems to be something going wrong here...")
                     disp("You can continue but also decide to retry it.")
-                    disp("If you want to retry, type Ctrl-C until you the prompt, set cspTime to 0 and restart the analysis.")
+                    disp("If you want to retry, type Ctrl-C until you the prompt,")
+                    printf("set cspTime to 0 (\"cspTime=0\") and restart the analysis (\"question(%d)\".\n",cspq)
                     disp("Ask your instructor to have a look and help you. ")
                     disp("")
                     junk=input("<>","s");
@@ -197,9 +207,13 @@ else % enough titrationPoints
         % strict checking for scoring
         % scaling by pb is only valid in fast exchange regime!
         % this may not be true for all peaks, so also allow that
-        if abs(CSP(p) - pb*simCSP(p)) < 0.1
+        % correct if within 10%
+        % also consider peakErr, since CSP is just a number could be accicentally correct
+        % so actually both free and bound peak position should be correct within tolerance
+        % and final CSP value should be within tolerance
+        if abs(CSP(p) - pb*simCSP(p)) < 0.1 && peakErrApo == 0 && peakErrBnd == 0
             corrCSP(p) = 1;
-        elseif abs(CSP(p) - simCSP(p)) < 0.1
+        elseif abs(CSP(p) - simCSP(p)) < 0.1 && peakErrApo == 0 && peakErrBnd == 0
             corrCSP(p) = 1;
         else
             errList = [errList p];
@@ -226,7 +240,7 @@ else % enough titrationPoints
         disp("")
         cspTime = 0;
     else
-        % not more than 2 mistakes
+        % not more than 2 mistakes wrt to relaxed check within 20% of actual CSP
         disp("")
         disp("")
         printf("Cool! You identified %d peak shifts correctly.\n", sum(corrCSP));
@@ -250,6 +264,18 @@ else % enough titrationPoints
             score=score+sum(corrCSP)+1;
             questionAsked(cspq)=1;
             cspTime = cspTime +1;
+            % show the correct CSPs vectors
+            for p=1:9
+                % plot line connecting between true free to bound
+                newPosH = wHvppm(p) - dwHvppm(p);
+                newPosN = wNvppm(p) - dwNvppm(p);
+                x_f = wHvppm(p);
+                x_b = newPosH;
+                y_f = wNvppm(p);
+                y_b = newPosN;
+                line([x_f x_b],[y_f y_b],"linestyle","-", "color", "m", "linewidth", 1.0)
+            end
+            disp("The actual CSPs are shown as magenta lines.")
         end
         disp("")
         junk=input("<>","s");

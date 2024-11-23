@@ -32,9 +32,9 @@ else
     printf("++                                           ++\n")
     printf("+++++++++++++++++++++++++++++++++++++++++++++++\n")
     disp("")
-    if finalScore > 80
+    if finalScore > 8
         printf("Awesome %s, you did a really great job.\n", yourName)
-    elseif finalScore > 60
+    elseif finalScore > 6
         printf("Good job %s! You made it to the end and passed it!\n",yourName)
     else
         printf("Alright %s, you made it to the end...\n", yourName)

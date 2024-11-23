@@ -1,6 +1,21 @@
 HISTORY titrationSimulator
 
 test
+- Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 
+
+v19 Nov 2024  -- after feedback Ecem Arpi
+- fixed several typos
+- added titration progress bar
+- added visual distinction of steps and questions
+- fix CSP evaluation to also require correct peak picking
+- added actual CSP vectors
+- several textual clarifications
+- added 25% points for correct answer on retry
+- improved instructions after restarting from backup
+- all questions better integrated (also calcCSP and getKD)
+- tweaked evaluation of exchange regimes 
+
+test
  - MacOS 13.6: Octave 9.2.0 - Qt (latest)          easyMode 1 OK
  - windows 10: Octave 8.4.0 - Qt                   easyMode 2 OK
         (rotating plot is very slow)

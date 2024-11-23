@@ -6,10 +6,23 @@ function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange
 global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail sendEmail ligandClass
+global molEq beNice
 
     disp("")
     if number == 1 && questionAsked(number) == 0
         disp("")
+        disp("You will now get your first multiple-choice question.")
+        disp("To answer just type any of the options A, B, C, etc. when prompted.")
+        disp("Just a, b, c etc. also works.")
+        disp("")
+        disp("Please note that you can only enter your answer when prompted.")
+        disp("Anything that you type when you see <> is ignored.")
+        disp("")
+        printf("If your answer is correct, you get the full %d points.\n", questionPoints)
+        printf("If it is wrong, you can answer once more, for %d points.\n", round(0.25*questionPoints) )
+        disp("")
+        junk=input("<>","s");
+        disp("");
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -21,6 +34,7 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         end
         disp("")
         disp("What labeling strategy is best to use? Also consider costs.")
+        disp("")
         if ligandClass ==  0
             disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
             disp("    B. The ligand should be unlabeled, the protein 15N-labeled.")
@@ -51,9 +65,14 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("are very sensitive to binding events, more so than 13C chemical shifts.")
         disp("So B is the right answer.");
         disp("")
+        disp("NEXT:")
+        disp("")
+        disp("Now you need to make your protein NMR sample and ligand stock solution.")
     elseif number == 2 && questionAsked(number) == 0
         [val, minS2peak] = min(S2Values);
         [val, maxS2peak] = max(S2Values);
+        peakLabel1 = strcat(aa_string(minS2peak),num2str(minS2peak));
+        peakLabel2 = strcat(aa_string(maxS2peak),num2str(maxS2peak));
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
@@ -62,17 +81,17 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("Peak intensity is related to molecular size.")
         disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
         disp("")
-        printf("Peak %d has a higher intensity than peak %d.\n", minS2peak, maxS2peak)
+        printf("The peak of residue %s has a higher intensity than that of residue %s.\n", peakLabel1, peakLabel2)
         disp("How can this be explained?")
-        printf("    A. Peak %d experiences less internal dynamics,\n", minS2peak)
+        printf("    A. The peak of residue %s experiences less internal dynamics,\n", peakLabel1)
         disp("       which means that effectively it is like a smaller molecule")
         disp("")
-        printf("    B. Peak %d has a higher intensity, because it is the signal of more protons.\n", minS2peak)
+        printf("    B. The peak of residue %s has a higher intensity, because it is the signal of more protons.\n", peakLabel1)
         disp("")
-        printf("    C. Peak %d experiences more internal dynamics, \n", minS2peak)
+        printf("    C. The peak of residue %s experiences more internal dynamics, \n", peakLabel1)
         disp("       which means that effectively it is like a smaller molecule.")
         disp("")
-        printf("    D. Peak %d has a higher intensity, because it just happens to be so due to the noise.\n", minS2peak)
+        printf("    D. The peak of residue %s has a higher intensity, because it just happens to be so due to the noise.\n", peakLabel1)
         disp("")
         answer2 = input("Enter your answer: ","s");
         answer2 = checkAnswer(answer2);
@@ -98,6 +117,11 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         disp("")
     elseif number == 3 && questionAsked(number) == 0
         disp("")
+        disp("Time for an intermezzo question!")
+        disp("You have added now more than 1 molar equivalent of ligand to the protein.")
+        disp("Time to consider how much you should add to have all binding sites")
+        disp("on the protein fully occupied with ligand.")
+        disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
@@ -118,12 +142,14 @@ global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions in
         junk=input("<>","s");
         disp("");
         disp("EXPLANATION:")
-        disp("Obviously the ligand concentration needed to saturate the protein depends on the affinity")
-        disp("It also depends on your protein concentration.") 
+        disp("Obviously the ligand concentration needed to saturate the protein depends on the binding affinity")
+        disp("It also depends on your protein concentration.")
+        disp("")
         disp("Imagine you have an immensely concentrated protein solution.")
         disp("Then you need to add more ligand to bind all proteins compared to when you have very little protein.")
-        disp("Using the power of math, you can derive that approximately 9*KD + protein concentration is needed")
-        disp("to get 90% of all binding-sites occupied.")
+        disp("")
+        disp("Using the power of math, you can derive that you need")
+        disp("approximately 9*KD + the protein concentration to get 90% of all binding-sites occupied.")
         disp("So A is the right answer.");
         disp("")
         junk=input("<>","s");

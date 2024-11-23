@@ -7,7 +7,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
     global numLvls cntFactor baseLevel asH asN cntLvls;
     global acronymProtein ligandMass proteinMass acronymLigand;
     global swH swN noiseX ns plotPoints labelShift labelSize gH gN B0 centerHppm centerNppm;
-    global noiseLevel aa_string numPeaks startFloor
+    global noiseLevel aa_string numPeaks startFloor cspq
     
     if nargin == 0
         disp("")
@@ -26,6 +26,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
         if numLvls_ > 40
             disp("")
             disp("Ooff, that's going to take ages. Resetting to 20 levels ...")
+            disp("")
             numLvls =20;
         else
             numLvls = numLvls_;
@@ -37,6 +38,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
             if cntFactor_ < 1.05
                 disp("")
                 disp("Resetting contour factor to 1.05 minimum...")
+                disp("")
                 cntFactor = 1.05;
             else
                 cntFactor = cntFactor_;
@@ -57,6 +59,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
             disp("First record a specrum and process to a 2D spectrum.")
             disp("")
         else
+            disp("")
             baseLevel=startFloor*peakHeight;
             % 2. check against noiselevel (defined in plot2D as 3*RMS, executed as part of xfb)
             if baseLevel < noiseLevel*1
@@ -102,6 +105,12 @@ function edlev(numLvls_, cntFactor_, startFloor_);
             %title('1H-15N HSQC spectrum','fontweight','bold')
             % store level settings
             levSettings = [ numLvls, cntFactor, baseLevel];
+            disp("Done!")
+            disp("")
+            disp("Continue with your titration (\"titrate\"), recording and processing the spectrum (\"zg\", \"xfb\")")
+            printf("or chemical shift perturbation analysis (\"question(%d)\").", cspq) 
+            printf("\n")
+            disp("")
         end % check peakHeight
     end
 endfunction

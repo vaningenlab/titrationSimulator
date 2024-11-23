@@ -67,20 +67,20 @@ else
         disp("You will now add ligand to the protein sample in steps,")
         disp("and record the protein fingerprint spectrum at each step until the protein is fully bound.")
         disp("")
-        disp("Keep repeating adding ligand (\"titrate\"), recording and processing the spectrum (\"zg\", \"xfb\"")
+        disp("Keep repeating adding ligand (\"titrate\"), recording and processing the spectrum (\"zg\", \"xfb\")")
         disp("until you do not see significant changes in the spectrum anymore.")
         disp("")
         disp("To make this a bit easier for you, you can take a look at the output from the \"report\" command")
         disp("to see how much bound state protein you have and to judge how much you need to add.")
         disp("")
         disp("Try to space your additions such that in about 7 to 10 steps you go from 0% bound to 85-95% bound.")
-        disp("A progress bar will also roughly show how far your in the titration.")
+        disp("A progress bar will also roughly show how far you are in the titration.")
         disp("")
         disp("Note that it may be impossible to reach beyond 90% or 95% bound protein, depending on your system.")
         disp("IRL you obviously don't have this information and you would only judge the change in the spectra.")
            if affinityValue < 1e-4 && easyMode > 0
             disp("")
-            disp("Since the affinity for you system is rather high, do the following:")
+            disp("Since the affinity for your system is rather high, do the following:")
             disp("Make sure to record spectra after adding each time 10 or 20% ligand")
             disp("and make sure to also include few spectra around 100% of ligand added, e.g. 90%, 95%, 110% etc.")
             disp("This is important to get a proper estimate for the KD")
@@ -89,7 +89,7 @@ else
         end
         if affinityValue > 1e-3 && easyMode > 0
             disp("")
-            disp("Since the affinity for you system is rather low, try to aim for at least 80% bound.")
+            disp("Since the affinity for your system is rather low, try to aim for at least 80% bound.")
             disp("This is important to get a proper estimate for the KD")
             disp("Remember that you need to add increasingly more ligand to get all the protein bound to ligand.")
             disp("You can use the \"report\" command to keep track of where you are in the titration.")
@@ -110,23 +110,24 @@ else
     end
     % below happens for all points
     disp("")
-    % progress bar to show % bound state protein in 10% steps
-    percentBound = 100*cConcv(titrationPoint)/pConc;
-    progressTitration = round(percentBound/10);
-    emptyBits         = 10 - progressTitration;
-      disp("      0                              100% complete titration")
-    printf("     [")
-    for i = 1:progressTitration
-        printf("---")
-    end
-    printf("%2.0f",round(percentBound/5)*5)
-    for i = 1:emptyBits
-        printf("   ")
-    end
-    printf("]\n")
-    disp("")
+    % progress bar to show % bound state protein in 5% steps
+    %percentBound = 100*cConcv(titrationPoint)/pConc;
+    %progressTitration = round(percentBound/5);
+    %emptyBits         = 20 - progressTitration;
+    %disp(" * titration progress bar (in steps of 5%) *")
+    %disp("       0%                                   100% complete")
+    %printf("     [")
+    %for i = 1:progressTitration
+    %    printf("--")
+    %end
+    %rintf("%2.0f",round(percentBound/5)*5)
+    %for i = 1:emptyBits
+    %    printf("  ")
+    %end
+    %printf("]\n")
+    %disp("")
     printf("Your sample now contains %.2f mM of ligand\n", lConc)
-    printf("this is %.2f equivalents of ligand compared to protein\n", molEq)
+    printf("this is %.2f molar equivalents of ligand compared to protein\n", molEq)
     disp("")
     molAdd = input("How many molar equivalents of ligand do you want to add? ","s");
     if length(regexp(molAdd,'[.\d]')) < length(molAdd) || length(molAdd)==0
@@ -178,16 +179,6 @@ else
             disp("")
         else
             % sensible input so proceed
-            if molEq + str2num(molAdd) >= 1
-                disp("")
-                if easyMode == 3  && questionAsked(3) == 0
-                    question(3)
-                elseif questionAsked(4) == 0 && easyMode == 2
-                    question(4)
-                elseif questionAsked(6) == 0 && easyMode < 2
-                    question(6)
-                end
-            end
             % for display
             molAdd = str2num(molAdd);
             molEq = molEq + molAdd;                                                      % total eq. added
@@ -250,6 +241,17 @@ else
                     disp("")
                     junk=input("<>","s");
                     disp("")
+                end
+                % do the question on how far to go if more than 1 eq. added
+                if molEq >= 1
+                    disp("")
+                    if easyMode == 3  && questionAsked(3) == 0
+                        question(3)
+                    elseif questionAsked(4) == 0 && easyMode == 2
+                        question(4)
+                    elseif questionAsked(6) == 0 && easyMode < 2
+                        question(6)
+                    end
                 end
                 buildExchangeMatrix % update exchange matrix
                 pbVectorActual = [pbVectorActual pb];  % store actual pb -- only update after titrate!
