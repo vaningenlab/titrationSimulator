@@ -3,14 +3,6 @@
 peakErr = 0;
 continueCalcQuestion = "y";
 checkBound = 1;
-% set correct question number for binding interface = cspq+1
-if easyMode == 1
-    cspq = 8;
-elseif easyMode == 2
-    cspq = 5;
-else
-    cspq = 4;
-end
 % for safety add check here as well
 if titrationPoint <= 2
     % user first needs to do at least two additions
@@ -195,14 +187,14 @@ else % enough titrationPoints
         % calculate dx dx weighted CSP
         H_CSP = x_b - x_f;
         N_CSP = y_b - y_f;
-        CSP(p)   = sqrt(H_CSP^2 + (N_CSP/5)^2);
+        CSP(p)   = sqrt(H_CSP^2 + (N_CSP/5)^2)
         % plot line connecting free to bound if CSP > treshold
         line([x_f x_b],[y_f y_b],"linestyle",":", "color", [0.1, 0.1, 0.1])
         %pause(0.5)
         % check result % also if free state has been mis-identified!
         simCSPH = dwHvppm(p);
-        simCSPN = dwHvppm(p);
-        simCSP(p)  = sqrt(simCSPH^2 + (simCSPN/5)^2);
+        simCSPN = dwNvppm(p);
+        simCSP(p)  = sqrt(simCSPH^2 + (simCSPN/5)^2)
         % checking absolute value allows swapping free and bound!
         % strict checking for scoring
         % scaling by pb is only valid in fast exchange regime!

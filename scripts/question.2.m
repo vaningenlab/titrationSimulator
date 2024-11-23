@@ -6,7 +6,9 @@ function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange
 global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail sendEmail ligandClass
-global molEq beNice
+global molEq beNice aa_string cspq titrationPoint pb colorNamesLong wHvppm wNvppm dwHvppm dwNvppm 
+global cspTime numBig numSmall kdq affinityValue proteinConc plotPoints colorPlot asHppm asNppm
+global plotSpectra cntLvls lConcv molEqv beNice CSP_o CSP_f CSP getkdTime pbVectorActual kdq
 
     disp("")
     if number == 1 && questionAsked(number) == 0
@@ -24,7 +26,7 @@ global molEq beNice
         junk=input("<>","s");
         disp("");
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 1 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 1 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         if ligandClass > 0
@@ -71,7 +73,7 @@ global molEq beNice
     elseif number == 2 && questionAsked(number) == 0
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 2 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 2 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         disp("Examine the pulse calibration plot. When do you see no signal?")
@@ -107,7 +109,7 @@ global molEq beNice
         peakLabel2 = strcat(aa_string(maxS2peak),num2str(maxS2peak));
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 3 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 3 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         disp("Peak intensity is related to molecular size.")
@@ -155,7 +157,7 @@ global molEq beNice
         disp("on the protein fully occupied with ligand.")
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 4 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 4 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         disp("You are about to exceed 1 molar equivalent of ligand added.")
@@ -197,14 +199,14 @@ global molEq beNice
     elseif number == 5 && questionAsked(number) == 0
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 5 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 5 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         questionCSP
     elseif number == 6 && questionAsked(number) == 0
         disp("")
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 6 (of %d)                     +++\n",numQuestions)
+        printf("+++               QUESTION 6 (of %d)                      +++\n",numQuestions)
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         disp("")
         questionInterface

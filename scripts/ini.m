@@ -29,7 +29,7 @@ global allSpectra plotSpectra peakStoreX peakStoreY plotPoints peakIntProfile la
 global numLvls cntFactor baseLevel cntLvls startFloor noiseX colorNamesLong colorPlot
 global gH gN B0 atH atN swH swN wHv wNv dwHv dwNv asHppm asNppm laN_Av laN_Bv wHvppm wNvppm dwHvppm dwNvppm
 global asH asN asHppm asNppm centerHppm centerNppm zfH zfN 
-global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq
+global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq kdq
 
 % reset octave prompt
 PS1(":)] ");
@@ -52,7 +52,7 @@ diary nmrsim.log
 sendEmail      = 0;                     % 1 = use instructor email to send results
                                         % 0 = use electronic learning environment such as Blackboard
 instructorMail = "h.vaningen@uu.nl";    % email where to send output
-easyMode       = 1;                     % [0 | 1 | 2 | 3] 
+easyMode       = 3;                     % [ 1 | 2 | 3] 
                                         % 1 = easy = only use intermediate and fast exchange and no big protein assemblies
                                         %     this option is best for students in NMR courses
                                         % 2 = super easy = with 1H pulse calibration, no acq. times, fewer questions, only fast exchange
@@ -63,8 +63,6 @@ easyMode       = 1;                     % [0 | 1 | 2 | 3]
                                         %      only few KD/koff combinations that should always give a perfect result
                                         %      also more coaching to choose NMR sample concentrations
                                         %      best for students in courses where NMR theory is not the focus and limited time
-                                        % 0 = original = could generate systems that does not result in saturated complex, could be slow exchange
-                                        %      not recommended as it requires high frustration tolerance of students
 
 % settings below generally do not need to be changed
 beNice         = 1;                     % [0 | 1] prevent some mistakes yes (1) or no (0) (independent of easyMode)
@@ -347,6 +345,24 @@ else
     showHint       = 0;                     % to track if overlap hint was shown
     showSaturationTip = 0;                  % to track if saturation hint was shown
     peakDissappearCheck = 0;                % to track if peaks could have dissapeared below contour level
+    
+    % set correct question number for CSP
+    if easyMode == 1
+        cspq = 8;
+    elseif easyMode == 2
+        cspq = 5;
+    else
+        cspq = 4;
+    end
+    % set correct question number for KD
+    if easyMode == 1
+           kdq = 10;
+    elseif easyMode == 2
+        kdq = 7;
+    else
+        kdq = 6;
+    end
+
     disp("")
     disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
     disp("")

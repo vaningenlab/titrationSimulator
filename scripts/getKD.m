@@ -14,14 +14,6 @@ if easyMode == 0
     junk=input("<>","s");
     disp("")
 end
-% set correct question number
-if easyMode == 1
-       kdq = 10;
-elseif easyMode == 2
-    kdq = 7;
-else
-    kdq = 6;
-end
 % save score at start of this analysis
 oriScore = score;
 % check whether done before

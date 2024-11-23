@@ -69,7 +69,7 @@ else % enough titrationPoints
         disp("")
         disp("*----------------------------------------------------------*")
         if easyMode == 3
-            disp("***         STEP 6 of 6: ANALYSIS                        ***")
+            disp("***         STEP 5 of 5: ANALYSIS                        ***")
         else
             disp("***         STEP 6 of 6: ANALYSIS                        ***")
         end

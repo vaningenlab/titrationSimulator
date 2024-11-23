@@ -1,14 +1,6 @@
 % questionInterface.m
 % to make sure students perceive this explictly as a question
 % ask question on interpretation when ready and only if not done before!
-% set correct question number for binding interface = cspq+1
-if easyMode == 1
-    cspq = 8;
-elseif easyMode == 2
-    cspq = 5;
-else
-    cspq = 4;
-end
 if questionAsked(cspq) == 0
     disp("")
     % for safety add check here as well

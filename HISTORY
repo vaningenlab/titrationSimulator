@@ -1,7 +1,9 @@
 HISTORY titrationSimulator
 
 test
-- Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 
+- Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 OK
+                                            easyMode 2 OK
+                                            easyMode 3 OK
 
 v19 Nov 2024  -- after feedback Ecem Arpi
 - fixed several typos
@@ -13,7 +15,8 @@ v19 Nov 2024  -- after feedback Ecem Arpi
 - added 25% points for correct answer on retry
 - improved instructions after restarting from backup
 - all questions better integrated (also calcCSP and getKD)
-- tweaked evaluation of exchange regimes 
+- tweaked evaluation of exchange regimes
+- fixed type in questionCSP to calculate expected CSPs
 
 test
  - MacOS 13.6: Octave 9.2.0 - Qt (latest)          easyMode 1 OK
