@@ -4,6 +4,7 @@ test
 - Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 OK
                                             easyMode 2 OK
                                             easyMode 3 OK
+  Windows 10:  Octave 
 
 v19 Nov 2024  -- after feedback Ecem Arpi
 - fixed several typos
