@@ -11,22 +11,7 @@ else
     save "state.out"
     disp("")
     disp("\tPlotting...")
-    if strcmp(graphics_toolkit, 'qt') == 1
-        disp("\tClick the rotate icon in the figure window menu bar to activate rotation.")
-        disp("\tThen click, hold and drag mouse to rotate the plot.")
-        % avoid zooming in to prevent crashes on UU PCs
-        %disp("\tYou can click the zoom button in the figure window menu bar to drag-select a zoom region.")
-        %disp("\tClick the button with a 1 inside the magnifying glass to go back to the full view.")
-    elseif strcmp(graphics_toolkit, 'fltk') == 1
-        disp("\tClick the \"R\" button on the bottom of the figure window to activate rotation.")
-        disp("\tThen left click inside the figure window to rotate the plot.")
-        disp("\tNote that this can be very slow.")
-        disp("\tIssue \"coneView\" again to go back to the default view.")
-    elseif strcmp(graphics_toolkit, 'gnuplot') == 1
-        disp("\tUse the mouse inside the figure window to rotate the plot.")
-        disp("\tNote that this can be very slow.")
-        disp("\tIssue \"coneView\" again to go back to the default view.")
-    end
+
     disp("")
     figure(3);
     % now downsize plotted spectrum to avoid crashes on UU PCs
@@ -58,5 +43,30 @@ else
     set(gca,'YDir','reverse')
     titlestr = sprintf("1H-15N HSQC spectrum of %s (%.1f kDa)\n\n titration point %d", acronymProtein, proteinMass, titrationPoint);
     title(titlestr,"fontweight","bold")
+    % warnings to user after plotting
+    if strcmp(graphics_toolkit, 'qt') == 1
+        disp("\tBEWARE: the UU PCs and this plot window are not friends.")
+        disp("\tBefore continuing do the following")
+        disp("\t- in the menu bar of the Figure 3 window, click Tools")
+        disp("\t- then click GUI mode (on all axis)")
+        disp("\t- then click Disable pan and rotate")
+        disp("")
+        junk=input("<>","s");
+        disp("")
+        disp("\tNow you cann click the rotate icon in the figure window menu bar to activate rotation.")
+        disp("\tClick, hold and drag mouse to rotate the plot.")
+        % avoid zooming in to prevent crashes on UU PCs
+        %disp("\tYou can click the zoom button in the figure window menu bar to drag-select a zoom region.")
+        %disp("\tClick the button with a 1 inside the magnifying glass to go back to the full view.")
+    elseif strcmp(graphics_toolkit, 'fltk') == 1
+        disp("\tClick the \"R\" button on the bottom of the figure window to activate rotation.")
+        disp("\tThen left click inside the figure window to rotate the plot.")
+        disp("\tNote that this can be very slow.")
+        disp("\tIssue \"coneView\" again to go back to the default view.")
+    elseif strcmp(graphics_toolkit, 'gnuplot') == 1
+        disp("\tUse the mouse inside the figure window to rotate the plot.")
+        disp("\tNote that this can be very slow.")
+        disp("\tIssue \"coneView\" again to go back to the default view.")
+    end
 end
 

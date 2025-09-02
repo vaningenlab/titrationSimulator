@@ -157,12 +157,19 @@ if exist("state.out") == 2
     if titrationPoint == 0
         disp("Ah you have no sample yet.")
         disp("Type \"makeSample\" to continue")
-    elseif plotPoints  == 0
+    elseif plotPoints  == 0 
         % no spectrum plotted yet, so crash before rotate FID?
         disp("It seems you have not recorded or processed a 2D HSQC spectrum yet.")
         disp("Type \"eda\" to setup, \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
         disp("")
         disp("If the program crashed when rotating the 3D plot of the FID, then don't rotate anymore!")
+        disp("")
+    elseif plotPoints == 1 && questionAsked(5)==0 && easyMode==1
+        % one spectum only plotted, likely question coneview crashed
+        disp("It seems you run into a crash when rotating the 3D spectrum plot in the coneView step.")
+        disp("Type \"xfb\" to replot your spectrum.")
+        disp("When doing \"coneView\" again, make sure to disable the GUI mode pan/rotate as shown.")
+        disp("or simply do not rotate the plot anymore, but try to identify the two peaks of interest in the view.")
         disp("")
     elseif plotPoints == 1
         % one spectum only plotted, so still before the titration, maybe question coneview crashed
