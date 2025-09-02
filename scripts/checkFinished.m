@@ -19,6 +19,8 @@ elseif sum(questionAsked) < numQuestions && pb >= 0.7
     disp("Type \"question(x)\" at the prompt to still answer it,")
     disp("with x being the number of the question!")
     disp("")
+    disp("After answeringn the question type \"checkFinished\"")
+    disp("")
 else
     % all question answered
     disp("")
