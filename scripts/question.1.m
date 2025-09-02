@@ -5,11 +5,11 @@
 function question(number)
 
 global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourName affinityRange aa_string
-global acronymProtein acronymLigand ligandDescriptor easyMode cq instructorMail atH atN numQuestions pb
-global dwNvppm dwHvppm numPeaks laN_Av laN_Bv titrationPoint peakIntProfile finalScore sendEmail ligandClass
-global colorNamesLong wHvppm wNvppm tp cspTime numBig numSmall simCSP affinityValue proteinConc getkdTime
-global plotPoints lConcv pbVectorActual colorPlot asHppm asNppm plotSpectra cntLvls
-global pConcv lConcv molEqv molEq beNice CSP_o CSP_f CSP dwHvppm dwNvppm
+global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail sendEmail ligandClass
+global numPeaks dwNvppm dwHvppm wHvppm wNvppm laN_Av laN_Bv atH atN asHppm asNppm numBig numSmall
+global titrationPoint tp pConcv lConcv molEqv molEq pbVectorActual proteinConc affinityValue pb
+global CSP_o CSP_f CSP simCSP cspTime cspq colorNamesLong plotPoints plotSpectra
+global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
 
     disp("")
     if number == 1 && questionAsked(number) == 0
