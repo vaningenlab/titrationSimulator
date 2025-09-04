@@ -121,7 +121,7 @@ disp("")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
 disp("\t++         DO THE PEAKS MOVE?         ++")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
-disp("\t++ (c)2024     HvI Utrecht University ++")
+disp("\t++ (c)2025     HvI Utrecht University ++")
 disp("\t++++++++++++++++++++++++++++++++++++++++")
 disp("")
 

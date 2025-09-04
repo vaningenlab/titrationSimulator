@@ -21,8 +21,12 @@ cd "$NMRSIM_PATH"
 resize -s 30 100 >& /dev/null
 
 # Automagically find path to octave installation
-if [ ! -z $( command -v octave 2> /dev/null ) ]; then
-  OCTAVE=$( command -v octave )
+#if [ ! -z $( command -v octave 2> /dev/null ) ]; then
+#  OCTAVE=$( command -v octave )
+if [ ! -z $( ls /Applications/Octave-9.2.app/Contents/Resources/usr/Cellar/octave-octapp@9.2.0/9.2.0/bin/octave-9.2.0 2> /dev/null ) ]; then
+  OCTAVE="/Applications/Octave-9.2.app/Contents/Resources/usr/Cellar/octave-octapp@9.2.0/9.2.0/bin/octave-9.2.0"
+elif [ ! -z $( ls ~/Applications/Octave-9.2.app/Contents/Resources/usr/Cellar/octave-octapp@9.2.0/9.2.0/bin/octave-9.2.0 2> /dev/null ) ]; then
+  OCTAVE="~/Applications/Octave-9.2.app/Contents/Resources/usr/Cellar/octave-octapp@9.2.0/9.2.0/bin/octave-9.2.0"
 elif [ ! -z $( ls /Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
   OCTAVE="/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0"
 elif [ ! -z $( ls ~/Applications/Octave-6.2.0.app/Contents/Resources/usr/Cellar/octave-octave-app@6.2.0/6.2.0/bin/octave-6.2.0 2> /dev/null ) ]; then
@@ -33,7 +37,7 @@ else
   echo
   echo "Install Octave via the the Mac Octave.app website or via a package manager like HomeBrew."
   echo
-  echo "If you installed the Ocave-6.2.0.app, make sure it is in the /Applications folder."
+  echo "If you installed the Octave-6.2.0.app, or Octave-9.2.0.app make sure it is in the /Applications folder."
   echo
   echo "Otherwise you could open the app in the usual way, then navigate within the app"
   echo "to the directory where you put the nmrSim scripts (change the working directory),"

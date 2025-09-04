@@ -1,10 +1,20 @@
 HISTORY titrationSimulator
 
+v20 Sep 2025 -- before BMSB course
+- added downsampling of 3D spectrum to reduce risk of crash upon rotation in coneView
+  this fix does not work/is not needed on mac, only for UU PC
+- added backup point before coneView and added corresponding restoration
+- fixed definition of global variables in question.1.m
+- added checkFinished prompt when not all questions completed
+
+test
+- Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 OK
+  Windows  UU: Octave 8.4.0 - Qt            easyMode 1
+
 test
 - Mac OS 13.6: Octave 9.2.0 - Qt (latest)   easyMode 1 OK
                                             easyMode 2 OK
                                             easyMode 3 OK
-  Windows 10:  Octave 
 
 v19 Nov 2024  -- after feedback Ecem Arpi
 - fixed several typos

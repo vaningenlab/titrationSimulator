@@ -27,16 +27,20 @@ else
     asNmax = min(length(asNppm),asNmax+t);
     % define zoomed region
     zoomSpec = Sr(asNmin:asNmax,asHmin:asHmax);  %
-    % install downsample function -- this needs forge installed
-    pkg load signal
-    % downsample zoomed spectrum
-    Srd1 = downsample(zoomSpec,2);
-    Srd2 = downsample(Srd1',2);
-    Srd3 = Srd2';
-    ax1 = downsample(asHppm(asHmin:asHmax),2);
-    ax2 = downsample(asNppm(asNmin:asNmax),2);
-    % plot
-    mesh(ax1, ax2, Srd3);
+    if ispc()
+        % install downsample function -- this needs forge installed -- true for Windows
+        pkg load signal
+        % downsample zoomed spectrum
+        Srd1 = downsample(zoomSpec,2);
+        Srd2 = downsample(Srd1',2);
+        Srd3 = Srd2';
+        ax1 = downsample(asHppm(asHmin:asHmax),2);
+        ax2 = downsample(asNppm(asNmin:asNmax),2);
+        % plot
+        mesh(ax1, ax2, Srd3);
+    else
+        mesh(asHppm(asHmin:asHmax), asNppm(asNmin:asNmax), zoomSpec);
+    end
     xlabel('1H (ppm)')
     ylabel('15N (ppm)')
     set(gca,'XDir','reverse')
@@ -45,19 +49,28 @@ else
     title(titlestr,"fontweight","bold")
     % warnings to user after plotting
     if strcmp(graphics_toolkit, 'qt') == 1
-        disp("\tBEWARE: the UU PCs and this plot window are not friends.")
-        disp("\tBefore continuing do the following")
-        disp("\t- in the menu bar of the Figure 3 window, click Tools")
-        disp("\t- then click GUI mode (on all axis)")
-        disp("\t- then click Disable pan and rotate")
-        disp("")
-        junk=input("<>","s");
-        disp("")
-        disp("\tNow you cann click the rotate icon in the figure window menu bar to activate rotation.")
-        disp("\tClick, hold and drag mouse to rotate the plot.")
+        if ispc()
+            disp("\tBEWARE: the UU PCs and this plot window are not friends.")
+            disp("\tBefore continuing do the following")
+            disp("\t- in the menu bar of the Figure 3 window, click Tools")
+            disp("\t- then click GUI mode (on all axis)")
+            disp("\t- then click Disable pan and rotate")
+            disp("")
+            disp("Do this now before continuing...")
+            disp("")
+            junk=input("<>","s");
+            disp("")
+            disp("\tNow you can click the rotate icon in the figure window menu bar to activate rotation.")
+            disp("\tClick, hold and drag mouse to rotate the plot.")
         % avoid zooming in to prevent crashes on UU PCs
         %disp("\tYou can click the zoom button in the figure window menu bar to drag-select a zoom region.")
         %disp("\tClick the button with a 1 inside the magnifying glass to go back to the full view.")
+        else
+            disp("\tClick the rotate icon in the figure window menu bar to activate rotation.")
+            disp("\tClick, hold and drag mouse to rotate the plot.")
+            disp("\tYou can click the zoom button in the figure window menu bar to drag-select a zoom region.")
+            disp("\tClick the button with a 1 inside the magnifying glass to go back to the full view.")
+        end
     elseif strcmp(graphics_toolkit, 'fltk') == 1
         disp("\tClick the \"R\" button on the bottom of the figure window to activate rotation.")
         disp("\tThen left click inside the figure window to rotate the plot.")
