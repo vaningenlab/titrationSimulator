@@ -63,6 +63,7 @@ easyMode       = 1;                     % [ 1 | 2 | 3]
                                         %      only few KD/koff combinations that should always give a perfect result
                                         %      also more coaching to choose NMR sample concentrations
                                         %      best for students in courses where NMR theory is not the focus and limited time
+uu_check       = 1;                     % to avoid crash on rotating 3D spectrum plot
 
 % settings below generally do not need to be changed
 beNice         = 1;                     % [0 | 1] prevent some mistakes yes (1) or no (0) (independent of easyMode)

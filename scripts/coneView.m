@@ -11,10 +11,12 @@ else
     save "state.out"
     disp("")
     disp("\tPlotting...")
-
     disp("")
     figure(3);
-    % now downsize plotted spectrum to avoid crashes on UU PCs
+    % now downsize plotted spectrum to avoid crashes on UU PCs -- anyway useful
+    % crash is not related to size of matrix, some strange interaction foirst plot
+    % closing figure 1 also does not help, also seems to get worse with each restart
+    % simply best to make them NOT rotate the plot when at UU
     % calculate zoom regions for area with peaks only
     t = 10;                                     % extra points around min/max
     asHmax = find(asHppm-min(wHvppm)<0)(1);     % minimum ppm -- note axis is reversed!
@@ -50,18 +52,22 @@ else
     % warnings to user after plotting
     if strcmp(graphics_toolkit, 'qt') == 1
         if ispc()
-            disp("\tBEWARE: the UU PCs and this plot window are not friends.")
-            disp("\tBefore continuing do the following")
-            disp("\t- in the menu bar of the Figure 3 window, click Tools")
-            disp("\t- then click GUI mode (on all axis)")
-            disp("\t- then click Disable pan and rotate")
-            disp("")
-            disp("Do this now before continuing...")
-            disp("")
-            junk=input("<>","s");
-            disp("")
-            disp("\tNow you can click the rotate icon in the figure window menu bar to activate rotation.")
-            disp("\tClick, hold and drag mouse to rotate the plot.")
+            if uu_check == 1
+                disp("\tBEWARE: the UU PCs and this plot window are not friends.")
+                disp("\tBefore continuing do the following")
+                disp("\t- in the menu bar of the Figure 3 window, click Tools")
+                disp("\t- then click GUI mode (on all axis)")
+                disp("\t- then click Disable pan and rotate")
+                disp("")
+                disp("Do this now before continuing, and DO NOT rotate the plot or the program will crash...")
+                disp("")
+                junk=input("<>","s");
+                disp("")
+                disp("\tInspect the plot but do NOT rotate it or zoom in/out.")
+            else
+                disp("\tNow you can click the rotate icon in the figure window menu bar to activate rotation.")
+                disp("\tClick, hold and drag mouse to rotate the plot.")
+            end
         % avoid zooming in to prevent crashes on UU PCs
         %disp("\tYou can click the zoom button in the figure window menu bar to drag-select a zoom region.")
         %disp("\tClick the button with a 1 inside the magnifying glass to go back to the full view.")
