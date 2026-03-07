@@ -1,5 +1,17 @@
 HISTORY titrationSimulator
 
+v21 Sep 2025 -- after BMSB course
+- eda zg dont fry the probe
+- na reduceoverlay kleur in calcCSP klopt niet/ geKD werkt nie; restore
+- rstore bindiincurve
+- vraag NH2 add asm gln
+- question9 =10 easymode
+- overlayAll
+- backup overal
+- nog duidelijker wat te doen
+- add space : before entry
+- question 7 did not show
+
 v20 Sep 2025 -- before BMSB course
 - added downsampling of 3D spectrum to reduce risk of crash upon rotation in coneView
   this fix does not work/is not needed on mac, only for UU PC
