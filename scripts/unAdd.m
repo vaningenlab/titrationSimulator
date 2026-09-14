@@ -48,7 +48,7 @@ if titrationPoint > plotPoints && titrationPoint > 1
         printf("[ligand] is %.3f\n",lConcv(titrationPoint))
         disp("Go ask your instructor.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
     end
     totalVolume = totalVolume - volAdd;
@@ -59,8 +59,8 @@ if titrationPoint > plotPoints && titrationPoint > 1
     pConcReal = proteinDilutionReal*proteinConc;
     lConcReal = ligandStock*(totalVolumeReal-initialVolume)/totalVolumeReal;
     disp("The addition has been undone.")
-    disp("Double check by issuing \"report\".");
-    disp("Then redo your addition by typing \"titrate\" at the command prompt.")
+    printf("Double check by issuing %s.\n", dispCommand("report"));
+    printf("Then redo your addition by typing %s at the command prompt.\n", dispCommand("titrate"))
     disp("")
 else
     % sorry computer says no
@@ -71,7 +71,7 @@ else
     disp("Now you cannot undo that anymore.")
     disp("")
     disp("If you really want to change the titration,")
-    disp("you will have to restart from scratch and make a new sample by typing \"makeSample\" at the prompt.")
-    disp("Otherwise, just continue the titration by typing \"titrate\".")
+    printf("you will have to restart from scratch and make a new sample by typing %s at the prompt.\n", dispCommand("makeSample"))
+    printf("Otherwise, just continue the titration by typing %s.\n", dispCommand("titrate"))
     disp("")
 end

@@ -27,13 +27,13 @@ if questionAsked(cspq) == 1
     disp("You already did this analysis.")
     disp("You can do it again but you won't get points for it...")
     disp("")
-    junk=input("<>","s");
+    showBreak
     disp("")
 end
 if titrationPoint <= 2
     % user first needs to do at least two additions
     disp("")
-    disp("First add some more ligand by typing \"titrate\" at the command prompt.")
+    printf("First add some more ligand by typing %s at the command prompt.\n", dispCommand("titrate"))
     disp("")
 else % enough titrationPoints
     if pb < 0.8 && beNice == 1
@@ -47,11 +47,11 @@ else % enough titrationPoints
             disp("")
             disp("Even though the affinity is rather high, and your protein is nearly completely bound to ligand,")
             disp("it is better to record an additional point to measure the binding plateau.")
-            disp("Type \"report\" to see how far you are in the titration.")
-            disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
+            printf("Type %s to see how far you are in the titration.\n", dispCommand("report"))
+            printf("Type %s to add more ligand, increase to at least 1.5 equivalents of ligand.\n", dispCommand("titrate"))
         end
         disp("")
-        disp("Continue anyway, or do first another \"titrate\".")
+        printf("Continue anyway, or do first another %s.\n", dispCommand("titrate"))
         continueCalcQuestion = input("Do you want to continue with the perturbation analysis? y/n: ","s");
         if continueCalcQuestion != "n" && continueCalcQuestion != "y"
             continueCalcQuestion = input("Please type y if you want to continue with analyis:","s");
@@ -67,6 +67,7 @@ else % enough titrationPoints
     if continueCalcQuestion == "y"
         clc
         disp("")
+        printf("%s", YEL)
         disp("*----------------------------------------------------------*")
         if easyMode == 3
             disp("***         STEP 5 of 5: ANALYSIS                        ***")
@@ -74,6 +75,7 @@ else % enough titrationPoints
             disp("***         STEP 6 of 6: ANALYSIS                        ***")
         end
         disp("*----------------------------------------------------------*")
+        printf("%s", WHT)
         % give intro how to use it
         disp("")
         disp("Wait a sec, saving a backup of your work before continuing ...")
@@ -88,7 +90,7 @@ else % enough titrationPoints
         disp("")
         disp("Each of these steps is a question that will be scored.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("OK, the first step is the chemical shift perturbation analysis,")
         disp("which is simply determining for each peak the change in chemical shift.")
@@ -106,17 +108,17 @@ else % enough titrationPoints
             disp("You may have to change the contouring of the spectra to see closer to the noise level")
         end
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("Look carefully at each peak to identify where they go.")
         disp("Make sure you have the whole spectrum with all peaks visible.")
         disp("")
         disp("It can help to make spectrum window larger.")
-        disp("If you cannot see the peak labels well, issue \"plotAll\" at the command prompt.")
+        printf("If you cannot see the peak labels well, issue %s at the command prompt.\n", dispCommand("plotAll"))
         disp("")
         if titrationPoint > maxSpectra % have set this to be more than 15
             disp("Since you have many overlaid spectra , first simplify this using")
-            disp("the \"reduceOverlay\" command.")
+            printf("the %s command.\n", dispCommand("reduceOverlay"))
         end
         if peakDissappearCheck < 0.2*sino/120*startFloor/0.05 && beNice == 1
             % checked that 0.2 is good setting default plot, w/ 120 starting sino
@@ -124,7 +126,7 @@ else % enough titrationPoints
             disp("")
             disp("To do this analysis you need see the start and end position for each residue.")
             disp("If you cannot see all peaks, adjust the contour levels to start closer to the noise level")
-            disp("Type \"edlev\" at the command prompt to adjust the contour settings,")
+            printf("Type %s at the command prompt to adjust the contour settings,\n", dispCommand("edlev"))
             disp("and adjust the last number to 0.04 or lower")
             disp("")
         end
@@ -136,13 +138,13 @@ else % enough titrationPoints
             disp("")
         end
         disp("Other commands that are useful:")
-        disp("\t - zoomPeak     (to zoom in on a peak)")
-        disp("\t - zoomFull     (to go back to full view)")
-        disp("\t - edlev        (to change the contouring)")
-        disp("\t - plotAll      (to replot all spectra and put labels on top")
+        printf("\t - %szoomPeak%s     (to zoom in on a peak)\n", RED, WHT)
+        printf("\t - %szoomFull%s     (to go back to full view)\n", RED, WHT)
+        printf("\t - %sedlev%s        (to change the contouring)\n", RED, WHT)
+        printf("\t - %splotAll%s      (to replot all spectra and put labels on top\n", RED, WHT)
         disp("")
         disp("When you have setup the spectrum properly and are ready for it,")
-        printf("type question(%d) to do the chemical shift perturbation analysis", cspq)
+        printf("type %s to do the chemical shift perturbation analysis", dispQuestion(cspq))
         disp("")
     end % intro
 end % check enough titrationPoints

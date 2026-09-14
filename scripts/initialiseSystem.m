@@ -12,6 +12,7 @@
 clc
 
 disp("")
+printf("%s", YEL)
 disp("*----------------------------------------------------------*")
 if easyMode == 3
     disp("***         STEP 1 of 5: YOUR PROTEIN & LIGAND           ***")
@@ -19,12 +20,13 @@ else
     disp("***         STEP 1 of 6: YOUR PROTEIN & LIGAND           ***")
 end
 disp("*----------------------------------------------------------*")
+printf("%s", WHT)
 disp("")
 disp("The program will now ask you a few simple questions")
 disp("in order to select a system for you.")
 disp("Don't worry about typos or mistakes, it should work anyways.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 tmp = rand();   % start with first rand to make sure next one is really different
@@ -39,7 +41,7 @@ if acronymProtein == 0
     acronymProtein = createAcronym(yourName);
     if acronymProtein == 0
         disp("OK, I'll guess ...");
-        junk=input("<>","s");
+        showBreak
         disp("Your name is ... Anita!");
         acronymProtein = "ANITA";
     end
@@ -55,7 +57,7 @@ if acronymLigand == 0
     if acronymLigand == 0
         disp("OK, I'll guess ...");
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("Your favorite food is a boterham met pindakaas!")
         acronymLigand = "BTRHMPNK";
     end
@@ -71,7 +73,7 @@ if vectorOfNumbers == 0
     if vectorOfNumbers == 0
         disp("Ok, I'll guess...")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("Your birthday is Nov 30th 1976!")
         vectorOfNumbers = [ 3 0 1 1 1 9 7 6];
         arrayOfNumbers = {"3", "0", "1", "1", "1", "9", "7", "6"};
@@ -88,13 +90,13 @@ if aa_length == 0
     if aa_length == 0
         disp("Ok, I'll guess...")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("You may find this inspiring:")
         disp("  In theory there is no difference between theory and practice,")
         disp("  in practice, this is only true for NMR.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         aa_string = "AVDKFGNSCEFHILMQRTWY"(1:numPeaks);
     end
 end
@@ -245,22 +247,22 @@ proteinDescriptor = proteinWords{round((length(proteinWords)-1)*rand()+1)};
 disp("")
 disp("You will perform a titration of:")
 disp("")
-printf("\t%s factor %s ( %.1f kDa) with\n", proteinDescriptor, acronymProtein, proteinMass)
-printf("\t%s %s ( %.1f kDa)\n", ligandDescriptor, acronymLigand, ligandMass)
+printf("\t%s factor %s%s%s ( %.1f kDa) with\n", proteinDescriptor, CYN, acronymProtein, WHT, proteinMass)
+printf("\t%s %s%s%s ( %.1f kDa)\n", ligandDescriptor, CYN, acronymLigand, WHT, ligandMass)
 disp("")
-printf("The protein %s has been isotope-labeled using segmental labeling.\n", acronymProtein)
+printf("The protein %s%s%s has been isotope-labeled using segmental labeling.\n", CYN, acronymProtein, WHT)
 printf("Only %d residues are labeled and show up in the spectrum.\n", numPeaks)
-printf("The amino acid squence of the labeled part is %s.\n", aa_string)
-printf("For simplicity these residues will be numbered 1-%d.\n", numPeaks)
+printf("The amino acid squence of the labeled part is %s%s%s.\n", CYN, aa_string, WHT)
+printf("For simplicity these residues will be numbered %s1-%d%s.\n", CYN, numPeaks, WHT)
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 printf("Preliminary experiments have shown that the\n")
-printf("dissociation constant KD is in the %s range.\n", affinityRange)
+printf("dissociation constant KD is in the %s%s%s range.\n", CYN, affinityRange, WHT)
 disp("")
 disp("By doing an NMR titration experiment you will determine")
 disp("the binding interface and the binding constant of this interaction.")
 disp("")
-disp("In other words, the question is: Do the peaks move?")
+printf("In other words, the question is: %sDo the peaks move?%s\n", CYN, WHT)
 disp("")
-junk=input("<>","s");
+showBreak

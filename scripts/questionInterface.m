@@ -6,7 +6,7 @@ if questionAsked(cspq) == 0
     % for safety add check here as well
     if titrationPoint <= 2
         % user first needs to do at least two additions
-        disp("First add some more ligand by typing \"titrate\" at the command prompt.")
+        printf("First add some more ligand by typing %s at the command prompt.\n", dispCommand("titrate"))
     elseif pb < 0.8 && beNice == 1
         disp("Try adding more ligand to your protein.")
         disp("It looks like you're not done yet.")
@@ -15,12 +15,12 @@ if questionAsked(cspq) == 0
             disp("")
             disp("Even though the affinity is rather high, and your protein is nearly completely bound to ligand,")
             disp("it is better to record an additional point to measure the binding plateau.")
-            disp("Type \"report\" to see how far you are in the titration.")
-            disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
+            printf("Type %s to see how far you are in the titration.\n", dispCommand("report"))
+            printf("Type %s to add more ligand, increase to at least 1.5 equivalents of ligand.\n", dispCommand("titrate"))
         end
     else
         disp("First complete the chemical shift perturbation analysis.")
-        printf("Type \"question(%d)\" at the the command prompt.\n", cspq)
+        printf("Type %s at the the command prompt.\n", dispQuestion(cspq))
     end
     disp("")
 else
@@ -43,7 +43,7 @@ else
             disp("")
             resList1 = "1 2 3";
             justNumbers = regexprep(resList1, '\D',"");
-            junk=input("<>","s");
+            showBreak
             disp("")
         elseif length(justNumbers) != numBig
             disp("OK, I'll see what I can do...")
@@ -84,7 +84,7 @@ else
         questionAsked(cspq+1)=1;
     end
     disp("")
-    junk=input("<>","s");
+    showBreak
     % cue student to do final analysis if indeed saturated/ or if done
     % that is per residue exchange regime and estimates
     disp("")
@@ -94,12 +94,12 @@ else
         disp("In the last step of the analysis you examine the echange regime for each peak.")
         disp("You are asked to classify for each of the shifting peaks whether it is in slow/intermediate/fast")
         disp("exchange in the 1H dimension.")
-        disp("Use the command \"showSlices\" to extract 1D slices in the 1H dimension.")
+        printf("Use the command %s to extract 1D slices in the 1H dimension.", dispCommand("showSlices"))
         disp("Use these views to classify the exchange regime.")
-        disp("When you're ready to do this analysis, type \"question(9)\".");
+        printf("When you're ready to do this analysis, type %s.", dispQuestion(9));
     else
         disp("Let's determine the binding affinity.")
-        printf("Type \"question(%d)\" at the the command prompt.\n", cspq+2)
+        printf("Type %s at the the command prompt.\n", dispQuestion(cspq+2))
         %disp("Use the command \"getKD\" to extract a binding curve and dissociation constant.")
     end
     disp("")

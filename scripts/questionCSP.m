@@ -7,7 +7,7 @@ checkBound = 1;
 if titrationPoint <= 2
     % user first needs to do at least two additions
     disp("")
-    disp("First add some more ligand by typing \"titrate\" at the command prompt.")
+    printf("First add some more ligand by typing %s at the command prompt.\n", dispCommand("titrate"))
     disp("")
 else % enough titrationPoints
     if pb < 0.8 && beNice == 1
@@ -21,11 +21,11 @@ else % enough titrationPoints
             disp("")
             disp("Even though the affinity is rather high, and your protein is nearly completely bound to ligand,")
             disp("it is better to record an additional point to measure the binding plateau.")
-            disp("Type \"report\" to see how far you are in the titration.")
-            disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
+            printf("Type %s to see how far you are in the titration.\n", dispCommand("report"))
+            printf("Type %s to add more ligand, increase to at least 1.5 equivalents of ligand.\n", dispCommand("titrate"))
         end
         disp("")
-        disp("Continue anyway, or do first another \"titrate\".")
+        printf("Continue anyway, or do first another %s.\n", dispCommand("titrate"))
         continueCalcQuestion = input("Do you want to continue with the perturbation analysis? y/n: ","s");
         if continueCalcQuestion != "n" && continueCalcQuestion != "y"
             continueCalcQuestion = input("Please type y if you want to continue with analyis:","s");
@@ -58,7 +58,7 @@ else % enough titrationPoints
         disp("If the tool is active the background color is slightly gray.")
     end
     disp("")
-    junk=input("<>","s");
+    showBreak
     disp("")
     disp("Be sure to only click inside the spectrum window.")
     disp("Do not adjust the size of the spectrum window any more.")
@@ -74,7 +74,7 @@ else % enough titrationPoints
     disp("")
     disp("And click slowly!")
     disp("")
-    junk=input("<>","s");
+    showBreak
     disp("")
     % bring spectrum window forward
     figure(2)
@@ -115,16 +115,16 @@ else % enough titrationPoints
                 disp("For the next time, double check that you are looking at the right peak!")
                 disp("Check that you have the correct residue and the free-state spectrum. ")
                 disp("")
-                junk=input("<>","s");
+                showBreak
             else
                 disp("")
                 disp("There seems to be something going wrong here...")
                 disp("You can continue but also decide to retry it.")
                 disp("If you want to retry, type Ctrl-C until you see the prompt,")
-                printf("set cspTime to 0 (\"cspTime=0\") and restart the analysis (\"question(%d)\".\n",cspq)
+                printf("set cspTime to 0 (%s) and restart the analysis (%s).\n",dispCommand("cspTime=0"), dispQuestion(cspq))
                 disp("Ask your instructor to have a look and help you. ")
                 disp("")
-                junk=input("<>","s");
+                showBreak
             end
             %disp("Try again, type these commands:")
             %disp("\t - edlev(10,1.4,0.1)  (to clear any lines)")
@@ -171,16 +171,16 @@ else % enough titrationPoints
                     disp("For the next time, double check that you are looking at the right peak!")
                     disp("Check that you have the correct residue and the bound-state spectrum. ")
                     disp("")
-                    junk=input("<>","s");
+                    showBreak
                 else
                     disp("")
                     disp("There seems to be something going wrong here...")
                     disp("You can continue but also decide to retry it.")
                     disp("If you want to retry, type Ctrl-C until you the prompt,")
-                    printf("set cspTime to 0 (\"cspTime=0\") and restart the analysis (\"question(%d)\".\n",cspq)
+                    printf("set cspTime to 0 (%s) and restart the analysis (%s).\n",dispCommand("cspTime=0"), dispQuestion(cspq))
                     disp("Ask your instructor to have a look and help you. ")
                     disp("")
-                    junk=input("<>","s");
+                    showBreak
                 end
             end
         end % check bound pick
@@ -221,7 +221,7 @@ else % enough titrationPoints
         disp("")
         disp("Oops, there were too many peak picking mistakes to continue...")
         disp("")
-        printf("Restart the analysis by typing \"question(%d)\" at the prompt.\n", cspq)
+        printf("Restart the analysis by typing %s at the prompt.\n", dispQuestion(cspq))
         disp("Ask your instructor to have a look.")
         disp("")
         disp("Other commands that are helpful:")
@@ -270,7 +270,7 @@ else % enough titrationPoints
             disp("The actual CSPs are shown as magenta lines.")
         end
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("Figure 5 shows for each residue the chemical shift perturbation.")
         disp("The peak displacements in the 1H and 15N dimension are combined into one number.")
@@ -282,10 +282,10 @@ else % enough titrationPoints
         ylabel("weighted chemical shift perturbation (ppm)")
         title("CSP analysis","fontweight","bold")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("Now you can determine the binding interface residues.")
-        printf("Type \"question(%d)\" at the prompt.\n", cspq+1)
+        printf("Type %s at the prompt.\n", dispQuestion(cspq+1))
         disp("")
     end % check number mistakes actual run
 end

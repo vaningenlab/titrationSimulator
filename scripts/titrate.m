@@ -9,26 +9,26 @@
 
 if titrationPoint == 0
     disp("")
-    disp("First make a sample by typing \"makeSample\".")
+    printf("First make a sample by typing %s.\n", dispCommand("makeSample"))
     disp("")
 elseif titrationPoint == 1 && plotPoints == 0
     disp("")
     disp("First record the HSQC spectrum of the free protein.")
-    disp("Load the parameters of the HSQC experiment: rpar(\"HSQC\").")
-    disp("Record and process the spectrum using \"zg\" and \"xfb\".")
+    printf("Load the parameters of the HSQC experiment: %s.\n", dispCommand("rpar(\"HSQC\")"))
+    printf("Record and process the spectrum using %s and %s.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("")
 elseif titrationPoint > 1 && length(size(allSpectra)) == 2
     % added something but did not record or process the spectrum
     disp("")
     disp("You still need to record and process the HSQC of the current sample.")
-    disp("Record and process the spectrum using \"zg\" and \"xfb\".")
+    printf("Record and process the spectrum using %s and %s.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("Then you can do a new addition.")
     disp("")
 elseif titrationPoint > 1 && length(size(allSpectra)) == 3 && size(allSpectra)(length(size(allSpectra))) < titrationPoint
     % added something but did not record or process the spectrum
     disp("")
     disp("You still need to record and process the HSQC of the current sample.")
-    disp("Record and process the spectrum using \"zg\" and \"xfb\".")
+    printf("Record and process the spectrum using %s and %s.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("Then you can do a new addition.")
     disp("")
 elseif titrationPoint >= 1 && max(max(allSpectra(:,:,titrationPoint))) == 0
@@ -36,7 +36,7 @@ elseif titrationPoint >= 1 && max(max(allSpectra(:,:,titrationPoint))) == 0
     disp("")
     disp("Something is wrong. Your spectrum is empty. Check with your instructor.")
     disp("It seems you still need to record and process the HSQC of the current sample.")
-    disp("Record and process the spectrum using \"zg\" and \"xfb\".")
+    printf("Record and process the spectrum using %s and %s.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("Then you can do a new addition.")
     disp("")
 else
@@ -49,13 +49,14 @@ else
         max(max(allSpectra))
         disp("Check with your instructor.")
         disp("You can simply continue, although the analysis won't work as well.")
-        disp("You could also restart the titration by making a new sample (\"makeSample\")")
+        disp("You could also restart the titration by making a new sample (%s)\n", dispCommand("makeSample"))
         disp("")
     end
     if titrationPoint == 1 && plotPoints == 1
         % first point additional info
         clc
         disp("")
+        printf("%s", YEL)
         disp("*----------------------------------------------------------*")
         if easyMode == 3
             disp("***         STEP 4 of 5: TITRATE TO BOUND STATE          ***")
@@ -63,14 +64,15 @@ else
             disp("***         STEP 5 of 6: TITRATE TO BOUND STATE          ***")
         end
         disp("*----------------------------------------------------------*")
+        printf("%s", WHT)
         disp("")
         disp("You will now add ligand to the protein sample in steps,")
         disp("and record the protein fingerprint spectrum at each step until the protein is fully bound.")
         disp("")
-        disp("Keep repeating adding ligand (\"titrate\"), recording and processing the spectrum (\"zg\", \"xfb\")")
+        printf("Keep repeating adding ligand (%s), recording and processing the spectrum (%s, %s)\n",dispCommand("titrate"),dispCommand("zg"), dispCommand("xfb"))
         disp("until you do not see significant changes in the spectrum anymore.")
         disp("")
-        disp("To make this a bit easier for you, you can take a look at the output from the \"report\" command")
+        printf("To make this a bit easier for you, you can take a look at the output from the %s command\n", dispCommand("report"))
         disp("to see how much bound state protein you have and to judge how much you need to add.")
         disp("")
         disp("Try to space your additions such that in about 7 to 10 steps you go from 0% bound to 85-95% bound.")
@@ -84,7 +86,7 @@ else
             disp("Make sure to record spectra after adding each time 10 or 20% ligand")
             disp("and make sure to also include few spectra around 100% of ligand added, e.g. 90%, 95%, 110% etc.")
             disp("This is important to get a proper estimate for the KD")
-            disp("You can use the \"report\" command to keep track of where you are in the titration.")
+            printf("You can use the %s command to keep track of where you are in the titration.\n", dispCommand("report"))
             disp("")
         end
         if affinityValue > 1e-3 && easyMode > 0
@@ -92,7 +94,7 @@ else
             disp("Since the affinity for your system is rather low, try to aim for at least 80% bound.")
             disp("This is important to get a proper estimate for the KD")
             disp("Remember that you need to add increasingly more ligand to get all the protein bound to ligand.")
-            disp("You can use the \"report\" command to keep track of where you are in the titration.")
+            printf("You can use the %s command to keep track of where you are in the titration.\n", dispCommand("report"))
             disp("")
         end
         if titrationPoint > 10 && pb < 0.7
@@ -105,7 +107,7 @@ else
             disp("")
         end
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
     end
     % below happens for all points
@@ -126,44 +128,44 @@ else
     %end
     %printf("]\n")
     %disp("")
-    printf("Your sample now contains %.2f mM of ligand\n", lConc)
-    printf("this is %.2f molar equivalents of ligand compared to protein\n", molEq)
+    printf("Your sample now contains %s%.2f mM%s of ligand\n", CYN, lConc, WHT)
+    printf("this is %s%.2f%s molar equivalents of ligand compared to protein\n", CYN, molEq, WHT)
     disp("")
     molAdd = input("How many molar equivalents of ligand do you want to add? ","s");
     if length(regexp(molAdd,'[.\d]')) < length(molAdd) || length(molAdd)==0
         disp("")
         disp("Please enter a positive number without units!")
-        disp("Type \"titrate\" again to re-enter your values.")
+        printf("Type %s again to re-enter your values.\n", dispCommand("titrate"))
         disp("")
     elseif str2num(molAdd) <= 0
         disp("")
         disp("You should enter a positive number, bigger than 0.")
-        disp("Type \"titrate\" again to re-enter your values.")
+        printf("Type %s again to re-enter your values.\n", dispCommand("titrate"))
         disp("")
     else
         % valid input
         if str2num(molAdd) < 0.01 && beNice == 1
             disp("")
             disp("Ah that's very little, add a bit more, at least 1%.")
-            disp("Do \"titrate\" again and use more equivalents.")
+            printf("Do %s again and use more equivalents.\n", dispCommand("titrate"))
             disp("")
         elseif str2num(molAdd) > 0.3 && beNice == 1 && titrationPoint == 1 && affinityValue > 1e-5 && affinityValue < 1e-3
             disp("")
             disp("Take it easy, don't add too much in the first shot")
             disp("Better to use 0.1-0.3 equivalents for the first step.")
-            disp("Do \"titrate\" again and use fewer equivalents.")
+            printf("Do %s again and use fewer equivalents.\n", dispCommand("titrate"))
             disp("")
         elseif str2num(molAdd) > 0.1 && beNice == 1 && titrationPoint == 1 && affinityValue < 1e-5
             disp("")
             disp("Take it easy, the affinity is quite high so don't add too much in one shot")
             disp("Don't use more than 10% for the first step. Better to use few % only for the first steps.")
-            disp("Do \"titrate\" again and use fewer equivalents.")
+            printf("Do %s again and use fewer equivalents.\n", dispCommand("titrate"))
             disp("")
         elseif str2num(molAdd) > 0.5 && beNice == 1 && titrationPoint == 1
             disp("")
             disp("Wow, slow down, don't add too much in one shot")
             disp("Don't use more than 20% for the first step. Better to use few % only for the first steps.")
-            disp("Do \"titrate\" again and use fewer equivalents.")
+            printf("Do %s again and use fewer equivalents.\n", dispCommand("titrate"))
             disp("")
         elseif molEq + str2num(molAdd) > (1+easyMode)*100/(proteinConc*initialVolume*ligandMass/1e3)
             % this should pop up when more than x mol of ligand is used
@@ -175,7 +177,7 @@ else
             % doubled to 200 mg for easyMode
             disp("")
             printf("Ah, you ran out of ligand....you don't have more than %d mg of ligand.\n", (1+easyMode)*100)
-            disp("You stop here, analyze the titration using \"report\" and \"calcCSP\",")
+            printf("You stop here, analyze the titration using %s and %s.\n", dispCommand("report"), dispCommand("calcCSP"))
             disp("")
         else
             % sensible input so proceed
@@ -200,9 +202,9 @@ else
                 disp("You will have a very dilute protein sample after this.")
                 disp("There is no point to do this step.")
                 disp("Either stop the titration here, and analyze the results")
-                disp("using \"report\" and \"calcCSP\" commands,")
+                printf("using %s and %s commands\n", dispCommand("report"), dispCommand("calcCSP"))
                 disp("or start again by making a more concentrated sample")
-                disp("using \"makeSample\" and then redoing the titration.")
+                printf("using %s and then redoing the titration.\n", dispCommand("makeSample"))
                 disp("")
             else
                 % dilution is OK so proceed
@@ -212,7 +214,7 @@ else
                 pConcv(tp) = pConc;
                 lConcv(tp) = lConc;
                 disp("")
-                printf("OK, you have added %.2f equivalents of %s stock.\n", molAdd, acronymLigand)
+                printf("OK, you have added %s%.2f%s equivalents of %s%s%s stock.\n", CYN, molAdd, WHT, CYN, acronymLigand, WHT)
                 disp("")
                 disp("New sample conditions:")
                 printf("Volume                     : %.2f (uL)\n", totalVolume)
@@ -229,7 +231,7 @@ else
                     printf("[protein] is %.3f\n",pConcv(titrationPoint))
                     disp("Go ask your instructor.")
                     disp("")
-                    junk=input("<>","s");
+                    showBreak
                     disp("")
                 end
                 if cConcv(titrationPoint) == 0 && titrationPoint > 1
@@ -239,7 +241,7 @@ else
                     printf("[ligand] is %.3f\n",lConcv(titrationPoint))
                     disp("Go ask your instructor.")
                     disp("")
-                    junk=input("<>","s");
+                    showBreak
                     disp("")
                 end
                 % do the question on how far to go if more than 1 eq. added
@@ -260,19 +262,19 @@ else
                     disp("Now start the HSQC experiment again.")
                     disp("Btw, you may want to use more scans from now on,")
                     disp("since you're sample is so diluted.")
-                    disp("Use \"eda\" to adjust ns then run the experiment using \"zg\".")
+                    printf("Use %s to adjust ns then run the experiment using %s.\n", dispCommand("eda"), dispCommand("zg"))
                     disp("")
                 elseif proteinDilution < 0.3 || pConc < 0.05 && easyMode > 1
                     disp("")
                     disp("Now start the HSQC experiment again.")
                     disp("Btw, you may want to use more scans from now on,")
                     disp("since you're sample is so diluted.")
-                    disp("Use \"eda\" to adjust ns then run the experiment using \"zg\".")
+                    printf("Use %s to adjust ns then run the experiment using %s.\n", dispCommand("eda"), dispCommand("zg"))
                     disp("")
                 else
                     disp("")
-                    disp("Now start the HSQC experiment again by typing \"zg\" at the command prompt.")
-                    disp("If you want to change your addition, you can then do that -only now- by issuing \"unAdd\".")
+                    printf("Now start the HSQC experiment again by typing %s at the command prompt.\n", dispCommand("zg"))
+                    printf("If you want to change your addition, you can then do that -only now- by issuing %s.\n", dispCommand("unAdd"))
                     disp("")
                 end
             end % check dilution

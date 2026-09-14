@@ -1,7 +1,7 @@
 % systemInfo.m
 
 disp("")
-printf("\t*** system details ***\n")
+printf("\t%s*** system details ***%s\n", YEL, WHT)
 disp("")
 printf("\tprotein                      : %s factor %s (%.1f kDa)\n", proteinDescriptor, acronymProtein, proteinMass)
 printf("\tligand                       : %s %s (%.1f kDa)\n", ligandDescriptor, acronymLigand, ligandMass)
@@ -45,7 +45,7 @@ end
 disp("")
 report
 disp("")
-disp("\t*** score ***\n")
+printf("\t%s*** score ***%s\n", YEL, WHT)
 disp("")
 if easyMode == 1
 	printf("Your final score          : %d out of 10 points\n", finalScore)
@@ -67,12 +67,12 @@ if sum(questionAsked) < numQuestions
 		end 
 	end 
 	print("\n\n")
-	disp("Type, for example, \"question(5)\" to still try to answer question 5.")
+	printf("Type, for example, %s to still try to answer question 5.\n", dispQuestion(5))
 	disp("")
 	disp("If you are not done yet w/ the titration, simply continue your experiment.")
 	disp("You should encounter all questions along the way.")
 	disp("")
 else
-	disp("Type \"goodbye\" to quit")
+	printf("Type %s to quit\n", dispCommand("goodbye"))
 end
 disp("")

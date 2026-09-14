@@ -12,16 +12,17 @@ function rpar(expName)
         disp("")
         disp("Usage:")
         if easyMode == 0
-            disp("rpar(\"find90\") or rpar(\"HSQC\")")
+            printf("%s or %s\n", dispCommand("rpar(\"find90\")"), dispCommand("rpar(\"HSQC\")"))
         elseif easyMode == 1 || easyMode == 2
-            disp("rpar(\"popt\") or rpar(\"HSQC\")")
+            printf("%s or %s\n", dispCommand("rpar(\"popt\")"), dispCommand("rpar(\"HSQC\")"))
         else
-             disp("rpar(\"HSQC\")")
+            printf("%s\n", dispCommand("rpar(\"HSQC\")"))
         end
         disp("")
     else
         %clc
         % double check for quotes -- not possible
+        defineColors
         if strcmp(expName,"HSQC")
             expPars = "HSQC";
             if easyMode < 3 && beNice == 1 && numCalibCheck == 0
@@ -30,7 +31,7 @@ function rpar(expName)
                 disp("Wait. Let me first double check your 90-degree pulse length ...")
                 %pause(0.5)
                 disp("")
-                junk=input("<>","s");
+                showBreak
                 disp("")
                 p1Err = 0;
                 loadHSQC = 0;
@@ -60,14 +61,14 @@ function rpar(expName)
                 if p1Err == 1
                     % do not continue, but prompt to re-calibrate
                     disp("")
-                    printf("You found %.2f us for the 90-degree pulse length,\n", p1)
+                    printf("You found %s%.2f%s us for the 90-degree pulse length,\n", CYN, p1, WHT)
                     disp("But this is too far off from what the computer tells me...")
                     disp("Go back to the pulse calibration experiment and redo the calibration by typing:")
                     disp("")
                     if easyMode == 0
-                        disp("rpar(\"find90\")")
+                        printf("%s\n", dispCommand("rpar(\"find90\")"))
                     else
-                        disp("rpar(\"popt\")")
+                        printf("%s\n", dispCommand("rpar(\"popt\")"))
                     end
                     disp("")
                     disp("Ask your instructor for help if necessary.")
@@ -81,19 +82,19 @@ function rpar(expName)
                     if abs(p1-trup) <= 0.5
                         % easyMode 0 1 2 / always true for easyMode 2 /
                         disp("Alright. You did a good job at the calibration!")
-                        printf("You found %.2f us for the 90-degree pulse length,\n", p1)
-                        printf("somehow the computer knows it is actually %.2f us.\n", trup)
+                        printf("You found %s%.2f%s us for the 90-degree pulse length,\n", CYN, p1, WHT)
+                        printf("somehow the computer knows it is actually %s%.2f%s us.\n", CYN,trup, WHT)
                         disp("You get 10 points extra!")
                         score = score + 10;
                         loadHSQC = 1;
                     elseif abs(p1-trup) < 1
                         % easyMode 0 1 2 / always true for easyMode 2 /
                         disp("Alright. You did a pretty good job at the calibration!")
-                        printf("You found %.2f us for the 90-degree pulse length,\n", p1)
-                        printf("somehow the computer knows it is actually %.2f us.\n", trup)
+                        printf("You found %s%.2f%s us for the 90-degree pulse length,\n", CYN, p1, WHT)
+                        printf("somehow the computer knows it is actually %s%.2f%s us.\n", CYN,trup, WHT)
                         disp("Normally, you would need to be more exact, but here it is OK. You get 5 points extra!")
                         if easyMode == 1
-                            disp("If you want you go back to the calibration experiment: \"rpar(\"popt\")\".")
+                            printf("If you want you go back to the calibration experiment: %s\n.", dispCommand("rpar(\"popt\")"))
                         end
                         score = score + 5;
                         loadHSQC = 1;
@@ -102,15 +103,15 @@ function rpar(expName)
                         if p1Err > 0
                             disp("Still, you did a reasonable job at the calibration!")
                             if easyMode == 1
-                                disp("If you want you go back to the calibration experiment: \"rpar(\"popt\")\".")
+                                printf("If you want you go back to the calibration experiment: %s\n.", dispCommand("rpar(\"popt\")"))
                             end
                             % can still redo calibration so do not tell the answer
                         else
                             disp("Not bad. You did a reasonable job at the calibration!")
-                            printf("You found %.2f us for the 90-degree pulse length,\n", p1)
-                            printf("somehow the computer knows it is actually %.2f us.\n", trup)
+                            pprintf("You found %s%.2f%s us for the 90-degree pulse length,\n", CYN, p1, WHT)
+                            printf("somehow the computer knows it is actually %s%.2f%s us.\n", CYN,trup, WHT)
                             if easyMode == 1
-                                disp("If you want you go back to the calibration experiment: \"rpar(\"popt\")\".")
+                                printf("If you want you go back to the calibration experiment: %s\n.", dispCommand("rpar(\"popt\")"))
                             end
                         end
                         disp("You get 2 points extra!")
@@ -119,25 +120,27 @@ function rpar(expName)
                     else 
                         % easyMode 0 
                         disp("Sorry, the pulse calibration is not very good.")
-                        printf("You found %.2f us for the 90-degree pulse length,\n", p1)
-                        printf("somehow the computer knows it is actually %.2f us.\n", trup)
+                        printf("You found %s%.2f%s us for the 90-degree pulse length,\n", CYN, p1, WHT)
+                        printf("somehow the computer knows it is actually %s%.2f%s us.\n", CYN,trup, WHT)
                         disp("You did not score points here...")
                         disp("Check the calibration again")
                         disp("by typing at the command prompt:")
                         if easyMode == 0
-                            disp("rpar(\"find90\")")
+                            printf("%s\n", dispCommand("rpar(\"find90\")"))
                         else
-                            disp("rpar(\"popt\")")
+                            printf("%s\n", dispCommand("rpar(\"popt\")"))
                         end
                     end
                     if loadHSQC == 1
                         disp("")
-                        junk=input("<>","s");
+                        showBreak
                         clc
                         disp("")
+                        printf("%s", YEL)
                         disp("*----------------------------------------------------------*")
                         disp("***         STEP 4 of 6: PROTEIN FREE STATE SPECTRUM     ***")
                         disp("*----------------------------------------------------------*")
+                        printf("%s", WHT)
                         disp("")
                         disp("Loading experimental setup for {1H-15N}-HSQC experiment ...")
                         nu = time();
@@ -145,22 +148,25 @@ function rpar(expName)
                         while time() < nu + 1
                             a=a+1;
                         end 
-                        disp("Loaded! Now setup the acquisition parameters by typing \"eda\" at the command prompt.")
+                        printf("Loaded! Now setup the acquisition parameters by typing %s at the command prompt.\n", dispCommand("eda"))
                         disp("")
-                        disp("( Remember, the command prompt is when you see :)], the <> symbol is a pause where all input is ignored )")
+                        printf("( Remember, the command prompt is when you see %s:)]%s,\n", CYN, WHT)
+                        printf("the %s<>%s symbol is a pause where all input is ignored.\n", MAG,WHT)
                         disp("")
                         numCalibCheck = 1;
                         disp("")
-                        junk=input("<>","s");
+                        showBreak;
                         disp("")
                     end
                 end
             elseif easyMode == 3 || ( easyMode < 3 && numCalibCheck == 1)
                 clc
                 disp("")
+                printf("%s", YEL)
                 disp("*----------------------------------------------------------*")
                 disp("***         STEP 3 of 5: PROTEIN FREE STATE SPECTRUM     ***")
                 disp("*----------------------------------------------------------*")
+                printf("%s", WHT)
                 disp("")
                 disp("Loading experimental setup for {1H-15N}-HSQC experiment ...")
                 nu = time();
@@ -168,16 +174,18 @@ function rpar(expName)
                 while time() < nu + 1
                     a=a+1;
                 end 
-                disp("Loaded! Now setup the acquisition parameters by typing \"eda\" at the command prompt")
+                printf("Loaded! Now setup the acquisition parameters by typing %s at the command prompt\n", dispCommand("eda"))
                 disp("")
             end % checks HSQC
         elseif strcmp(expName,"find90")
             expPars = "find90";
             clc
             disp("")
+            printf("%s", YEL)
             disp("*----------------------------------------------------------*")
             disp("***         STEP 3 of 6: PULSE CALIBRATION               ***")
             disp("*----------------------------------------------------------*")
+            printf("%s", WHT)
             disp("")
             disp("Loading 1H 90 degree pulse calibration experiment ...")
             nu = time();
@@ -193,16 +201,16 @@ function rpar(expName)
             if questionAsked(2) == 0
                 disp("")
                 question(2)
-                junk=input("<>","s");
+                showBreak
             end
             disp("")
             disp("To calibrate the pulse length you:")
             disp("\t - enter the value of the pulse length at the command prompt by typing, e.g.:")
             disp("\t   \tp1 = 8")
             disp("\t   ==> note it is p-one not p-el! <==")
-            disp("\t - then you start the experiment by typing \"zg\" at the prompt, this will execute a pulse")
+            printf("\t - then you start the experiment by typing %s at the prompt, this will execute a pulse\n", dispCommand("zg"))
             disp("\t   of 4x the value you entered, e.g. 32us in the example above.")
-            disp("\t - you then Fourier Transform the FID by typing \"qfp\" at the prompt")
+            printf("\t - you then Fourier Transform the FID by typing %s at the prompt\n", dispCommand("qfp"))
             disp("\t - you examine the signal intensity and if neccessary, ")
             disp("\t   change the p1-value and redo the experiment.")
             disp("")
@@ -213,9 +221,11 @@ function rpar(expName)
             expPars = "popt";
             clc
             disp("")
+            printf("%s", YEL)
             disp("*----------------------------------------------------------*")
             disp("***         STEP 3 of 6: PULSE CALIBRATION               ***")
             disp("*----------------------------------------------------------*")
+            printf("%s", WHT)
             disp("")
             disp("Loading 1H 90 degree pulse calibration experiment ...")
             nu = time();
@@ -225,7 +235,7 @@ function rpar(expName)
             end 
             disp("Loaded!")
             disp("")
-            junk=input("<>","s");
+            showBreak
             if numCalib == 0
                 disp("")
                 disp("Calibration of the 90 degree pulse is crucial to make sure your experiments work well,")
@@ -237,23 +247,23 @@ function rpar(expName)
                 disp("In these spectra you will see only one 1H signal: the water,")
                 disp("as it is the most intense 1H signal.")
                 disp("")
-                junk=input("<>","s");
+                showBreak
                 disp("")
-                disp("The goal is that you determine at what duration of the pulse (called p1)")
+                printf("The goal is that you determine at what duration of the pulse (called %s)\n", dispCommand("p1"))
                 disp("you get a 90 degree rotation of the magnetization and thus maximum signal.")
                 disp("")
                 disp("The 1H 90 degree pulse length varies usually between 7 and 12 microseconds, ")
                 disp("depending on the saltiness of your sample buffer.")
                 disp("")
-                junk=input("<>","s");
+                showBreak
                 disp("")
                 disp("Let's do the first try of the calibration experiment together.")
                 disp("")
-                junk=input("<>","s");
+                showBreak
                 disp("")
             end
             disp("To do the calibration:")
-            disp("\t - type \"zg\" at the prompt")
+            printf("\t - type %s at the prompt\n", dispCommand("zg"))
             disp("\t - you are asked for a starting value for the pulse length duration,")
             disp("\t   an increment value and a total number of experiments")
             disp("\t - you examine the result")
@@ -262,7 +272,7 @@ function rpar(expName)
             disp("")
             disp("The computer says no.")
             printf("There is no %s experiment.\n", expName)
-            disp("Type \"rpar\" without arguments to see which experiments are available.")
+            printf("Type %s without arguments to see which experiments are available.\n", dispCommand("rpar"))
             disp("")
          end
     end 

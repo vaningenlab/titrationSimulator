@@ -7,9 +7,10 @@ function zoomPeak(peakNumber, boxHp, boxNp)
 
     if nargin == 0
         disp("")
-        disp("Include a peak to zoom in on, e.g. zoomPeak(3).")
+        printf("Include a peak to zoom in on, e.g. %s.\n", dispCommand("zoomPeak(3)"))
         disp("Only specify the residue number, not the amino acid!")
-        disp("You can also specify the zoom range in ppm, e.g. zoomPeak(3,0.1,0.5)");
+        printf("You can also specify the zoom range in ppm, e.g.\n", dispCommand("zoomPeak(3,0.1,0.5)"));
+        printf("Use %s to return to full view\n", dispCommand("zoomFull"))
         disp("")
     else
         figure(2);
@@ -26,7 +27,7 @@ function zoomPeak(peakNumber, boxHp, boxNp)
             axis([pcpH-boxHp pcpH+boxHp pcpN-boxNp pcpN+boxNp]);
         else
             printf("Oops! Peak %d does not exist\n", peakNumber)
-            printf("The peak-number has to in range 1-%d: zoomPeak(3)\n", numPeaks)
+            printf("The peak-number has to in range 1-%d: e.g. %s\n", dispCommand("zoomPeak(3)"), numPeaks)
         end
     end
 

@@ -3,12 +3,15 @@
 function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
     
     global cq
+
+    defineColors
     
     %pause (0.5) % somehow cause huge delay with 1 sec
     
     pp = mod(round(3*rand()),3);
     if answer == correctAnswer
         newScore = oldScore + questionPoints;
+        printf("%s", CYN)
         disp("")
         if pp == 0
             printf("Good job. You now have %d points.\n", newScore);
@@ -17,10 +20,12 @@ function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
         else
             printf("Alright! Another %d gets you %d points...\n", questionPoints, newScore);
         end
+        printf("%s", WHT)
         disp("")
     else
         newScore = oldScore;
         disp("")
+        printf("%s", MAG)
         if pp == 0
             answerTwo = input("Ah too bad...Second guess?? ","s");
         elseif pp == 1
@@ -40,6 +45,7 @@ function newScore = calcScore(answer, oldScore, correctAnswer, questionPoints);
         else
             disp("Sorry that's still not correct... please check the explanation below.")
         end
+        printf("%s", WHT)
         disp("");
     end
     cq = cq+1;  % increment the current question index

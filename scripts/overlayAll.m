@@ -4,7 +4,7 @@
 if plotPoints < titrationPoint
     disp("")
     disp("All spectra are reactivated to be overlaid.")
-    disp("Issue \"edlev\" again to update the plot. ")
+    printf("Issue %s again to update the plot.\n", dispCommand("edlev"))
     disp("")
     plotSpectra = allSpectra;
     plotPoints  = titrationPoint;

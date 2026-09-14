@@ -3,7 +3,7 @@ if plotPoints == 0
     disp("")
     disp("Nothing to show...")
     disp("First record and process a 2D HSQC experiment.")
-    disp("Type \"zg\" and \"xfb\" to do this.")
+    printf("Type %s and %s to do this.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("")
 else
     disp("")
@@ -54,16 +54,21 @@ else
         if ispc()
             if uu_check == 1
                 disp("\tBEWARE: the UU PCs and this plot window are not friends.")
-                disp("\tBefore continuing do the following")
-                disp("\t- in the menu bar of the Figure 3 window, click Tools")
-                disp("\t- then click GUI mode (on all axis)")
-                disp("\t- then click Disable pan and rotate")
-                disp("")
-                disp("Do this now before continuing, and DO NOT rotate the plot or the program will crash...")
+                disp("\t        rotating the spectrum plot may trigger a crash... in testing it was ok though..")
+                %disp("\tBefore continuing do the following")
+                %disp("\t- in the menu bar of the Figure 3 window, click Tools")
+                %disp("\t- then click GUI mode (on all axis)")
+                %disp("\t- then click Disable pan and rotate")
+                %disp("")
+                %disp("Do this now before continuing...")
                 disp("")
                 junk=input("<>","s");
                 disp("")
-                disp("\tInspect the plot but do NOT rotate it or zoom in/out.")
+                disp("\tInspect and compare the peak intensities. Use rotate button to get a good view.")
+                disp("\tShould the program crash when rotating, the auto-backup allows to restart from this point.")
+                disp("")
+                printf("When you're ready type %s\n", dispQuestion(cq))
+                disp("")
             else
                 disp("\tNow you can click the rotate icon in the figure window menu bar to activate rotation.")
                 disp("\tClick, hold and drag mouse to rotate the plot.")
@@ -81,11 +86,11 @@ else
         disp("\tClick the \"R\" button on the bottom of the figure window to activate rotation.")
         disp("\tThen left click inside the figure window to rotate the plot.")
         disp("\tNote that this can be very slow.")
-        disp("\tIssue \"coneView\" again to go back to the default view.")
+        printf("\tIssue %s again to go back to the default view.\n", dispCommand("coneView"))
     elseif strcmp(graphics_toolkit, 'gnuplot') == 1
         disp("\tUse the mouse inside the figure window to rotate the plot.")
         disp("\tNote that this can be very slow.")
-        disp("\tIssue \"coneView\" again to go back to the default view.")
+        printf("\tIssue %s again to go back to the default view.\n", dispCommand("coneView"))
     end
 end
 

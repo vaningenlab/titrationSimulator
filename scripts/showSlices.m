@@ -9,12 +9,12 @@ function showSlices(peakNumber, dimension)
     if nargin < 2
         disp("")
         disp("Specify the peak (1-9) and the dimension (N/H) for the 1D projections.")
-        disp("e.g. showSlices(3, \"N\") or showSlices(9,\"H\")")
-        disp("I can also show both slices using \"b\", e.g. showSlices(3, \"b\")")
+        printf("e.g. %s or %s\n", dispCommand("showSlices(3,\"N\")"), dispCommand("showSlices(9,\"H\")"))
+        printf("I can also show both slices using \"b\", e.g. %s\n", dispCommand("showSlices(3,\"b\")"))
         disp("")
     elseif peakNumber < 0 || peakNumber > 9
         printf("Oops! Peak %d does not exist\n", peakNumber)
-        disp("The peak-number has to in range 1-9: showSlices(3,\"N\")")
+        printf("The peak-number has to in range 1-9: %s\n", dispCommand("showSlices(3,\"N\")"))
     elseif dimension != "N" && dimension != "H" && dimension != "b"
         disp("")
         disp("??? I only can project along \"N\" or \"H\" or both (\"b\"). Sorry dude.")

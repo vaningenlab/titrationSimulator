@@ -8,14 +8,11 @@ Rem without using --gui will force --cli and default to fltk toolkit
 Rem User needs to adjust ROOT_PATH if Octave is not installed in default location
 Rem spaces in variable is OK
 
-set ROOT_PATH=C:\Program Files\GNU Octave\Octave-8.4.0
+set ROOT_PATH=C:\Program Files\GNU Octave\Octave-11.3.0
 
-Rem Double-check whether script is started from within ZIP archive
-Rem if "zip" in (~dp0)
-
-Rem User will need to activate pushd command below in case users are logged in from network drive
-Rem Remove "Rem" in line below:
-Rem pushd %~dp0
+Rem turn up volume one notch to also atomatically unmute sound
+echo CreateObject("WScript.shell").SendKeys(chr(173)) > "%Temp%\unmute.vbs"
+cscript //NoLogo "%Temp%\unmute.vbs"
 
 Rem titration simulator script dir extracted from current working dir -- could contain spaces
 Rem should not be necessary since current dir is already main dir of simulator

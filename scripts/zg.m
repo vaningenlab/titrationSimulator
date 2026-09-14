@@ -26,9 +26,12 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         % note that noise has to be complex number otherwise symmetrical noise!
         noiseX = 1*(randn(npN,npH)+sqrt(-1)*randn(npN,npH));
         noiseY = 1*(randn(npN,npH)+sqrt(-1)*randn(npN,npH));
+        % start timer to track computation speed
         tic();
         disp("")
+        printf("%s", YEL)
         disp("Wait, initializing experiment ...")
+        printf("%s", WHT)
         % here I add the acqu window
         figure(1)
         clf
@@ -72,18 +75,23 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         FIDamp = ns/8*round(max(real(McX(1,:))))+1;
         printf("\n")
         disp("")
+        printf("%s", YEL)
         disp("Starting acquisition ...")
+        printf("%s", WHT)
         disp("")
         disp("The plot shows the FID for each experiment needed to make the 2D spectrum (2nd counter)")
         disp(" and summed for each scan (first counter)")
         disp("")
+        printf("%s", BLU)
         disp("==> Do not change to another plot window until acquisition is finished.<==")
+        printf("%s", WHT)
         disp("")
+        % derive appropriate waiting time as recycle dalay
         acq_time = toc()/8;
         % here skip or adjust number of plots shown if computer is very slow
-        % typically initialization time on my laptop is ca. 10 sec, so put cutoff at 32 sec/8 = 4 sec
+        % typically initialization time on my 2008 laptop is ca. 10 sec, so put cutoff for slow PC at 8 sec for 74 points
         % for the typical 74 points
-        slowPCtime = (32*npN/74)/4;
+        slowPCtime = 8*npN/74;
         if acq_time < slowPCtime
             for p=1:npN/2
                 % fast PC
@@ -93,6 +101,16 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
                 scanFIDX = signalSf*totalFIDX(p*2,:) + noiseSf*(randn(1,npH)+sqrt(-1)*randn(1,npH));
                 scanFIDY = signalSf*totalFIDY(p*2,:) + noiseSf*(randn(1,npH)+sqrt(-1)*randn(1,npH));
                 for scan=1:ns/2
+                    % plotting has become much faster on UU PC / Octave 11.3 so need to build in a delay - 0.3 sec
+                    % is it because of 11.3 version (just plotting) or hardware? if hardware can use initialization time
+                    % typically initialization time on my 2026 laptop is ca. 0.2 sec, so put cutoff for fast PC at 0.5 sec for 74 points
+                    %check_octave_version 
+                    fastPCtime = 0.5*npN/74;
+                    if acq_time < fastPCtime
+                        % this is a very fast system
+                        % let's do so-fast with 100 ms delay
+                        pause(0.1)
+                    end
                     figure(1)
                     hold off
                     if p == 1
@@ -123,7 +141,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("Your computer is a bit slow...")
             disp("Adjusting the acquisition window to update every fourth point and fourth scan...")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             for p=1:npN/4
                 % need to show total FID + noise for every scan and every t1 point -- every other ns, t1
@@ -211,7 +229,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         disp("Acquisition finished.")
         % now show all FIDs in t1 behind each other
         disp("")
-        %junk=input("<>","s");
+        %showBreak
         %disp("")
         disp("Showing all recorded FIDs")
         disp("")
@@ -240,7 +258,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         end
         disp("")
         if titrationPoint == 1 && fidShown == 0 && easyMode == 0
-            disp("Type \"showFID\" at the command prompt to take a look at the FID.")
+            printf("Type %s at the command prompt to take a look at the FID.\n", dispCommand("showFID"))
         elseif titrationPoint == 1 && fidShown == 0 && easyMode == 1
             disp("")
             disp("Saving a backup of your work before continuing ...")
@@ -250,7 +268,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("")
             disp("Let's take a closer look at how the plotted FIDs are transformed to a 2D spectrum.")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             disp("Right now all FIDs are plotted after each other.")
             disp("Zoom in on the plot to see the individual FIDs.")
@@ -264,7 +282,7 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
                 disp("Click the \"A\" button to autoscale to the full view.")
             end
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             showFID
         elseif easyMode == 2 && fidShown == 0 && titrationPoint == 4
@@ -278,21 +296,21 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("")
             disp("Let's take a closer look at how the plotted FIDs are transformed to a 2D spectrum.")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             disp("Right now all FIDs are plotted after each other.")
             disp("Zoom in on the plot to see the individual FIDs.")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             showFID
         else
-            disp("Type \"xfb\" at the command prompt to process the data to a spectrum.")
+            printf("Type %s at the command prompt to process the data to a spectrum.\n", dispCommand("xfb"))
         end
         disp("")
     elseif exist("pConc")
         disp("")
-        disp("Error! Acquisition parameters undefined. Type eda first")
+        printf("Error! Acquisition parameters undefined. Type %s first\n", dispCommand("eda"))
         disp("")
     else
         disp("")
@@ -312,9 +330,11 @@ elseif strcmp(expPars, "find90")
             a = 1+1;
         end
         disp("")
+        printf("%s", BLU)
         disp("Acquisition finished.")
+        printf("%s", WHT)
         disp("")
-        disp("Type \"qfp\" at the command prompt to process the data to a spectrum.")
+        printf("Type %s at the command prompt to process the data to a spectrum.\n", dispCommand("qfp"))
         disp("")
     end
     if p1 == 0
@@ -364,7 +384,7 @@ elseif strcmp(expPars, "popt")
     if  promptForReEnter == 1
         disp("")
         disp("Please enter a positive number without units!")
-        disp("Type \"zg\" again to re-enter your values")
+        printf("Type %s again to re-enter your values\n", dispCommand("zg"))
         disp("")
     else
         pS = str2num(pS);
@@ -440,43 +460,45 @@ elseif strcmp(expPars, "popt")
             disp("")
         end
         numCalib = numCalib + 1;
-        junk=input("<>","s");
+        showBreak
         disp("")
         if questionAsked(2) == 0 && easyMode < 3   % this is no longer skipped in easyMode == 2; since it helps to understand what goes on
             question(2)
             disp("")
-            disp("To continue the calibration, type \"zg\" the command prompt")
+            printf("To continue the calibration, type %s the command prompt\n", dispCommand("zg"))
             disp("to adapt the range and number of experiments")
             disp("")
         else
             disp("")
-            disp("To continue the calibration, type \"zg\" the command prompt")
+            printf("To continue the calibration, type %s the command prompt\n", dispCommand("zg"))
             disp("to adapt the range and number of experiments")
             disp("")
             disp("Once you found the p1 value to get a zero-crossing, set p1 to")
             disp("the pulse length needed for a 90-degree rotation.")
             disp("For example if you find the 360 zero crossing at 32 us,")
-            disp("then enter the p1 value at the command prompt, when you see :)], like this:")
+            printf("then enter the p1 value at the command prompt, when you see %s:)]%s, like this:\n", CYN, WHT)
+            printf("%s",RED)
             disp("\t   \tp1 = 8")
-            disp("\t   \tor p1 = 32/4")
-            disp("\t   ==> note it is \"p-one\" not \"p-el\" or \"p-i\"! <==")
+            printf("%s", WHT)
+            printf("\t   \tor %sp1 = 32/4%s\n", RED, WHT)
+            printf("\t   ==> note it is %s not %s or %s! <==", dispCommand("p-one"), dispCommand("p-el"),dispCommand("p-i"))
             disp("")
             disp("Once you have defined the correct value for p1,")
             disp("you can proceed to record the HSQC protein fingerprint spectrum.")
             disp("")
-            junk=input("<>","s");
+            showBreak;
             disp("")
             disp("To proceed do the following:")
-            disp("\t - continue with the calibration (\"zg\") until you identified the zero-crossing.")
-            disp("\t - set p1 to the correct value (e.g. \"p1 = 32/4\" ")
+            printf("\t - continue with the calibration %s until you identified the zero-crossing.\n", dispCommand("zg"))
+            printf("\t - set p1 to the correct value (e.g. %s\n", dispCommand("p1 = 32/4"))
             disp("\t - load the parameters of the protein fingerprint experiment, by typing:")
-            disp("\t      rpar(\"HSQC\")")
+            printf("\t      %s\n",dispCommand("rpar(\"HSQC\")"))
             disp("")
         end
     end
 else
     disp("I don't understand which experiment you want to do.")
     disp("First load the parameters of an experiment by typing")
-    disp("\"rpar\" at the command prompt and hit return.")
+    printf("%s at the command prompt and hit return.\n", dispCommand("rpar"))
     disp("")
 end

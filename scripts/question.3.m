@@ -24,7 +24,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         printf("If your answer is correct, you get the full %d points.\n", questionPoints)
         printf("If it is wrong, you can answer once more, for %d points.\n", round(0.25*questionPoints) )
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
         printf("+++               QUESTION 1 (of %d)                      +++\n",numQuestions)
@@ -54,7 +54,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         answer1 = checkAnswer(answer1);
         score   = calcScore(answer1, score, "B", questionPoints);
         questionAsked(1)=1;
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("EXPLANATION:")
         if ligandClass == 0
@@ -99,7 +99,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         answer2 = input("Enter your answer: ","s");
         answer2 = checkAnswer(answer2);
         score   = calcScore(answer2, score, "C", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("EXPLANATION:")
         disp("C is right here. The differences in peak intensities are caused by differences in local dynamics.")
@@ -108,15 +108,15 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         questionAsked(2) = 1;
          % now prompt student to start with titration
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("Beautiful, you now have a fingerprint 15N-HSQC spectrum of your protein.")
         disp("Compare your spectrum with that of your (virtual) neighbour.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("Now let's finally start with the titration and see whether the peaks move ...")
-        disp("Type \"titrate\" at the command prompt.")
+        printf("Type %s at the command prompt.\n", dispCommand("titrate"))
         disp("")
     elseif number == 3 && questionAsked(number) == 0
         disp("")
@@ -142,7 +142,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         answer3 = input("Enter your answer: ","s");
         answer3 = checkAnswer(answer3);
         score   = calcScore(answer3, score, "A", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("EXPLANATION:")
         disp("Obviously the ligand concentration needed to saturate the protein depends on the binding affinity")
@@ -155,15 +155,15 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         disp("approximately 9*KD + the protein concentration to get 90% of all binding-sites occupied.")
         disp("So A is the right answer.");
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         %printf("In your system the KD is in the %s range.\n", affinityRange)
         disp("Continue the titration until you see no more significant changes in the spectrum")
-        disp("You can also take a peek at the %bound protein using \"report\"...")
+        printf("You can also take a peek at the %bound protein using %s...\n", dispCommand("report"))
         disp("")
-        disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
+        printf("When you have all your spectra, issue %s to analyse the changes in the spectra.\n", dispCommand("calcCSP"))
         disp("")
-        junk=input("<>","s");
+        showBreak
         questionAsked(3)=1;
     elseif number == 4 && questionAsked(number) == 0
         disp("")
@@ -230,7 +230,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         disp("")
         disp("")
         questionAsked(7)=1;
-        junk=input("<>","s");
+        showBreak
         %clc
         questionAsked(7) = 1;
         checkFinished

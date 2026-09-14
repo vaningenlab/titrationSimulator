@@ -12,13 +12,26 @@
 lowS2       = 0.3 + 0.3*rand(1,2);
 mediumS2    = 0.6 + 0.2*rand(1,2);
 bigS2       = 0.8 + 0.2*rand(1,5);
-S2Values    = [ lowS2 mediumS2 bigS2 ];
+S2ValuesOrd = [ lowS2 mediumS2 bigS2 ];
+% better to randomize otehrwise always peak 1,2 3 with higest int.
+ind         = randperm (numel (S2ValuesOrd));
+S2Values    = S2ValuesOrd(ind);
+
 [val, minS2peak] = min(S2Values);
 [val, maxS2peak] = max(S2Values);
-% does not matter if ordered since peak positions are random anyways
-% but need to check that min and max are assigned to overlapping peaks!
-% so peak 1 2 or 3 is min and should not overlap with peak 7 or 8 9
 
+% make one peak with Rex contribution, which is reduced in bound state
+% this needs to be a bigS2 peak to be clear
+RexValuesNA = zeros(1,numPeaks);
+RexValuesHA = zeros(1,numPeaks);
+RexValuesNB = zeros(1,numPeaks);
+RexValuesHB = zeros(1,numPeaks);
+Rexpeak = maxS2peak;
+% base value can be ca. 15 s-1 for R2 Nxy and 50 s-1 for 1H
+RexValuesNA(Rexpeak) = 3;
+RexValuesHA(Rexpeak) = 10;
+RexValuesNB(Rexpeak) = 1;
+RexValuesHB(Rexpeak) = 3;
 
 % fixed parameters
 hbar = 1.0546e-34;      % Planck's constant over 2*my_pi [J s ]
@@ -112,14 +125,14 @@ deltaH_Bv = 1/3*dHN*cH*1/2*(3*(cos(phiH))^2-1)*JwH_Bv;                          
 
 % Helgstrand has 1/36 instead of 1/4 but factor 3 in dHH so 9/36 = 1/4
 laN_Av = 1/36*dHN^2*( 2*J0_Av + 3/2*JwN_Av + 1/2*JwHmN_Av + 3*JwH_Av + 3*JwHpN_Av) ...
-            + 1/3*cN^2*(2/3*J0_Av+1/2*JwN_Av);                                      % Nxy auto
+            + 1/3*cN^2*(2/3*J0_Av+1/2*JwN_Av) + RexValuesNA;                                      % Nxy auto
 laH_Av = 1/36*dHN^2*( 2*J0_Av + 3*JwN_Av + 1/2*JwHmN_Av + 3/2*JwH_Av + 3*JwHpN_Av) ...
-            + 1/3*cH^2*(2/3*J0_Av+1/2*JwH_Av) + laHH_A;                                      % Hxy auto
+            + 1/3*cH^2*(2/3*J0_Av+1/2*JwH_Av) + laHH_A + RexValuesHA;                                 % Hxy auto
 
 rhoaN_Av = 1/36*dHN^2*(2*J0_Av + 3/2*JwN_Av + 1/2*JwHmN_Av + 3*JwHpN_Av) ...
-            + 1/3*cH^2*JwH_Av + 1/3*cN^2*(2/3*J0_Av + 1/2*JwN_Av) + rhoHH_A;                  % HzNxy auto
+            + 1/3*cH^2*JwH_Av + 1/3*cN^2*(2/3*J0_Av + 1/2*JwN_Av) + rhoHH_A + RexValuesNA;                  % HzNxy auto
 rhoaH_Av = 1/36*dHN^2*(2*J0_Av + 3/2*JwH_Av + 1/2*JwHmN_Av + 3*JwHpN_Av) ...
-            + 1/3*cN^2*JwN_Av + 1/3*cH^2*(2/3*J0_Av + 1/2*JwH_Av) + laHH_A;                  % HxyNz auto
+            + 1/3*cN^2*JwN_Av + 1/3*cH^2*(2/3*J0_Av + 1/2*JwH_Av) + laHH_A + RexValuesHA;                  % HxyNz auto
 
 % check factor 0.5 of Helgstrand! 
 % Palmer writes 1/6 P2cos(theta)*(4J(0)+3J(w)) = 1/12 (3cos^2-1) ( 4J0 + 3Jw)
@@ -128,14 +141,14 @@ etaN_Av = 1/3*0.5*dHN*cN*(3*(cos(phiN))^2-1)*(2/3*J0_Av+1/2*JwN_Av);            
 etaH_Av = 1/3*0.5*dHN*cH*(3*(cos(phiH))^2-1)*(2/3*J0_Av+1/2*JwH_Av);                    % cross-correlation
 
 laN_Bv = 1/36*dHN^2*( 2*J0_Bv + 3/2*JwN_Bv + 1/2*JwHmN_Bv + 3*JwH_Bv + 3*JwHpN_Bv) ...
-            + 1/3*cN^2*(2/3*J0_Bv+1/2*JwN_Bv);                                      % Nxy auto
+            + 1/3*cN^2*(2/3*J0_Bv+1/2*JwN_Bv) + RexValuesNB;                                      % Nxy auto
 laH_Bv = 1/36*dHN^2*( 2*J0_Bv + 3*JwN_Bv + 1/2*JwHmN_Bv + 3/2*JwH_Bv + 3*JwHpN_Bv) ...
-            + 1/3*cH^2*(2/3*J0_Bv+1/2*JwH_Bv) + laHH_B;                                      % Hxy auto
+            + 1/3*cH^2*(2/3*J0_Bv+1/2*JwH_Bv) + laHH_B + RexValuesHB;                                      % Hxy auto
 
 rhoaN_Bv = 1/36*dHN^2*(2*J0_Bv + 3/2*JwN_Bv + 1/2*JwHmN_Bv + 3*JwHpN_Bv) ...
-            + 1/3*cH^2*JwH_Bv + 1/3*cN^2*(2/3*J0_Bv + 1/2*JwN_Bv) + rhoHH_B;                  % HzNxy auto
+            + 1/3*cH^2*JwH_Bv + 1/3*cN^2*(2/3*J0_Bv + 1/2*JwN_Bv) + rhoHH_B +  RexValuesNB;                  % HzNxy auto
 rhoaH_Bv = 1/36*dHN^2*(2*J0_Bv + 3/2*JwH_Bv + 1/2*JwHmN_Bv + 3*JwHpN_Bv) ...
-            + 1/3*cN^2*JwN_Bv + 1/3*cH^2*(2/3*J0_Bv + 1/2*JwH_Bv) + laHH_B;                  % HxyNz auto
+            + 1/3*cN^2*JwN_Bv + 1/3*cH^2*(2/3*J0_Bv + 1/2*JwH_Bv) + laHH_B  + RexValuesHB;                  % HxyNz auto
 
 % check factor 0.5 of Helgstrand!
 % Palmer writes 1/6 P2cos(theta)*(4J(0)+3J(w)) = 1/12 (3cos^2-1) ( 4J0 + 3Jw)

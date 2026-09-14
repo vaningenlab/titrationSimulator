@@ -36,7 +36,7 @@ global molEq beNice
         answer1 = checkAnswer(answer1);
         score   = calcScore(answer1, score, "B", questionPoints);
         questionAsked(1)=1;
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("EXPLANATION:")
         if ligandClass == 0
@@ -68,13 +68,13 @@ global molEq beNice
         answer2 = input("Enter your answer: ","s");
         answer2 = checkAnswer(answer2);
         score   = calcScore(answer2, score, "B", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("EXPLANATION:")
         disp("There will be no signal at 180, 360, 540 degree, etc. Maximum signal for 90, 450 degree, etc.")
         disp("And minimum signal for 270, 630 degree etc. So B is the right answer.");
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("NEXT:")
         disp("As it is easier to check for zero of a sinoid signal than a maximum,")
@@ -100,7 +100,7 @@ global molEq beNice
         answer3 = checkAnswer(answer3);
         score   = calcScore(answer3, score, "A", questionPoints);
         questionAsked(3)=1;
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("EXPLANATION:")
         disp("A. is the correct answer. Ignoring relaxation tau should be 1/(4*J),")
@@ -111,7 +111,7 @@ global molEq beNice
         disp("")
         disp("tau= xx          [where xx is the value you want in seconds]")
         disp("")
-        junk=input("<>","s");
+        showBreak
         %clc
         disp("")
         disp("***      4. Protein HSQC      ***")
@@ -138,7 +138,7 @@ global molEq beNice
         answer4 = input("Enter your answer: ","s");
         answer4 = checkAnswer(answer4);
         score   = calcScore(answer4, score, "D", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("EXPLANATION:")
         disp("D is correct. The length of the acquisition time determines the magnitude of")
@@ -147,7 +147,7 @@ global molEq beNice
         disp("Both signal and noise accumalate but due to the random nature of the noise, it adds up")
         disp("not linearly, but as the square-root.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("Now rerecord the HSQC making sure it has a good S/N and good resolution.")
         disp("Then I have a final question for you before you can really start with the titration.")
@@ -185,7 +185,7 @@ global molEq beNice
         answer5 = input("Enter your answer: ","s");
         answer5 = checkAnswer(answer5);
         score   = calcScore(answer5, score, "C", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("EXPLANATION:")
         %disp("C is right here. The differences in peak intensities are caused by differences in transverse")
@@ -217,7 +217,7 @@ global molEq beNice
         answer6 = input("Enter your answer: ","s");
         answer6 = checkAnswer(answer6);
         score   = calcScore(answer6, score, "A", questionPoints);
-        junk=input("<>","s");
+        showBreak
         disp("");
         disp("EXPLANATION:")
         %disp("First: P+L <-> PL, KD = [P][L]/[PL]")
@@ -237,7 +237,7 @@ global molEq beNice
         disp("approximately 9*KD + protein concentration to get 90% of all binding-sites occupied.")
         disp("So A is the right answer.");
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         printf("In your system the KD is in the %s range.\n", affinityRange)
         disp("So continue the titration until you are close to 10*KD+protein concentration,")
@@ -246,7 +246,7 @@ global molEq beNice
         disp("")
         disp("When you have all your spectra, issue \"calcCSP\" to analyse the changes in the spectra.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         questionAsked(6)=1;
     %calcCSP has question 7 and 8
     elseif number == 7 && questionAsked(number) == 0
@@ -273,7 +273,7 @@ global molEq beNice
         disp("fast, intermediate or slow exchange.")
         disp("For every peak, all 1D slices of that peak in all spectra will be shown.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         score=score+1
         disp("")
         for p=1:numPeaks
@@ -318,7 +318,7 @@ global molEq beNice
                 disp("the ratio of dw (=chemical shift difference in rad s-1) to kex (the exchange rate).")
                 peakInfo(p)
             end
-            junk=input("<>","s");
+            showBreak
             %clc
         end
         disp("")
@@ -370,7 +370,7 @@ global molEq beNice
             printf("the complex has a life time of 1/koff ~ %.0f ms.\n", 1/koff*1000);
         end
         disp("")
-        junk=input("<>","s");
+        showBreak
         %clc
         questionAsked(number) = 1;
         checkFinished

@@ -1,5 +1,30 @@
 HISTORY titrationSimulator
 
+v22 Sep 2026 -- before BMSB course
+- all "i" changed to sqrt(-1) DONE
+- resize to 140 char wide for intro -- double check windows DONE
+- added from ideas March 2026 after OnderwijsFestival UU
+    - add sound and intro -- IN PROGRESS
+    - add bold text /color via ANSI statements:     DONE
+        white: main text
+        yellow: headers (questions, steps)
+        cyan: score good, progress bar
+        magenta: score bad
+        blue: explanation header
+    - add pacman animation     --- NOT DONE, later
+    ==> showIntro.m and credit.m
+- update to 11.3 in windows bat file DONE
+- update dynamics question to emphasize fast-time scale question DONE
+- tone down "do not rotate" as FID rotate works, spectrum conveiew roatte aslso works…  DONE
+- question(5) prompt after inspect bit do NOT rotate is awkward DONE
+- add a linebroadened signal and add reference in question(5) answer, double check which peak is used for comparison with high int. DONE
+- slow down simulation of HSQC, is too fast! - pause command in zg.m in ns-loop DONE
+- questionAsked check when loading backup DONE
+- tone down using less protein if affinity is low! DONE
+- credit in goodbye
+- music
+
+
 v21 Sep 2025 -- after BMSB course
 - eda zg dont fry the probe
 - na reduceoverlay kleur in calcCSP klopt niet/ geKD werkt nie; restore

@@ -16,7 +16,7 @@
 %                if easyMode = 2  question.2.m 
 %                if easyMode = 3, question.3.m 
 %                if easyMode = 0, question.0.m 
-%           these question file can of course be altered to adjust the phrasing to your lectures.
+%           these question files can of course be altered to adjust the phrasing to your lectures.
 
 
 clear -all
@@ -29,10 +29,10 @@ global allSpectra plotSpectra peakStoreX peakStoreY plotPoints peakIntProfile la
 global numLvls cntFactor baseLevel cntLvls startFloor noiseX colorNamesLong colorPlot
 global gH gN B0 atH atN swH swN wHv wNv dwHv dwNv asHppm asNppm laN_Av laN_Bv wHvppm wNvppm dwHvppm dwNvppm
 global asH asN asHppm asNppm centerHppm centerNppm zfH zfN 
-global noiseLevel S2Values ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq kdq
+global noiseLevel S2Values Rexpeak ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq kdq
 
-% reset octave prompt
-PS1(":)] ");
+% reset octave prompt -- in cyan
+PS1('\033[1;36m:)] \033[0m');
 
 % switch pager off to have output written to screen immediately
 more off;
@@ -81,6 +81,7 @@ if easyMode == 0
     end
     numQuestions   = 13;                % total number of questions
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no DOES NOT WORK YET AS INTENDED
+    warning('off', 'all');              % to hide SW vertex plot warnings on my Mac laptop v.9.3
 elseif easyMode  == 1
     if ispc()
         copyfile("question.1.m", "question.m");
@@ -89,6 +90,7 @@ elseif easyMode  == 1
     end
     numQuestions   = 12;                % easy mode 1 has 12 questions + calibration points
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
+    warning('off', 'all');              % to hide SW vertex plot warnings on my Mac laptop v.9.3
 elseif easyMode  == 2
     if ispc()
         copyfile("question.2.m", "question.m");
@@ -97,6 +99,7 @@ elseif easyMode  == 2
     end
     numQuestions   = 8;                 % super easy mode 2 has fewer questions to get faster to the titration
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
+    warning('off', 'all');              % to hide SW vertex plot warnings on my Mac laptop v.9.3
 else
     if ispc()
         copyfile("question.3.m", "question.m");
@@ -105,26 +108,9 @@ else
     end
     numQuestions   = 7;                 % super easy mode 3 has even fewer questions to get faster to the titration
     offResonance   = 0;                 % [0|1] include off-resonance effects yes or no
+    warning('off', 'all');              % to hide SW vertex plot warnings on my Mac laptop v.9.3
 end
 
-% print info 
-
-clc
-disp("")
-disp("\t****************************************")
-disp("\t***                                  ***")
-disp("\t***       titrationSimulator         ***")
-disp("\t***                                  ***")
-disp("\t****************************************")
-disp("\t***      powered by GNU Octave       ***")
-disp("\t****************************************")
-disp("")
-disp("\t++++++++++++++++++++++++++++++++++++++++")
-disp("\t++         DO THE PEAKS MOVE?         ++")
-disp("\t++++++++++++++++++++++++++++++++++++++++")
-disp("\t++ (c)2025     HvI Utrecht University ++")
-disp("\t++++++++++++++++++++++++++++++++++++++++")
-disp("")
 
 % These steps are run by the user by issuing commands at the prompt
 % Just start the first step here.
@@ -153,66 +139,74 @@ if exist("state.out") == 2
             unansweredQ = [unansweredQ q];
         end
     end
+    if unansweredQ == [];
+        disp("")
+        disp("Great! You have answered all question, so looks like you're done!")
+        printf("To see your score again, type %s\n", dispCommand("checkFinished"))
+    else
+        disp("")
+        disp("Ok, you were not fully done yet. You still need to answer few questions")
+    end
     disp("")
     disp("Some tips on how to continue:")
     if titrationPoint == 0
         disp("Ah you have no sample yet.")
-        disp("Type \"makeSample\" to continue")
+        printf("Type % to continue.\n",dispCommand("makeSample"))
     elseif plotPoints  == 0 
         % no spectrum plotted yet, so crash before rotate FID?
         disp("It seems you have not recorded or processed a 2D HSQC spectrum yet.")
-        disp("Type \"eda\" to setup, \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
+        printf("Type %s to setup, %s to rerun the experiment and then %s to process it to a spectrum.\n", dispCommand("eda"), dispCommand("zg"), dispCommand("xfb"))
         disp("")
         disp("If the program crashed when rotating the 3D plot of the FID, then don't rotate anymore!")
         disp("")
     elseif plotPoints == 1 && questionAsked(5)==0 && easyMode==1
         % one spectum only plotted, likely question coneview crashed
         disp("It seems you run into a crash when rotating the 3D spectrum plot in the coneView step.")
-        disp("Type \"xfb\" to replot your spectrum.")
-        disp("When doing \"coneView\" again, make sure to disable the GUI mode pan/rotate as shown.")
+        printf("Type %s to replot your spectrum.\n", dispCommand("xfb"))
+        printf("When doing %s again, make sure to disable the GUI mode pan/rotate as shown.\n", dispCommand("coneView"))
         disp("or simply do not rotate the plot anymore, but try to identify the two peaks of interest in the view.")
         disp("")
     elseif plotPoints == 1
         % one spectum only plotted, so still before the titration, maybe question coneview crashed
         disp("It seems you have not started the titration yet.")
-        disp("Type \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
-        disp("Then start the titration with \"titrate\" command.")
+        printf("Type %s to rerun the experiment and then %s to process it to a spectrum.\n", dispCommand("zg"), dispCommand("xfb"))
+        printf("Then start the titration with %s command.\n", dispCommand("titrate"))
     elseif pb < 0.85
         % at least two spectra were plotted, so doing the titration and not saturated
         disp("Ah, you were in the middle of the titration experiment")
-        disp("Below you see the output of the \"report\" command with")
+        printf("Below you see the output of the %s command with\n", dispCommand("report"))
         disp("all the details on your titration steps.")
         disp("")
         report
         disp("")
-        junk=input("<>","s");
+        showBreak
         disp("")
         disp("Now do the following at the command prompt:")
-        disp("Type \"plotAll\" to show the overlay of all spectra.")
-        disp("Type \"titrate\" to continue the titration.")
+        printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
+        printf("Type %s to continue the titration.\n", dispCommand("titrate"))
     else
         % already enough bound state (>0.85%) to start analysis
         disp("It seems you completed the titration experiment.")
         if questionAsked(cspq) == 0
             disp("You can continue with the data analysis.")
             disp("Now do the following at the command prompt:")
-            disp("Type \"plotAll\" to show the overlay of all spectra.")
-            disp("Type \"calcCSP\" to start the chemical shift perturbation analysis.")
+            printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
+            printf("Type %s to start the chemical shift perturbation analysis.\n", dispCommand("calcCSP"))
         elseif questionAsked(cspq+1) == 0
             disp("You can continue with the determination of the binding interface.")
             disp("Now do the following at the command prompt:")
-            disp("Type \"plotAll\" to show the overlay of all spectra.")
-            printf("Then type \"restoreCSP\" and then type \"question(%d).\n", cspq+1)
+            printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
+            printf("Then type %s and then type %s.\n", dispCommand("plotAll"), dispQuestion("question",cspq+1))
         elseif questionAsked(kdq) == 0
             disp("You already did the CSP analysis.")
             disp("Now continue with the binding affinity determination.")
             disp("Now do the following at the command prompt:")
-            disp("Type \"plotAll\" to show the overlay of all spectra.")
-            printf("Type \"restoreCSP\" and then type \"question(%d).\n", kdq)
+            printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
+            printf("Then type %s and then type %s.\n", dispCommand("restoreCSP"), dispQuestion("question",kdq))
         elseif sum(questionAsked) == numQuestions
             disp("Ah it seems you were actually done!")
-            disp("Type \"restoreAll\" to restore all Figures,")
-            disp("Then type \"checkFinished\" to complete the practical.")
+            printf("Type %s to restore all Figures,\n", dispCommand("restoreAll"))
+            printf("Then type %s to complete the practical.\n", dispCommand("checkFinished"))
         else
             disp("It seems you completed also the data analysis,")
             disp("but still a few final questions left to answer.")
@@ -220,14 +214,14 @@ if exist("state.out") == 2
             disp("")
             checkFinished
             disp("")
-            disp("Type \"question(x)\" to answer question x.")
+            printf("Type %s to answer question x.\n", dispCommand("question(x)"))
             disp("   (you may have to ignore the instructions at the end of the question on how to continue).")
         end
         % check whether last spectrum is empty
         spectrumSignal = max(max(plotSpectra(:,:,plotPoints)));
         if spectrumSignal == 0
             disp("It seems something is wrong with your last spectrum.")
-            disp("Type \"zg\" to rerun the experiment and then \"xfb\" to process it to a spectrum.")
+            printf("Type %s to rerun the experiment and then %s to process it to a spectrum.\n", dispCommand("zg"), dispCommand("xfb") )
             disp("If there's still no signal for the new spectrum, ask your instructor for help.")
             disp("If all is ok, then continue w/ the above commands")
         end
@@ -239,27 +233,39 @@ else
         disp("Loading previous titration system...")
         % load system from previous titration to allow restart
         load("system.out")
+        defineColors
+        defineMusic
         disp("Done!")
     else
         % print welcome message
+        % do fancy new gamified intro,  load colors and music
+        clc
+        defineColors
+        defineMusic
+        %pacmanAnimation     % pacman animation -- should be merged with music and intro text
+        showIntro           % music + welcome text
         disp("")
         disp("Welcome to the NMR titration simulator.")
         disp("")
-        disp("Whenever you see this symbol: <> press return/enter to continue!")
+        printf("Whenever you see this symbol: %s<>%s press return/enter to continue!\n", MAG, WHT)
         if ispc()
             disp("For windows users: you sometimes need to press twice ...")
             disp("First to (re)activate the window, then to actually continue.")
         end
         disp("")
-        disp("Whenever you see this symbol: :)] you have to enter a command.")
+        printf("Whenever you see this symbol: %s:)]%s you have to enter a command.\n", CYN, WHT)
         disp("Which command will be clear later on.")
         disp("")
         disp("Good luck!")
         disp("")
-        junk=input("<>","s");
+        showBreak
         clc
 
-        disp("\t**** NMR titration simulator ****")
+        printf("%s", YEL)
+        disp("*----------------------------------------------------------*")
+        disp("***                    HOW IT WORKS                      ***")
+        disp("*----------------------------------------------------------*")
+        printf("%s", WHT)
         disp("")
         disp("You're about to do an in silico NMR titration experiment")
         disp("to investigate a protein-ligand interaction.")
@@ -267,10 +273,12 @@ else
         disp("You will get your own protein and your own ligand to investigate.")
         disp("The ligand is either a small molecule, a peptide or another protein.")
         disp("")
+        printf("%s", CYN)
         disp("Your goal is to determine the binding interface")
         if easyMode >=1
             disp("and the dissociation constant.")
         end
+        printf("%s", WHT)
         disp("")
         disp("This simulator mimics the important steps")
         disp("in sample preparation and data acquisition.")
@@ -278,7 +286,7 @@ else
         disp("You will be guided step-by-step through the experiment.")
         disp("If something is unclear, ask your instructor.")
         disp("")
-        printf("There are %d multiple choice questions along the way.\n", numQuestions)
+        printf("There are %s%d%s multiple choice questions along the way.\n", CYN, numQuestions, WHT)
         disp("These will be automatically evaluated and scored.")
         disp("")
         disp("It is ok to take notes while doing this practical.")
@@ -287,12 +295,12 @@ else
         disp("During your experiment some plots will be generated.")
         disp("Keep the figure windows next to this text window so you can see both at the same time.")
         disp("")
-        junk=input("<>","s");
+        showBreak
         clc
         disp("")
         disp("OK, time to start. Enjoy!")
         disp("")
-        junk=input("<>","s");
+        showBreak
 
         initialiseSystem
         initialiseSpectrum
@@ -325,7 +333,7 @@ else
     number  = 0;            % question number identifier
     numLvls   = 10;         % initial settings for contourplot
     cntFactor = 1.4;        % initial settings for contourplot
-    startFloor= 0.05;        % initial settings for contourplot
+    startFloor= 0.05;       % initial settings for contourplot
     maxSpectra= 15;         % maximum amount of overlaid spectra before reduceOverlay works
     labelShift= 35;         % shift of peak labels from peak center in Hz
     labelSize = 12;         % font size for peak labels
@@ -372,7 +380,7 @@ else
     end
 
     disp("")
-    disp("Type \"makeSample\" (without the quotes) at the command prompt to continue.")
+    printf("Type %s at the command prompt to continue.\n", dispCommand("makeSample"))
     disp("")
 
 end % all startup options

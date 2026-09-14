@@ -43,7 +43,7 @@ title('FID #1 of 2D HSQC along 1H dimension (real part)','fontweight', 'bold')
 disp("")
 disp("If you do a FT of this FID you get a 1H spectrum.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 hold off
@@ -57,7 +57,7 @@ set(gca,'XDir','reverse')
 disp("")
 disp("A similar thing is true for say the 11th FID that was recorded.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 disp("Here you see the FID")
 
@@ -72,7 +72,7 @@ set(gca,'XDir','normal')
 disp("")
 disp("And again if you do a FT of this FID you get a 1H spectrum.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 hold off
@@ -87,12 +87,12 @@ disp("You can see that the intensities of the peaks are now different.")
 disp("Some peaks are negative and some are positive.")
 disp("This is because the 1H peak intensity is encoded with the 15N frequency!")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 disp("Let's zoom out again to the full series of FIDs recorded. ")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 hold off
@@ -109,7 +109,7 @@ set(gca,'XDir','normal')
 disp("The first step to get the 2D spectrum is to sort all FIDs as a 2D matrix")
 
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 hold off
@@ -132,12 +132,12 @@ end
 disp("Do you see the decay in the FID for both dimensions?")
 
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 disp("The next step is to Fourier Transform all rows of the 2D FID, so an FT in the 1H dimension.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 % this works
@@ -152,12 +152,12 @@ zlabel "signal intensity"
 title("FID after 1H FT (real part)",'fontweight', 'bold')
 
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 disp("The last step is then to apply Fourier Transform to all columns of the 2D matrix,")
 disp("so an FT in the 15N dimension.")
 disp("")
-junk=input("<>","s");
+showBreak
 disp("")
 
 
@@ -171,6 +171,6 @@ set(gca,'YDir','reverse')
 
 
 disp("")
-disp("Now continue by typing \"xfb\"")
+printf("Now continue by typing %s\n", dispCommand("xfb"))
 disp("")
 fidShown = 1;

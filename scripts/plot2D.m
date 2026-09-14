@@ -27,8 +27,8 @@ if tp == 1
         disp("The signal-to-noise is quite low.")
         disp("Would be best if you re-record the spectrum with more scans.")
         disp("")
-        disp("To do this: type \"eda\" at the command prompt and change ns")
-        disp("Then start acquisition again \"zg\".")
+        printf("To do this: type %s at the command prompt and change ns\n", dispCommand("eda"))
+        printf("Then start acquisition again %s.\n", dispCommand("zg"))
         disp("")
     end
     % if very noisy should switch to dataview

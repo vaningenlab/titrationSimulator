@@ -10,7 +10,7 @@
 
 Iz = 0.5*[ 1 0; 0 -1 ];
 Ix = 0.5*[ 0 1; 1 0 ];
-Iy = 0.5*i*[0 -1; 1 0 ];
+Iy = 0.5*sqrt(-1)*[0 -1; 1 0 ];
 E =[1 0; 0 1];
 
 % kron computes the kronecker product of matrix A and B = a(i,j)*b 
@@ -59,13 +59,13 @@ v(:,:,16)=1/2*Em;			% Helgstrand uses E/2
 
 for l = 1:16
 	for k=1:16
-		lvmHx(k,l) = trace(conj(v(:,:,k)')*(-i*(Hx*v(:,:,l)-v(:,:,l)*Hx)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmHy(k,l) = trace(conj(v(:,:,k)')*(-i*(Hy*v(:,:,l)-v(:,:,l)*Hy)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmHz(k,l) = trace(conj(v(:,:,k)')*(-i*(Hz*v(:,:,l)-v(:,:,l)*Hz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmNx(k,l) = trace(conj(v(:,:,k)')*(-i*(Nx*v(:,:,l)-v(:,:,l)*Nx)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmNy(k,l) = trace(conj(v(:,:,k)')*(-i*(Ny*v(:,:,l)-v(:,:,l)*Ny)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmNz(k,l) = trace(conj(v(:,:,k)')*(-i*(Nz*v(:,:,l)-v(:,:,l)*Nz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
-		lvmHzNz(k,l) = trace(conj(v(:,:,k)')*(-i*(2*Hz*Nz*v(:,:,l)-v(:,:,l)*2*Hz*Nz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmHx(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Hx*v(:,:,l)-v(:,:,l)*Hx)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmHy(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Hy*v(:,:,l)-v(:,:,l)*Hy)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmHz(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Hz*v(:,:,l)-v(:,:,l)*Hz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmNx(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Nx*v(:,:,l)-v(:,:,l)*Nx)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmNy(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Ny*v(:,:,l)-v(:,:,l)*Ny)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmNz(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(Nz*v(:,:,l)-v(:,:,l)*Nz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
+		lvmHzNz(k,l) = trace(conj(v(:,:,k)')*(-sqrt(-1)*(2*Hz*Nz*v(:,:,l)-v(:,:,l)*2*Hz*Nz)))/trace(v(:,:,k)*conj(v(:,:,k)'));
 	end
 end
 

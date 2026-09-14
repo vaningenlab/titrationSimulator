@@ -11,7 +11,7 @@ if easyMode == 0
     disp("")
     disp("This analysis won't work in your case most likely.")
     disp("")
-    junk=input("<>","s");
+    showBreak
     disp("")
 end
 % save score at start of this analysis
@@ -23,7 +23,7 @@ if questionAsked(kdq) == 1 && easyMode >=1
     disp("You can do it again but you won't get points for it...")
     disp("")
     disp("")
-    junk=input("<>","s");
+    showBreak
     disp("")
 end
 % make sure to only work if you're ready e.g. calcCSP has been asked
@@ -31,16 +31,16 @@ if easyMode >= 1 && questionAsked(kdq-1) == 0
     disp("")
     disp("First finish your titration experiment and")
     disp("do the chemical shift perturbation analysis.")
-    disp("Type \"report\" to see how far you are in the titration.")
-    disp("Type \"calcCSP\" to start the chemical shift perturbation analysis.")
+    printf("Type %s to see how far you are in the titration.\n", dispCommand("calcCSP"))
+    printf("Type %s to start the chemical shift perturbation analysis.\n", dispCommand("calcCSP"))
     disp("")
 elseif affinityValue*1e3 < proteinConc && molEq < 1.5
     % check whether plateau has been reached in particular for high affiniity binders
     disp("")
     disp("Even though the affinity is rather high, and your protein is nearly completely bound to ligand,")
     disp("it is better to record an additional point to measure the binding plateau.")
-    disp("Type \"report\" to see how far you are in the titration.")
-    disp("Type \"titrate\" to add more ligand, increase to at least 1.5 equivalents of ligand.")
+    printf("Type %s to see how far you are in the titration.\n", dispCommand("calcCSP"))
+    disp("Type %s to add more ligand, increase to at least 1.5 equivalents of ligand.\n", dispCommand("titrate"))
     disp("")
 else
     if questionAsked(kdq) == 0 && getkdTime == 0
@@ -61,7 +61,7 @@ else
         disp("")
     end
     if plotPoints < titrationPoint
-        disp("First, make sure you see all spectra again by typing \"overlayAll\" at the prompt.")
+        printf("First, make sure you see all spectra again by typing %s at the prompt.\n", dispCommand("overlayAll"))
         disp("")
     else
         disp("")
@@ -69,12 +69,12 @@ else
         if length(regexp(peakSelect,'[.\d]')) < length(peakSelect) || length(peakSelect)==0
             disp("")
             disp("Please enter a positive number without units!")
-            disp("Type \"getKD\" again to re-enter your values.")
+            printf("Type %s again to re-enter your values.\n", dispCommand("getKD"))
             disp("")
         elseif abs(dwHv(str2num(peakSelect)))/(2*koff) > 0.71 && beNice == 1  % check whether peak is indeed fast /fast-intermediate
             disp("")
             disp("This residue is in slow or intermediate exchange or experiences too much broadening.")
-            disp("Type \"getKD\" again and choose another peak.")
+            printf("Type %s again and choose another peak.\n", dispCommand("getKD"))
             disp("")
             disp("Best to take a peak that a large but gradual peak displacement during the titration,")
             disp("and can be seen at all titration steps.")
@@ -94,7 +94,7 @@ else
             disp("The spectrum plot is now zoomed in on this peak.")
             disp("Each spectrum of the titration will be shown, one at a time.")
             disp("")
-            junk=input("<>","s");
+            showBreak
             % now prompt for picking all peak centers
             % actually need to see only one spectrum at a time otherwise super crowded
             disp("")
@@ -107,7 +107,7 @@ else
             disp("")
             disp("And click slowly!")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             CSP_o =[];
             for ss=1:titrationPoint
@@ -165,12 +165,12 @@ else
             hold on
             disp("The binding curve is shown in Figure 6.")
             disp("")
-            junk=input("<>","s");
+            showBreak
             %clc
             disp("")
             disp("Now type any key to start fitting this curve...")
             disp("")
-            junk=input("<>","s");
+            showBreak
             nu = time();
             a=1;
             while time() <= nu + 2
@@ -215,7 +215,7 @@ else
             disp("")
             disp("Now let's check against the expected result..")
             disp("")
-            junk=input("<>","s");
+            showBreak
             disp("")
             % check with actual perfect data
             disp("The actual dissociation constant was:")
@@ -323,19 +323,19 @@ else
                         getkdTime =0;
                         score = oriScore;
                         disp("")
-                        disp("Type \"getKD\" again to redo the analysis.")
+                        printf("Type %s again to redo the analysis.\n", dispCommand("getKD"))
                         disp("")
                     else
                         disp("")
-                        printf("OK, now it is time for the final questions. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                        printf("OK, now it is time for the final questions. Type %s at the command prompt.\n", dispQuestion(kdq+1))
                         disp("")
                     end
                 else
                     % no redo, done here
                     disp("")
-                    junk=input("<>","s");
+                    showBreak
                     disp("")
-                    printf("Now it is time for the final questions. Type \"question(%d)\" at the command prompt.\n", kdq+1)
+                    printf("Now it is time for the final questions. Type %s at the command prompt.\n", dispQuestion(kdq+1))
                     disp("")
                 end % check redo
             else
@@ -351,7 +351,7 @@ else
                     end
                 else
                     disp("")
-                    printf("To continue to the final questions, type \"question(%d)\" at the command prompt.\n", kdq+1)
+                    printf("To continue to the final questions, type %s at the command prompt.\n", dispQuestion(kdq+1))
                     disp("")
                 end
             end

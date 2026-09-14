@@ -143,7 +143,7 @@ if sum(questionAsked) == numQuestions
     disp("")
     disp("Check the output above to see in which directory the figures are saved!")
     disp("")
-    disp("Once you have sent the files you can close this program by typing \"goodbye\"")
+    printf("Once you have sent the files you can close this program by typing %s\n", dispCommand("goodbye"))
     disp("")
 else
     disp("")
@@ -154,7 +154,7 @@ else
             printf("It seems you forgot to answer question %d!\n", q)
         end
     end
-    disp("Type \"question(x)\" at the prompt to still answer it,")
+    printf("Type %s at the prompt to still answer it,\n", dispCommand("question(x)"))
     disp("with x being the number of the question!")
     disp("Finish the titration, all questions and then when prompted you can save the results")
     disp("")

@@ -133,6 +133,6 @@ end
 disp("")
 disp("Check the output above to see in which directory the figures are saved!")
 disp("")
-disp("Once you have sent the figure and output you can close this program by typing \"goodbye\"")
+printf("Once you have sent the figure and output you can close this program by typing %s\n", dispCommand("goodbye"))
 
 

@@ -11,7 +11,7 @@
 
 Iz = 0.5*[ 1 0; 0 -1 ];
 Ix = 0.5*[ 0 1; 1 0 ];
-Iy = 0.5*i*[0 -1; 1 0 ];
+Iy = 0.5*sqrt(-1)*[0 -1; 1 0 ];
 E =[1 0; 0 1];
 % kron computes the kronecker product of matrix A and B = a(i,j)*b 
 % construct N=1 2x2 matrix for one-spin system A

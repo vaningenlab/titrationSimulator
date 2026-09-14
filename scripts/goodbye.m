@@ -29,13 +29,13 @@ else
 	disp("Did you send/upload the figures of your all titration spectra and the binding curve")
 	disp("and the system details file?")
 	disp("")
-	junk=input("<>","s");
+	showBreak
 	disp("")
-	disp("If you you did, perfect and you can type \"exit\" to close the program.")
+	printf("If you you did, perfect and you can type %s to close the program.\n", dispCommand("byebye"))
 	disp("")
-	disp("If not, make sure the whole spectrum is shown (do \"zoomFull\" if necessary).")
-	disp("Then make sure all spectra and peak labels are visible (do \"plotAll\" if necessary).")
-	disp("Then generate the final output files using the \"saveResults\" command.")
+	printf("If not, make sure the whole spectrum is shown (do %s if necessary).\n", dispCommand("zoomFull"))
+	printf("Then make sure all spectra and peak labels are visible (do %s if necessary).\n", dispCommand("plotAll"))
+	printf("Then generate the final output files using the %s command.\n", dispCommand("saveResults"))
 	disp("It will put three files in your working directory.")
 	disp("")
 	if sendEmail == 1
@@ -51,6 +51,6 @@ else
 	save "state.out"
 	disp("Done!")
 	disp("")
-	disp("Once you have sent the files you can close this program by typing \"exit\"")
+	printf("Once you have sent the files you can close this program by typing %s\n", dispCommand("byebye"))
 	disp("")
 end

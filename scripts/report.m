@@ -33,7 +33,7 @@ if plotPoints > 1
 elseif titrationPoint == 2
     % apparently something was added but not recorded/plotted yet
     disp("")
-    disp("First record and plot the HSQC spectrum by typing \"zg\", then \"xfb\".")
+    printf("First record and plot the HSQC spectrum by typing %s, then %s.\n", dispCommand("zg"), dispCommand("xfb"))
     disp("")
 else
     disp("")

@@ -48,7 +48,7 @@ end
 if  promptForReEnter == 1
     disp("")
     disp("Please enter a positive number without units!")
-    disp("Type \"eda\" again to re-enter your values")
+    printf("Type %s again to re-enter your values\n", dispCommand("eda"))
     disp("")
 else
     % valid input
@@ -80,41 +80,41 @@ else
         disp("")
         disp("Hmmm. The number of scans needs to be a multiple of 8 here.")
         disp("I'll reset to the nearest multiple.")
-        junk=input("<>","s");
+        showBreak
     end
     ns = 8*round(ns/8);   % make sure multiple of 8 scans is used
     % 120 ms acq. time in 1H as in real life as absolute max.
     if atH > 0.12
         disp("")
         disp("Oops! Don't fry the probe! Limit the 1H acquisition time to 120ms maximum.")
-        disp("Type \"eda\" again at the command prompt and adjust your acq. times.")
+        printf("Type %s again at the command prompt and adjust your acq. times.\n", dispCommand("eda"))
         disp("")
     elseif atN > 0.1
         disp("")
         disp("Mmmm, with such long 15N acquisition time the experiment is going to take very long.")
         disp("Reduce the 15N acquisition time to 100ms maximum.")
-        disp("Type \"eda\" again at the command prompt and adjust your acq. times.")
+        printf("Type %s again at the command prompt and adjust your acq. times.\n", dispCommand("eda"))
         disp("")
     elseif atH < 0.005
         disp("")
         printf("%.2f ms is really too short to record the FID in the 1H dimension. Adjust to 5ms minimum.\n", atH*1000)
-        disp("Type \"eda\" again at the command prompt and adjust your acq. times.")
+        printf("Type %s again at the command prompt and adjust your acq. times.\n", dispCommand("eda"))
         disp("")
     elseif atN < 0.002
         disp("")
         printf("%.2f ms is really too short to record the FID in the 15N dimension. Adjust to 2ms minimum.\n", atN*1000)
-        disp("Type \"eda\" again at the command prompt and adjust your acq. times.")
+        printf("Type %s again at the command prompt and adjust your acq. times.\n", dispCommand("eda"))
         disp("")
     elseif ns > 64
         disp("")
         disp("Wow, are really that patient? Reduce the number of scans to 64 maximum,")
         disp("otherwise you're stuck here till tomorrow!")
-        disp("Type \"eda\" again at the command prompt and adjust ns")
+        printf("Type %s again at the command prompt and adjust ns\n", dispCommand("eda"))
         disp("")
      elseif ns == 0
         disp("")
         disp("Zero scans, are you kidding me ?!")
-        disp("Type \"eda\" again at the command prompt and adjust ns")
+        printf("Type %s again at the command prompt and adjust ns\n", dispCommand("eda"))
         disp("")
     else
         if titrationPoint == 1
@@ -155,12 +155,12 @@ else
         end
         if titrationPoint == 1
             disp("")
-            disp("Now start the experiment by typing \"zg\" at the command prompt")
+            printf("Now start the experiment by typing %s at the command prompt\n", dispCommand("zg"))
             disp("")
         else
             disp("")
-            disp("If you already added ligand to your sample, start the experiment by typing \"zg\" at the command prompt")
-            disp("Otherwise, add ligand using \"titrate\" and then run the experiment")
+            printf("If you already added ligand to your sample, start the experiment by typing %s at the command prompt\n", dispCommand("zg"))
+            printf("Otherwise, add ligand using %s and then run the experiment\n", dispCommand("titrate"))
             disp("")
         end
     end

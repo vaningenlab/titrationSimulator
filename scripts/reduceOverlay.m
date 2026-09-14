@@ -20,7 +20,7 @@ if numSpectra > maxSpectra
     end
     disp("")
     disp("Number of spectra to be plotted has been reduced.")
-    disp("Issue \"edlev\" again to update the plot. ")
+    printf("Issue %s again to update the plot.\n", dispCommand("edlev"))
     disp("")
 else
     showSpec = ones(1,numSpectra);
