@@ -7,9 +7,9 @@
 % !bug upon redoing processing! 15N dim is not stable??? changes after 1st time!
 % SOLVED! never use "i" as iterator, or never use "i" as complex number, or BOTH!!
 
-if exist("McX") == 0
+if any(McX) == 0
 	disp("")
-	disp("Oops! First record a FID by typing zg")
+	printf("Oops! First record a FID of the HSQC by typing %s\n", dispCommand("zg"))
 	disp("")
 else
     process2D;

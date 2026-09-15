@@ -65,7 +65,7 @@ else
         disp("")
     else
         disp("")
-        peakSelect = input("For which peak do you want to extract a binding curve? (Enter number only)","s");
+        peakSelect = input("For which peak do you want to extract a binding curve? (Enter number only) ","s");
         if length(regexp(peakSelect,'[.\d]')) < length(peakSelect) || length(peakSelect)==0
             disp("")
             disp("Please enter a positive number without units!")
@@ -76,7 +76,7 @@ else
             disp("This residue is in slow or intermediate exchange or experiences too much broadening.")
             printf("Type %s again and choose another peak.\n", dispCommand("getKD"))
             disp("")
-            disp("Best to take a peak that a large but gradual peak displacement during the titration,")
+            disp("Best to take a peak with a large but gradual peak displacement during the titration,")
             disp("and can be seen at all titration steps.")
             disp("")
         else

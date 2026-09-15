@@ -75,7 +75,7 @@ play(player)
 disp("Bye bye")
 disp("")
 pause(16)
-disp("Wait, some more happy cosines to finish off with ...")
+disp("Wait, some happy cosines to finish off with ...")
 disp("")
 % start intro music
 player = audioplayer(soloTrack, fs);

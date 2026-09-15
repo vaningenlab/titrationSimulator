@@ -8,6 +8,8 @@ if plotPoints == 0
 else
     disp("")
     disp("Saving a backup of your work before continuing ...")
+    % remove audioplayer objects before saving 
+    clear player
     save "state.out"
     disp("")
     disp("\tPlotting...")

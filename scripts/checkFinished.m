@@ -6,7 +6,7 @@ if sum(questionAsked) < numQuestions && pb < 0.7
     disp("")
     disp("It seems you're a still in the midde of the titration experiment...")
     printf("Use the %s command to see how far you are.\n", dispCommand("report"))
-    printf("Continue w/ %s until you reach ~80% bound protein.\n", dispCommand("titrate"))
+    printf("Continue w/ %s until you reach ~80 percent bound protein.\n", dispCommand("titrate"))
     disp("The other question will come along the way")
 elseif sum(questionAsked) < numQuestions && pb >= 0.7
     % not all questions answered, check which

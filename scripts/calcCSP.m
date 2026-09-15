@@ -79,6 +79,8 @@ else % enough titrationPoints
         % give intro how to use it
         disp("")
         disp("Wait a sec, saving a backup of your work before continuing ...")
+        % remove audioplayer objects before saving 
+        clear player
         save "state.out"
         disp("")
         disp("Backup saved!")

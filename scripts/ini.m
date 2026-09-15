@@ -28,7 +28,7 @@ global proteinConc pConcv lConcv cConcv molEqv pb pbVectorActual trup p1 expPars
 global allSpectra plotSpectra peakStoreX peakStoreY plotPoints peakIntProfile labelShift labelSize 
 global numLvls cntFactor baseLevel cntLvls startFloor noiseX colorNamesLong colorPlot
 global gH gN B0 atH atN swH swN wHv wNv dwHv dwNv asHppm asNppm laN_Av laN_Bv wHvppm wNvppm dwHvppm dwNvppm
-global asH asN asHppm asNppm centerHppm centerNppm zfH zfN 
+global asH asN asHppm asNppm centerHppm centerNppm zfH zfN titrateInfoShown
 global noiseLevel S2Values Rexpeak ns McX numBig numSmall simCSP CSP_o CSP_s CSP_f CSP cspq kdq
 
 % reset octave prompt -- in cyan
@@ -361,6 +361,7 @@ else
     showHint       = 0;                     % to track if overlap hint was shown
     showSaturationTip = 0;                  % to track if saturation hint was shown
     peakDissappearCheck = 0;                % to track if peaks could have dissapeared below contour level
+    titrateInfoShown = 0;                   % to track whether 1st info on how to use titrate has been given
     
     % set correct question number for CSP
     if easyMode == 1

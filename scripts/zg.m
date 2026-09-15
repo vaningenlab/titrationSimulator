@@ -262,6 +262,8 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         elseif titrationPoint == 1 && fidShown == 0 && easyMode == 1
             disp("")
             disp("Saving a backup of your work before continuing ...")
+            % remove audioplayer objects before saving 
+            clear player
             save "state.out"
             disp("")
             disp("Backup saved!")
@@ -288,6 +290,8 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
         elseif easyMode == 2 && fidShown == 0 && titrationPoint == 4
             disp("")
             disp("Saving a backup of your work before continuing ...")
+            % remove audioplayer objects before saving 
+            clear player
             save "state.out"
             disp("")
             disp("Backup saved!")

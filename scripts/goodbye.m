@@ -48,6 +48,8 @@ else
 	disp("")
 	% save everything for debugging when students have weird results
 	disp("Saving the titration into \"state.out\" ...")
+	% remove audioplayer objects before saving 
+	clear player
 	save "state.out"
 	disp("Done!")
 	disp("")

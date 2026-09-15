@@ -52,7 +52,7 @@ else
         disp("You could also restart the titration by making a new sample (%s)\n", dispCommand("makeSample"))
         disp("")
     end
-    if titrationPoint == 1 && plotPoints == 1
+    if titrationPoint == 1 && plotPoints == 1 && titrateInfoShown == 0
         % first point additional info
         clc
         disp("")
@@ -109,6 +109,7 @@ else
         disp("")
         showBreak
         disp("")
+        titrateInfoShown=1;
     end
     % below happens for all points
     disp("")

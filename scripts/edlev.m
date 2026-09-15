@@ -108,7 +108,7 @@ function edlev(numLvls_, cntFactor_, startFloor_);
             disp("Done!")
             disp("")
             printf("Continue with your titration (%s), recording and processing the spectrum (%s, %s)\n", dispCommand("titrate"), dispCommand("zg"), dispCommand("xfb"))
-            printf("or chemical shift perturbation analysis (%s).", dispQuestion(cspq)) 
+            printf("or chemical shift perturbation analysis (%s).", dispCommand("calcCSP")) 
             printf("\n")
             disp("")
         end % check peakHeight

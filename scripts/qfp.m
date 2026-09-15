@@ -1,7 +1,7 @@
 % qfp.m
 %
 
-if exist("McH2O") == 0
+if any(McH2O) == 0
 	disp("")
 	disp("Oops! First record a pulse calibration FID by typing zg")
 	disp("")

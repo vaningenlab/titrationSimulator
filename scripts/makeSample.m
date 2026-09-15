@@ -80,6 +80,7 @@ if questionAsked(1)==0
 end
 
 continueQuestion = "y"; % continue 
+
 while continueQuestion == "y"
     continueQuestion = "n";
     % read input as string to be able to check whether input is a number
@@ -92,6 +93,7 @@ while continueQuestion == "y"
         disp("Please enter a positive number without units for the concentration")
         disp("")
     else
+        % valid input
         proteinConc = str2num(proteinConc);
         ligandStock = str2num(ligandStock);
         % 1 mM of 10 kDa is 10 mg/ml so 5 mg for normal sample
@@ -101,63 +103,65 @@ while continueQuestion == "y"
             disp("")
             printf("Ah, too bad! You don't have %.1f milligram of protein in the fridge\n", amountProtein)
             printf("You also do not want to spend even more time in the wetlab.\n")
+            disp("")
             showBreak
+            disp("")
             disp("A typical NMR sample has a volume of 500 microliter, so for a 10 kDa protein")
             disp("you need 5 mg of purified protein to get a 1 millimolar (mM) solution.")
             disp("Remember that this is an isotope labeled protein produced in minimal media,")
             disp("so reduce your protein concentration to use less than 20 mg.")
             
             disp("")
+            showBreak
             continueQuestion = "y";
-        end
-        if (proteinConc < 0.010 && continueQuestion == "n")
+        elseif (proteinConc < 0.010 && continueQuestion == "n")
             disp("")
             printf("NMR does not work on homeopathic dilutions...\n")
             printf("Increase your protein concentration to more than 10 micromolar.\n")
             disp("")
             showBreak
             continueQuestion = "y";
-        end
-        if ligandClass == 2 % this protein assembly,not present in easyMode
-            if ligandStock > 0.5 && continueQuestion == "n"
-                disp("")
-                printf("Crap, your assembly %s%s%s precipitated upon concentrating to %.1f mM...\n", ...
-                    CYN, acronymLigand, WHT, ligandStock)
-                printf("For such large systems it is unlikely to have more than 500 micromolar\n")
-                printf("as maximum concentration before it will crap out.\n")
-                disp("")
-                showBreak
-                continueQuestion = "y";
-            end
-        elseif ligandClass == 1 % doubled max to 15 mM for easyMode 2, 10 mM easyMode 1
-            if ligandStock > 5 + 5*easyMode && continueQuestion == "n"
-                disp("")
-                printf("F! Your ligand protein crapped out the solution at %.1f mM...\n", ligandStock)
-                printf("Limit your ligand protein concentration to %d mM to prevent aggregation.\n", 5 + easyMode*5)
-                disp("")
-                showBreak
-                continueQuestion = "y";
-            end
-        else    % 20 mM should be enough also for easyMode, except for easyMode=2 then 40mM is allowed, easyMode=3 gives 60 mM
-            if ligandStock > 20 + max((easyMode-1),0)*20 && continueQuestion == "n"
-                disp("")
-                printf("Shoot! Your compound won't dissolve at %.1f mM...\n", ligandStock)
-                printf("Limit your ligand concentration to %d mM.\n", 20+max((easyMode-1),0)*20)
-                disp("")
-                showBreak
-                continueQuestion = "y";
-            end
-                 % prevent usage of stock solution that are less twice the concentration of the protein
-            if ligandStock < 2*proteinConc && continueQuestion == "n"
-                disp("")
-                disp("Oosh. You took a very low stock concentration of the ligand.")
-                disp("That would mean you would have to huge volumes of ligand to saturate the protein")
-                disp("causing strong dilution of your protein and thus loss of sensitivity.")
-                disp("Use at least 3x the protein concentration as ligand stock solution concentration.")
-                disp("")
-                showBreak
-                continueQuestion = "y";
-            end
+        elseif (ligandClass == 2 && ligandStock > 0.5 && continueQuestion == "n")
+            % ligand:                                               easymode
+            % class 0: only small molecule or peptide ligands       0,1,2,3
+            % class 1: protein ligands                              0,1,2,3
+            % class 2: big protein assemblies                       0
+            % this is protein assembly,not present in easyMode
+            disp("")
+            printf("Crap, your assembly %s%s%s precipitated upon concentrating to %.1f mM...\n", ...
+                CYN, acronymLigand, WHT, ligandStock)
+            printf("For such large systems it is unlikely to have more than 500 micromolar\n")
+            printf("as maximum concentration before it will crap out.\n")
+            disp("")
+            showBreak
+            continueQuestion = "y";
+        elseif ligandClass == 1 && ligandStock > 5 + 5*easyMode && continueQuestion == "n"
+            % doubled max to 15 mM for easyMode 2, 10 mM easyMode 1
+            disp("")
+            printf("F! Your ligand protein crapped out the solution at %.1f mM...\n", ligandStock)
+            printf("Limit your ligand protein concentration to %d mM to prevent aggregation.\n", 5 + easyMode*5)
+            disp("")
+            showBreak
+            continueQuestion = "y";
+        elseif ligandStock > 20 + max((easyMode-1),0)*20 && continueQuestion == "n"
+            % 20 mM should be enough also for easyMode, except for easyMode=2 then 40mM is allowed, easyMode=3 gives 60 mM
+            % this can only pop up for ligandcalss =0 = compounds
+            disp("")
+            printf("Shoot! Your compound won't dissolve at %.1f mM...\n", ligandStock)
+            printf("Limit your ligand concentration to %d mM.\n", 20+max((easyMode-1),0)*20)
+            disp("")
+            showBreak
+            continueQuestion = "y";
+        elseif ligandStock < 2*proteinConc && continueQuestion == "n"
+            % prevent usage of stock solution that are less twice the concentration of the protein
+            disp("")
+            disp("Oosh. You took a very low stock concentration of the ligand.")
+            disp("That would mean you would have to huge volumes of ligand to saturate the protein")
+            disp("causing strong dilution of your protein and thus loss of sensitivity.")
+            disp("Use at least 3x the protein concentration as ligand stock solution concentration.")
+            disp("")
+            showBreak
+            continueQuestion = "y";
         end
         % highest conc of ligand should be 9*KD + P0 for 90% saturation
         % dilution of P should be no more than 70% here
@@ -168,7 +172,7 @@ while continueQuestion == "y"
         %                                        compounds to 2 mM 
         % with easyMode is 2 this should never pop up; (it should be possible to make a perfect sample).
         % so assuming 1mM sample, 40mM stock, KD = 40/13 = 3 mM maximum.
-        if ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 0
+        if ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 0 && continueQuestion == 'n'
             disp("")
             printf("%s", BLU)
             disp("Just one thing:")
@@ -192,8 +196,7 @@ while continueQuestion == "y"
                 end
                 continueQuestion = 'y';
                 disp("")
-            end
-            if proteinConc > 1 && affinityValue < 2e-3
+           elseif proteinConc > 1 && affinityValue < 2e-3
             %    % lower protein conc only useful for sub-millimolar 
             %    % e.g if KD = 2.0 mM and P0 = 1mM and ligandstock is 10 mM max for protein
             %    % then 9*2+1=19 for 90%, or 8*2 =16 for 80% so not really much effect from lowering protein.
@@ -233,7 +236,7 @@ while continueQuestion == "y"
                 disp("Try to add enough ligand in your titration to get at least 80% of the protein bound to ligand.")
                 disp("")
             end
-        elseif ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 1
+        elseif ligandStock < 1.3*(9*affinityValue*1e3 + proteinConc) && showSaturationTip == 1 && continueQuestion == 'n'
             disp("")
             disp("OK, just work with the samples you have now.")
             disp("Try to add enough ligand in your titration to get at least 80% of the protein bound to ligand.")

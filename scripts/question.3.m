@@ -159,7 +159,7 @@ global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
         disp("")
         %printf("In your system the KD is in the %s range.\n", affinityRange)
         disp("Continue the titration until you see no more significant changes in the spectrum")
-        printf("You can also take a peek at the %bound protein using %s...\n", dispCommand("report"))
+        printf("You can also take a peek at the percentage bound protein using %s...\n", dispCommand("report"))
         disp("")
         printf("When you have all your spectra, issue %s to analyse the changes in the spectra.\n", dispCommand("calcCSP"))
         disp("")
