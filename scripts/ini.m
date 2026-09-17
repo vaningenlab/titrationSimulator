@@ -21,6 +21,28 @@
 
 clear -all
 
+% hacky edit for UU PCs
+    clc
+    disp("")
+    disp("This program needs to restart in order to have a proper display.")
+    disp("")
+    disp("Please follow the following 4 instructions:")
+    disp("")
+    disp("1. Hold the control key and hit c (do a control-c)")
+    disp("")
+    disp("2. Type the letter n on the command line, and hit enter-key 2 times after typing it!:")
+    disp("\tn")
+    disp("")
+    disp("3. Type the word ini on the command line, and hit enter-key 1 times after typing it:")
+    disp("\tini")
+    disp("")
+    disp("You have 30 sec to do so")
+    disp("")
+    disp("4. If you see this the second time (after you typed \"ini\"), then do nothing and just wait!")
+    disp("")
+    pause(30)
+%
+
 global aa_string acronymProtein acronymLigand proteinMass ligandMass ligandDescriptor affinityRange affinityValue koff ligandClass 
 global instructorMail my_pi offResonance numQuestions questionPoints questionAsked 
 global titrationPoint cspTime getkdTime numPeaks numCalib numCalibCheck easyMode cq beNice
