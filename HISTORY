@@ -1,5 +1,43 @@
 HISTORY titrationSimulator
 
+v23 Sep 2026 -- after BMSB
+* ANSI color issues
+    hack of restarting ini works but is cumbersome
+    suggestion to open in Windows Terminal instead of Command Prompt, cannot get it to work
+    is not reproducible! later it worked fine on the very same computer
+* Figure crashes
+    still many students have crashes on rotate spectrum --> bring error message back
+    ==> testing w. large spectrum fast changes -- indeed on 1 of tests I got the 3D FID to crash
+    ==> downsample 3D FID as well works to prevent it
+    ==> in my testing the 3D spectrum does not crash even with very fast spinning of the spectrum
+    figure hanging
+    ==> not in testing
+    RAM usage is not the issue, Octave uses 300 MB with very large spectrum. Even if 20x this is 6 out 16 GB.
+    seems to point issue with GraphicsDriver crashing. these systems likely have integrated graphics
+    GNU Octave help page suggest to switch to CPU rendering of plots instead to prevent crash at expense of speed
+    https://docs.octave.org/latest/Hardware-vs-Software-Rendering.html
+    ask Peter for input
+* bugfixes:
+- bootNMR showing up more than 1 time, FIXED
+- loading backup throws error FIXED
+- backup after each processing ADDED
+- reset plotPoints after making new sample FIXED
+- calcCSP allows to run if %bound < 70% FIXED
+- checkBound implementation is not correct FIXED
+- also dilution check in xfb ==> to prompt use of edlev; added in plot2D directly DONE
+- show folder and files Windows correctly DONE
+- add backup also after last question DONE
+- checkFinished layout update DONE
+- correct systemInfo / peakInfo DONE
+- warnings in CYAN DONE
+- added sound play of FID
+
+UU PC:
+Windows 11 Enterprise
+16GB RAM
+Core i7 2.1 GHz
+
+
 v22 Sep 2026 -- before BMSB course
 - all "i" changed to sqrt(-1) DONE
 - resize to 140 char wide for intro -- double check windows DONE
@@ -21,8 +59,8 @@ v22 Sep 2026 -- before BMSB course
 - slow down simulation of HSQC, is too fast! - pause command in zg.m in ns-loop DONE
 - questionAsked check when loading backup DONE
 - tone down using less protein if affinity is low! DONE
-- credit in goodbye
-- music
+- credit in goodbye DINE
+- musis DONE
 
 
 v21 Sep 2025 -- after BMSB course

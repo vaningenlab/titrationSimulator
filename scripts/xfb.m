@@ -14,6 +14,10 @@ if any(McX) == 0
 else
     process2D;
     plot2D;
+    % make backup - on fast pc this is OK
+    clear player
+    save state.out
+    % continue
     if titrationPoint == 1 && sino < 10
         disp("")
         disp("The signal-to-noise is too low in this spectrum")

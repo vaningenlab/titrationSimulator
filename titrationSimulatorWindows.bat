@@ -79,4 +79,4 @@ ENDLOCAL & SET OPENBLAS_NUM_THREADS=%OPENBLAS_NUM_THREADS%
 Rem since we should be in main directory, just cd('scripts') should be sufficient
 Rem test 4/6/2024: 8.4.0 octave with qt toolkit works fine
 Rem use octave-cli.exe to default to fltk old-school graphics
-call "%OCTAVE_HOME%\bin\octave.exe" --eval "cd('scripts'); ini" --persist
+call "%OCTAVE_HOME%\bin\octave.exe" --eval "cd('scripts'); pause(3); ini" --persist

@@ -48,11 +48,11 @@ disp("")
 printf("\t%s*** score ***%s\n", YEL, WHT)
 disp("")
 if easyMode == 1
-	printf("Your final score          : %d out of 10 points\n", finalScore)
+	printf("\tYour final score          : %s%.2d%s out of 10 points\n", CYN, finalScore, WHT)
 elseif easyMode < 3
-	printf("Your final score          : %d out of %d points\n", score, numQuestions*questionPoints+10)
+	printf("\tYour final score          : %d out of %d points\n", score, numQuestions*questionPoints+10)
 else
-	printf("Your final score          : %d out of %d points\n", score, numQuestions*questionPoints)
+	printf("\tYour final score          : %d out of %d points\n", score, numQuestions*questionPoints)
 end
 disp("")
 disp("")

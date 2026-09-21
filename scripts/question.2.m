@@ -8,270 +8,307 @@ global score S2Values koff numPeaks dwNv dwHv questionPoints questionAsked yourN
 global acronymProtein acronymLigand ligandDescriptor easyMode cq numQuestions instructorMail sendEmail ligandClass
 global numPeaks dwNvppm dwHvppm wHvppm wNvppm laN_Av laN_Bv atH atN asHppm asNppm numBig numSmall
 global titrationPoint tp pConcv lConcv molEqv molEq pbVectorActual proteinConc affinityValue pb
-global CSP_o CSP_f CSP simCSP cspTime cspq colorNamesLong plotPoints plotSpectra
+global CSP_o CSP_f CSP CSP_s simCSP cspTime cspq colorNamesLong plotPoints plotSpectra
 global beNice getkdTime kdq colorPlot cntLvls peakIntProfile finalScore
 
+disp("")
+if number == 1 && questionAsked(number) == 0
     disp("")
-    if number == 1 && questionAsked(number) == 0
-        disp("")
-        disp("You will now get your first multiple-choice question.")
-        disp("To answer just type any of the options A, B, C, etc. when prompted.")
-        disp("Just a, b, c etc. also works.")
-        disp("")
-        disp("Please note that you can only enter your answer when prompted.")
-        disp("Anything that you type when you see <> is ignored.")
-        disp("")
-        printf("If your answer is correct, you get the full %d points.\n", questionPoints)
-        printf("If it is wrong, you can answer once more, for %d points.\n", round(0.25*questionPoints) )
-        disp("")
-        showBreak
-        disp("");
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 1 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        if ligandClass > 0
-            disp("You're investigating an interaction between two proteins.")
-        else
-            disp("You're investigating the interaction between a protein and a smaller molecule.")
-        end
-        disp("")
-        disp("What labeling strategy is best to use? Also consider costs.")
-        disp("")
-        if ligandClass ==  0
-            disp("    A. The ligand should be 15N-labeled, the protein unlabeled.")
-            disp("    B. The ligand should be unlabeled, the protein 15N-labeled.")
-            disp("    C. The ligand should be unlabeled, the protein 13C-labeled.")
-            disp("    D. The ligand should be 13C-labeled, the protein 15N-labeled.")
-        else
-            disp("    A. Both proteins should be 15N-labeled.")
-            disp("    B. One of the protein should be 15N-labeled.")
-            disp("    C. Both proteins should be 13C-labeled.")
-            disp("    D. One of the proteins should be 13C-labeled.")
-        end
-        disp("")
-        answer1 = input("Enter your answer: ","s");
-        answer1 = checkAnswer(answer1);
-        score   = calcScore(answer1, score, "B", questionPoints);
-        showBreak
-        disp("");
-        disp("EXPLANATION:")
-        if ligandClass == 0
-            disp("As we want to follow the peaks of the protein, it should be isotope labeled.")
-            disp("Cheapest, most practical option is to leave the ligand unlabeled.")
-        else
-            disp("To map the binding site of one protein on the other, only one should be labeled")
-            disp("otherwise you will get a complicated mixture of the NMR signals of both proteins.")
-        end
-        disp("The protein is best labeled with 15N, as the backbone amide chemical shifts")
-        disp("are very sensitive to binding events, more so than 13C chemical shifts.")
-        disp("So B is the right answer.");
-        disp("")
-        disp("NEXT:")
-        disp("")
-        disp("Now you need to make your protein NMR sample and ligand stock solution.")
-        questionAsked(1)=1;
-    elseif number == 2 && questionAsked(number) == 0
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 2 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        disp("Examine the pulse calibration plot. When do you see no signal?")
-        disp("    A. If you don't apply a pulse")
-        disp("    B. If the magnetization is along the z-axis")
-        disp("    C. If you give a 180 degree pulse")
-        disp("    D. All of the above.")
-        disp("")
-        answer2 = input("Enter your answer: ","s");
-        answer2 = checkAnswer(answer2);
-        score   = calcScore(answer2, score, "D", questionPoints);
-        showBreak
-        disp("")
-        disp("EXPLANATION:")
-        disp("In equilibrium the magnetization is along the magnetic field (the z-axis) and not detectable.")
-        disp("There will only be signal if the magnetization has been rotated to have a component in the xy-plane.")
-        disp("Thus, there will be no signal at 180, 360, 540 degrees, etc (magnetization along + or -z)")
-        disp("")
-        showBreak
-        disp("");
-        disp("NEXT:")
-        disp("As it is easier to check for zero of a sinoid signal than a maximum,")
-        disp("your task is to identify the pulse length value at which you get a zero-crossing")
-        disp("corresponding to a 180 or 360 degree rotation of the magnetization.")
-        disp("Run this experiment again with adjusted range of pulse lengths to zoom in on the zero-crossing.")
-        printf("Type \%s to run the calibration again\n", dispCommand("zg"))
-        disp("")
-        questionAsked(2)=1;
-    elseif number == 3 && questionAsked(number) == 0
-        [val, minS2peak] = min(S2Values);
-        [val, maxS2peak] = max(S2Values);
-        peakLabel1 = strcat(aa_string(minS2peak),num2str(minS2peak));
-        peakLabel2 = strcat(aa_string(maxS2peak),num2str(maxS2peak));
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 3 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        disp("Peak intensity is related to molecular size.")
-        disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
-        disp("")
-        printf("The peak of residue %s has a higher intensity than that of residue %s.\n", peakLabel1, peakLabel2)
-        disp("How can this be explained?")
-        printf("    A. The peak of residue %s experiences less internal dynamics,\n", peakLabel1)
-        disp("       which means that effectively it is like a smaller molecule")
-        disp("")
-        printf("    B. The peak of residue %s has a higher intensity, because it is the signal of more protons.\n", peakLabel1)
-        disp("")
-        printf("    C. The peak of residue %s experiences more internal dynamics, \n", peakLabel1)
-        disp("       which means that effectively it is like a smaller molecule.")
-        disp("")
-        printf("    D. The peak of residue %s has a higher intensity, because it just happens to be so due to the noise.\n", peakLabel1)
-        disp("")
-        answer2 = input("Enter your answer: ","s");
-        answer2 = checkAnswer(answer2);
-        score   = calcScore(answer2, score, "C", questionPoints);
-        showBreak
-        disp("")
-        disp("EXPLANATION:")
-        disp("C is right here. The differences in peak intensities are caused by differences in local dynamics.")
-        disp("For instance termini will be more floppy, more dynamic than the folded core of the protein.")
-        disp("Floppy bits will behave like small molecules and have sharper, more intense lines.")
-        questionAsked(number) = 1;
-        % now prompt student to start with titration
-        disp("")
-        showBreak
-        disp("");
-        disp("Beautiful, you now have a fingerprint 15N-HSQC spectrum of your protein.")
-        disp("Compare your spectrum with that of your (virtual) neighbour.")
-        disp("")
-        showBreak
-        disp("");
-        disp("Now let's finally start with the titration and see whether the peaks move ...")
-        printf("Type %s at the command prompt.\n", dispCommand("titrate"))
-        disp("")
-    elseif number == 4 && questionAsked(number) == 0
-        disp("")
-        disp("Time for an intermezzo question!")
-        disp("You have added now more than 1 molar equivalent of ligand to the protein.")
-        disp("Time to consider how much you should add to have all binding sites")
-        disp("on the protein fully occupied with ligand.")
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 4 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        disp("You are about to exceed 1 molar equivalent of ligand added.")
-        disp("Time to consider how much you should add to have that all binding sites on the protein")
-        disp("are fully occupied with ligand.")
-        disp("")
-        disp("What ligand concentration is needed to (completely) saturate the protein?")
-        disp("    A. Depends on the affinity and the protein concentration.")
-        disp("    B. Depends on the affinity")
-        disp("    C. Depends on the protein concentration.")
-        disp("    D. Depends on the association-rate.")
-        disp("")
-        answer3 = input("Enter your answer: ","s");
-        answer3 = checkAnswer(answer3);
-        score   = calcScore(answer3, score, "A", questionPoints);
-        showBreak
-        disp("");
-        disp("EXPLANATION:")
-        disp("Clearly the ligand concentration needed to saturate the protein depends on the binding affinity.")
-        disp("It also depends on your protein concentration.")
-        disp("")
-        disp("Imagine you have an immensely concentrated protein solution.")
-        disp("Then you need to add more ligand to bind all proteins compared to when you have very little protein.")
-        disp("")
-        disp("Using the power of math, you can derive that you need")
-        disp("approximately 9*KD + the protein concentration to get 90% of all binding-sites occupied.")
-        disp("So A is the right answer.");
-        disp("")
-        showBreak
-        disp("")
-        %printf("In your system the KD is in the %s range.\n", affinityRange)
-        disp("Continue the titration until you see no more significant changes in the spectrum")
-        printf("You can also take a peek at the percentage bound protein using %s...\n", dispCommand("report"))
-        disp("")
-        printf("When you have all your spectra, issue %s to analyse the changes in the spectra.\n", dispCommand("calcCSP"))
-        disp("")
-        showBreak
-        questionAsked(number)=1;
-    elseif number == 5 && questionAsked(number) == 0
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 5 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        questionCSP
-    elseif number == 6 && questionAsked(number) == 0
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 6 (of %d)                      +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        questionInterface
-    elseif number == 7 && questionAsked(number) == 0
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        getKD
-    elseif number == 8 && questionAsked(number) == 0
-        % summary of the practical
-        disp("")
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        printf("+++               QUESTION 8 (of %d)                     +++\n",numQuestions)
-        disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-        disp("")
-        printf("How would you proceed to model the interaction between %s and %s?\n", acronymProtein, acronymLigand)
-        disp("(Assuming you have structures for both...)")
-        disp("    A. Use the residues with the largest CSPs to drive a docking calculation")
-        disp("    B. Check whether the residues with the largest CSPs cluster on the surface")
-        disp("    C. Repeat the titration experiment but then reversed to get CSPs on the ligand")
-        disp("    D. Repeat the titration experiment to reproduce the results.")
-        disp("")
-        answer7 = input("Enter your answer: ","s");
-        answer7 = checkAnswer(answer7);
-        tru7 = "B";
-        score    = calcScore(answer7, score, tru7, questionPoints);
-        disp("")
-        disp("EXPLANATION")
-        disp("Well, first of all, NMR experiments are typically not repeated.")
-        disp("That is not needed because the signal is the average of zillions of molecules.")
-        disp("Plus, the signal-to-noise ratio is typically >> 10")
-        disp("so that peak positions can be determined extremely accurately.")
-        disp("On top of that, most error typically comes from the inaccuracies of the protein concentration,")
-        disp("which can easily be 20% off.")
-        disp("")
-        if strcmp(ligandDescriptor,"compound")
-            disp("Since your ligand is a small molecule, option C is not very useful.")
-            disp("Likely the whole molecule is part of the interface.")
-            disp("Anyways, the right thing to do is first to check whether the binding is specific:")
-            disp("in which case all residues with large CSPs should cluster on the outside of the protein.")
-        else
-            disp("The right thing to do is first to check whether the binding is specific:")
-            disp("in which case all residues with large CSPs should cluster on the outside of the protein.")
-            disp("Since your ligand is another protein, knowing the binding interface of one of two")
-            disp("is not enough to model the complex.")
-            disp("You also need to gather data to determine interface residues on the ligand.")
-            disp("You could use another titration experiment for that, but also something else like mutagenesis.")
-        end
-        disp("")
-        disp("")
-        questionAsked(number)=1;
-        showBreak
-        %%clc
-        questionAsked(number) = 1;
-        checkFinished
-    elseif questionAsked(number) == 1
-        disp("")
-        disp("Ha! We don't play that way.")
-        disp("You already answered this question ...")
-        disp("")
+    disp("You will now get your first multiple-choice question.")
+    printf("To answer just type any of the options %sA%s, %sB%s, %sC%s, etc. when prompted.\n", RED, WHT, RED, WHT, RED, WHT)
+    printf("Just %sa%s, %sb%s, %sc%s etc. also works.\n", RED, WHT, RED, WHT, RED, WHT)
+    disp("")
+    disp("Please note that you can only enter your answer when prompted.")
+    printf("Anything that you type when you see %s<>%s is ignored.\n", MAG, WHT)
+    disp("")
+    printf("If your answer is correct, you get the full %d points.\n", questionPoints)
+    printf("If it is wrong, you can answer once more, for %d points.\n", round(0.25*questionPoints) )
+    disp("")
+    showBreak
+    disp("");
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 1 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    if ligandClass > 0
+        disp("You're investigating an interaction between two proteins.")
     else
-        printf("Uh, I don't know question %d.\n", number)
+        disp("You're investigating the interaction between a protein and a smaller molecule.")
     end
+    disp("")
+    disp("What labeling strategy is best to use? Also consider costs.")
+    disp("")
+    if ligandClass ==  0
+        printf(dispOption("A", "The ligand should be 15N-labeled, the protein unlabeled."))
+        printf(dispOption("B", "The ligand should be unlabeled, the protein 15N-labeled."))
+        printf(dispOption("C", "The ligand should be unlabeled, the protein 13C-labeled."))
+        printf(dispOption("D", "The ligand should be 13C-labeled, the protein 15N-labeled."))
+    else
+        printf(dispOption("A", "Both proteins should be 15N-labeled."))
+        printf(dispOption("B", "One of the protein should be 15N-labeled."))
+        printf(dispOption("C", "Both proteins should be 13C-labeled."))
+        printf(dispOption("D", "One of the proteins should be 13C-labeled."))
+    end
+    disp("")
+    answer1 = input("Enter your answer: ","s");
+    answer1 = checkAnswer(answer1);
+    score   = calcScore(answer1, score, "B", questionPoints);
+    showBreak
+    disp("");
+    printf("%s", BLU)
+    disp("EXPLANATION:")
+    printf("%s", WHT)
+    if ligandClass == 0
+        disp("As we want to follow the peaks of the protein, it should be isotope labeled.")
+        disp("Cheapest, most practical option is to leave the ligand unlabeled.")
+    else
+        disp("To map the binding site of one protein on the other, only one should be labeled")
+        disp("otherwise you will get a complicated mixture of the NMR signals of both proteins.")
+    end
+    disp("The protein is best labeled with 15N, as the backbone amide chemical shifts")
+    disp("are very sensitive to binding events, more so than 13C chemical shifts.")
+    disp("So B is the right answer.");
+    disp("")
+    printf("%s", BLU)
+    disp("NEXT:")
+    printf("%s", WHT)
+    disp("")
+    disp("Now you need to make your protein NMR sample and ligand stock solution.")
+    questionAsked(1)=1;
+elseif number == 2 && questionAsked(number) == 0
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 2 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    disp("Examine the pulse calibration plot. When do you see no signal?")
+    printf(dispOption("A","If you don't apply a pulse."))
+    printf(dispOption("B","If the magnetization is along the z-axis."))
+    printf(dispOption("C","If you give a 180-degree pulse."))
+    printf(dispOption("D","All of the above."))
+    disp("")
+    answer2 = input("Enter your answer: ","s");
+    answer2 = checkAnswer(answer2);
+    score   = calcScore(answer2, score, "D", questionPoints);
+    showBreak
+    disp("")
+    printf("%s", BLU)
+    disp("EXPLANATION:")
+    printf("%s", WHT)
+    disp("In equilibrium the magnetization is along the magnetic field (the z-axis) and not detectable.")
+    disp("There will only be signal if the magnetization has been rotated to have a component in the xy-plane.")
+    disp("Thus, there will be no signal at 180, 360, 540 degrees, etc (magnetization along + or -z)")
+    disp("")
+    showBreak
+    disp("");
+    printf("%s", BLU)
+    disp("NEXT:")
+    printf("%s", WHT)
+    disp("As it is easier to check for zero of a sinoid signal than a maximum,")
+    disp("your task is to identify the pulse length value at which you get a zero-crossing")
+    disp("corresponding to a 180 or 360 degree rotation of the magnetization.")
+    disp("Run this experiment again with adjusted range of pulse lengths to zoom in on the zero-crossing.")
+    printf("Type \%s to run the calibration again\n", dispCommand("zg"))
+    disp("")
+    questionAsked(2)=1;
+elseif number == 3 && questionAsked(number) == 0
+   [val, minS2peak] = min(S2Values);
+    peakLabel1 = strcat(aa_string(minS2peak),num2str(minS2peak));
+    peakLabel2 = strcat(aa_string(Rexpeak),num2str(Rexpeak));
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 3 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    disp("Peak intensity is related to molecular size.")
+    disp("Small molecules have sharp, intense lines. Big molecules have broad, weak lines.")
+    disp("")
+    printf("The peak of residue %s has a higher intensity than that of residue %s.\n", peakLabel1, peakLabel2)
+    disp("How can this be explained?")
+    printf(dispOption("A","The residue of this peak experiences less internal dynamics,\n")
+    disp("       which means that effectively it is like a smaller molecule")
+    disp("")
+    printf(dispOption("B", "The peak of this residue has a higher intensity, because it is the signal of more protons.\n")
+    disp("")
+    printf(dispOption("C","The peak of this residue experiences more (fast) internal dynamics, \n")
+    disp("       which means that effectively it is like a smaller molecule.")
+    disp("")
+    printf(dispOption("D", "The peak of residue has a higher intensity, because it just happens to be so due to the noise.\n")
+    disp("")
+    answer2 = input("Enter your answer: ","s");
+    answer2 = checkAnswer(answer2);
+    score   = calcScore(answer2, score, "C", questionPoints);
+    showBreak
+    disp("")
+    printf("%s", BLU)
+    disp("EXPLANATION:")
+    printf("%s", WHT)
+    disp("C is right here. The differences in peak intensities are caused by differences in local dynamics.")
+    disp("For instance termini will be more floppy, more dynamic than the folded core of the protein.")
+    disp("Floppy bits will behave like small molecules and have sharper, more intense lines.")
+    questionAsked(number) = 1;
+    % now prompt student to start with titration
+    disp("")
+    showBreak
+    disp("");
+    printf("%s", BLU)
+    disp("NEXT:")
+    printf("%s", WHT)
+    disp("Beautiful, you now have a fingerprint 15N-HSQC spectrum of your protein.")
+    disp("Compare your spectrum with that of your (virtual) neighbour.")
+    disp("")
+    showBreak
+    disp("");
+    disp("Now let's finally start with the titration and see whether the peaks move ...")
+    printf("Type %s at the command prompt.\n", dispCommand("titrate"))
+    disp("")
+elseif number == 4 && questionAsked(number) == 0
+    disp("")
+    disp("Time for an intermezzo question!")
+    disp("You have added now more than 1 molar equivalent of ligand to the protein.")
+    disp("Time to consider how much you should add to have all binding sites")
+    disp("on the protein fully occupied with ligand.")
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 4 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    disp("You are about to exceed 1 molar equivalent of ligand added.")
+    disp("Time to consider how much you should add to have that all binding sites on the protein")
+    disp("are fully occupied with ligand.")
+    disp("")
+    disp("What ligand concentration is needed to (completely) saturate the protein?")
+    printf(dispOption("A","Depends on the affinity and the protein concentration."))
+    printf(dispOption("B","Depends on the affinity."))
+    printf(dispOption("C","Depends on the protein concentration."))
+    printf(dispOption("D","Depends on the association-rate."))
+    disp("")
+    answer3 = input("Enter your answer: ","s");
+    answer3 = checkAnswer(answer3);
+    score   = calcScore(answer3, score, "A", questionPoints);
+    showBreak
+    disp("");
+    printf("%s", BLU)
+    disp("EXPLANATION:")
+    printf("%s", WHT)
+    disp("Clearly the ligand concentration needed to saturate the protein depends on the binding affinity.")
+    disp("It also depends on your protein concentration.")
+    disp("")
+    disp("Imagine you have an immensely concentrated protein solution.")
+    disp("Then you need to add more ligand to bind all proteins compared to when you have very little protein.")
+    disp("")
+    disp("Using the power of math, you can derive that you need")
+    disp("approximately 9*KD + the protein concentration to get 90% of all binding-sites occupied.")
+    disp("So A is the right answer.");
+    disp("")
+    showBreak
+    disp("")
+    %printf("In your system the KD is in the %s range.\n", affinityRange)
+    printf("%s", BLU)
+    disp("NEXT:")
+    printf("%s", WHT)
+    disp("Continue the titration until you see no more significant changes in the spectrum")
+    printf("You can also take a peek at the percentage bound protein using %s...\n", dispCommand("report"))
+    disp("")
+    printf("When you have all your spectra, issue %s to analyse the changes in the spectra.\n", dispCommand("calcCSP"))
+    disp("")
+    showBreak
+    questionAsked(number)=1;
+elseif number == 5 && questionAsked(number) == 0
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 5 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    questionCSP
+elseif number == 6 && questionAsked(number) == 0
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 6 (of %d)                      +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    questionInterface
+elseif number == 7 && questionAsked(number) == 0
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 7 (of %d)                     +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    getKD
+elseif number == 8 && questionAsked(number) == 0
+    % summary of the practical
+    disp("")
+    printf("%s", YEL)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("+++               QUESTION 8 (of %d)                     +++\n",numQuestions)
+    disp("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    printf("%s", WHT)
+    disp("")
+    printf("How would you proceed to model the interaction between %s and %s?\n", acronymProtein, acronymLigand)
+    disp("(Assuming you have structures for both...)")
+    printf(dispOption("A","Use the residues with the largest CSPs to drive a docking calculation"))
+    printf(dispOption("B","Check whether the residues with the largest CSPs cluster on the surface"))
+    printf(dispOption("C","Repeat the titration experiment but then reversed to get CSPs on the ligand"))
+    printf(dispOption("D","Repeat the titration experiment to reproduce the results."))
+    disp("")
+    answer7 = input("Enter your answer: ","s");
+    answer7 = checkAnswer(answer7);
+    tru7 = "B";
+    score    = calcScore(answer7, score, tru7, questionPoints);
+    disp("")
+    printf("%s", BLU)
+    disp("EXPLANATION:")
+    printf("%s", WHT)
+    disp("Well, first of all, NMR experiments are typically not repeated.")
+    disp("That is not needed because the signal is the average of zillions of molecules.")
+    disp("Plus, the signal-to-noise ratio is typically >> 10")
+    disp("so that peak positions can be determined extremely accurately.")
+    disp("On top of that, most error typically comes from the inaccuracies of the protein concentration,")
+    disp("which can easily be 20% off.")
+    disp("")
+    if strcmp(ligandDescriptor,"compound")
+        disp("Since your ligand is a small molecule, option C is not very useful.")
+        disp("Likely the whole molecule is part of the interface.")
+        disp("Anyways, the right thing to do is first to check whether the binding is specific:")
+        disp("in which case all residues with large CSPs should cluster on the outside of the protein.")
+    else
+        disp("The right thing to do is first to check whether the binding is specific:")
+        disp("in which case all residues with large CSPs should cluster on the outside of the protein.")
+        disp("Since your ligand is another protein, knowing the binding interface of one of two")
+        disp("is not enough to model the complex.")
+        disp("You also need to gather data to determine interface residues on the ligand.")
+        disp("You could use another titration experiment for that, but also something else like mutagenesis.")
+    end
+    disp("")
+    disp("")
+    questionAsked(number)=1;
+    showBreak
+    %%clc
+    questionAsked(number) = 1;
+    checkFinished
+elseif number > numQuestions
+    disp("")
+    printf("Uh, I don't know question %d.\n", number)
+    disp("")
+elseif questionAsked(number) == 1
+    disp("")
+    disp("Ha! We don't play that way.")
+    disp("You already answered this question ...")
+    disp("")
+end
 
 endfunction

@@ -1,7 +1,7 @@
 % defineMusic.m
 
 % define retro game music
-fs = 8000;				% dwell time / 8 kHz max
+fs = 8000;				% 1/dwell time / 8 kHz max
 noteDur = 0.125;	    % 125 ms duration 1/16 note = 1 beat per 500 ms = 120 BPM
 						% 1 bar = 4*0.5 = 2 sec
 t16 = 0:1/fs:noteDur;	% time vector sixteenth note

@@ -55,8 +55,10 @@ else
     if strcmp(graphics_toolkit, 'qt') == 1
         if ispc()
             if uu_check == 1
+                printf("%s", CYN)
                 disp("\tBEWARE: the UU PCs and this plot window are not friends.")
                 disp("\t        rotating the spectrum plot may trigger a crash... in testing it was ok though..")
+                printf("%s", WHT)
                 %disp("\tBefore continuing do the following")
                 %disp("\t- in the menu bar of the Figure 3 window, click Tools")
                 %disp("\t- then click GUI mode (on all axis)")

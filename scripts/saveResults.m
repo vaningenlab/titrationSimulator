@@ -4,63 +4,78 @@
 if sum(questionAsked) == numQuestions
     % questions answered, we can assume done
     disp("")
-    disp("Ok, saving all your results: plots of the spectrum and binding curve and details on your system")
-
-    % save HSQCs
+    % save everything for debugging when students have weird results
+    printf("Making a final backup of all your results into \"state.out\" ... ")
+    % remove audioplayer objects before saving 
+    clear player
+    save "state.out"
+    printf("done!\n")
     disp("")
-    disp("    Generating the spectrum plot can take some time ....")
+    showBreak
+    disp("")
+
+    % save the 3 files
+    specFileNam = sprintf("titr_spec_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+    curveFileNam = sprintf("titr_curve_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+    infoFileNam = sprintf("titr_info_%s_%s_%d.txt", acronymProtein, acronymLigand, titrationPoint);
+    pathNam = pwd;
+    if ispc()
+        % remove \scripts from path for display
+        pathNam = pathNam(1:length(pathNam)-8)
+    end
+
+    disp("Saving the 3 files ")
+    printf("\t- %s  : the plot with all spectra\n", specFileNam)
+    printf("\t- %s : the binding curve\n", curveFileNam)
+    printf("\t- %s  : a text file describing your system\n", infoFileNam)
+    disp("")
+    disp("\tGenerating the spectrum plot can take some time ....")
+    disp("")
+
+    % now actually save
     figure(2);
     %student should make sure him/herself plot is shown properly
     % file location:
     %     mac: pwd in octave is main dir (inherited from startup dir) while path points to script dir
     % windows: saved in pw for mac (inherits startup dir)
     if ispc()
-        fileName = sprintf("../titr_spec_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("../%s", specFileNam);
     else
-        fileName = sprintf("titr_spec_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("%s", specFileNam);
     end
     if exist(fileName, "file") == 2
         fileName2 = sprintf("%s.BAK.png", fileName);
         movefile(fileName, fileName2);
-        printf("Backing up existing file %s to %s\n", fileName, fileName2);
+        %printf("Backing up existing file %s to %s\n", fileName, fileName2);
     end
     print(fileName, "-dpng");
-    disp("")
-    printf("Written spectrum plot %s in directory %s.\n", fileName, pwd)
-    disp("")
-
+    
     % save binding curve
-    disp("")
-    disp("    Generating the binding curve plot ....")
     figure(6)
     if ispc()
-        fileName = sprintf("../titr_curve_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("../%s", curveFileNam);
     else
-        fileName = sprintf("titr_curve_%s_%s_%d.png", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("%s", curveFileNam);
     end 
     if exist(fileName, "file") == 2
         fileName2 = sprintf("%s.BAK.png", fileName);
         movefile(fileName, fileName2);
-        printf("Backing up existing file %s to %s\n", fileName, fileName2);
+        %printf("Backing up existing file %s to %s\n", fileName, fileName2);
     end
     print(fileName, "-dpng");
-    disp("")
-    printf("Written binding curve plot %s in directory %s.\n", fileName, pwd)
-    disp("")
 
     % also save systemInfo to file
-    disp("")
-    disp("    Saving the system information ....")
     if ispc()
-        fileName = sprintf("../titr_info_%s_%s_%d.txt", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("../%s", infoFileNam);
     else
-        fileName = sprintf("titr_info_%s_%s_%d.txt", acronymProtein, acronymLigand, titrationPoint);
+        fileName = sprintf("%s", infoFileNam);
     end 
     if exist(fileName, "file") == 2
         fileName2 = sprintf("%s.BAK.txt", fileName);
         movefile(fileName, fileName2);
-        printf("Backing up existing file %s to %s\n", fileName, fileName2);
+        %printf("Backing up existing file %s to %s\n", fileName, fileName2);
     end
+
     fid = fopen(fileName,'w');
     fprintf(fid,"\t*** system details ***\n");
     fprintf(fid,"\tprotein                      : %s factor %s (%.1f kDa)\n", proteinDescriptor, acronymProtein, proteinMass);
@@ -127,8 +142,10 @@ if sum(questionAsked) == numQuestions
         fprintf(fid, "Your final score          : %d out of %d points\n", score, numQuestions*questionPoints);
     end
     fclose(fid);
+
+    showBreak
     disp("")
-    printf("Written system information %s in directory %s.\n", fileName, pwd)
+    printf("These 3 files are stored in the %s%s%s directory\n", CYN, pathNam, WHT)
     disp("")
 
 
@@ -140,8 +157,6 @@ if sum(questionAsked) == numQuestions
         disp("Upload these files in the assignment in the electronic learning environment")
         disp("as indicated by your instructor")
     end
-    disp("")
-    disp("Check the output above to see in which directory the figures are saved!")
     disp("")
     printf("Once you have sent the files you can close this program by typing %s\n", dispCommand("goodbye"))
     disp("")
@@ -157,6 +172,9 @@ else
     printf("Type %s at the prompt to still answer it,\n", dispCommand("question(x)"))
     disp("with x being the number of the question!")
     disp("Finish the titration, all questions and then when prompted you can save the results")
+    disp("You can type %s to check whether you are done.\n", dispCommand("checkFinished"))
+    disp("")
+    showBreak
+    disp("Also have your instructor have a look")
     disp("")
 end
-

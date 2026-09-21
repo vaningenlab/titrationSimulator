@@ -264,6 +264,7 @@ cConcv(1) = 0;
 molEqv(1) = 0;
 pbVectorActual = 0;     % to track the actual population bound w/ pipet error
 allSpectra = [];        % reset container for all spectra when making new sample
+plotPoints = 0;         % reset plot counter
 calcEquilibriumConcSingleSite % initialize
 buildExchangeMatrix     % initialize for first spectrum of free protein
 
@@ -280,10 +281,12 @@ disp("")
 showBreak
 disp("")
 
-% start NMR interaction
-bootNMR
-disp("")
-showBreak
+% start NMR interaction only on 1st run
+if sampleOuttro == 1
+    bootNMR
+    disp("")
+    showBreak
+end
 
 % explain how to proceed
 if sampleOuttro == 1 && easyMode <= 2

@@ -12,9 +12,11 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("Your tau value is quite off. This is not going to work properly. You'll see.")
             disp("")
         end
+        printf("%s", BLU)
         disp("Starting HSQC experiment, takes ~1 min depending on")
         disp("your number of a scans and 1H/15N acquisition times....")
         disp("Note that in real life such experiment would take ~10 min to 1 hr.")
+        printf("%s", WHT)
         buildExchangeMatrix                 % derive exchange matrix for this point
         totalFIDX = zeros(npN,npH);
         totalFIDY = zeros(npN,npH);
@@ -138,8 +140,10 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             end % loop np
         else
             disp("")
+            printf("%s", BLU)
             disp("Your computer is a bit slow...")
             disp("Adjusting the acquisition window to update every fourth point and fourth scan...")
+            printf("%s", WHT)
             disp("")
             showBreak
             disp("")
@@ -254,19 +258,23 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
 
         if ((tau < 0.002 || tau > 0.004) && beNice == 1)
             disp("")
+            printf("%s", CYN)
             disp("Better set tau back to 1/(4J)= 0.00273 and re-record the spectrum.")
+            printf("%s", WHT)
         end
         disp("")
         if titrationPoint == 1 && fidShown == 0 && easyMode == 0
             printf("Type %s at the command prompt to take a look at the FID.\n", dispCommand("showFID"))
         elseif titrationPoint == 1 && fidShown == 0 && easyMode == 1
             disp("")
+            printf("%s", BLU)
             disp("Saving a backup of your work before continuing ...")
             % remove audioplayer objects before saving 
             clear player
             save "state.out"
             disp("")
             disp("Backup saved!")
+            printf("%s", WHT)
             disp("")
             disp("Let's take a closer look at how the plotted FIDs are transformed to a 2D spectrum.")
             disp("")
@@ -276,12 +284,16 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             disp("Zoom in on the plot to see the individual FIDs.")
             if strcmp(graphics_toolkit, 'qt') == 1
                 %disp("Use the magnifying glass icon to activate zoom mode")
+                printf("%s", CYN)
                 disp("Use the zoom (+) button to activate zoom mode and drag a rectangle to zoom in")
                 disp("Click the button with a 1 inside the magnifying glass to go back to the full view.")
+                printf("%s", WHT)
             elseif strcmp(graphics_toolkit, 'fltk') == 1
+                printf("%s", CYN)
                 disp("Click the \"P\" button on the bottom of the figure window to activate zoom mode.")
                 disp("Then right click and drag a rectangle to zoom.")
                 disp("Click the \"A\" button to autoscale to the full view.")
+                printf("%s", WHT)
             end
             disp("")
             showBreak
@@ -289,12 +301,14 @@ if (strcmp(expPars,"HSQC") || strcmp(expPars,"hsqc"))
             showFID
         elseif easyMode == 2 && fidShown == 0 && titrationPoint == 4
             disp("")
+            printf("%s", BLU)
             disp("Saving a backup of your work before continuing ...")
             % remove audioplayer objects before saving 
             clear player
             save "state.out"
             disp("")
             disp("Backup saved!")
+            printf("%s", WHT)
             disp("")
             disp("Time for a little intermezzo!")
             disp("")

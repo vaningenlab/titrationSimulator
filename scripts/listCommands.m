@@ -18,6 +18,7 @@ disp("      - calcCSP           : calculate chemical shift perturbations")
 disp("      - getKD             : fit the dissociation constant")
 disp("      - saveResults       : save the final results")
 disp("      - unAdd             : remove the last ligand addition to the sample")
+disp("      - playFID           : listen to the FID")
 disp("      - saveState         : save all titration data")
 disp("      - checkFinished     : check whether you have completed all questions")
 if easyMode < 2

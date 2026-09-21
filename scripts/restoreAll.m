@@ -1,8 +1,12 @@
 % restoreAll.m
 
+disp("Figure 2 shows the spectra of your titration experiment")
+disp("")
 plotAll
 restoreCSP
 
+disp("")
+disp("Figure 6 shows your binding curve")
 figure(6)
 hold off
 plot(lConcv, CSP_o, 'ro;observed;')

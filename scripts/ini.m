@@ -21,28 +21,6 @@
 
 clear -all
 
-% hacky edit for UU PCs
-    clc
-    disp("")
-    disp("This program needs to restart in order to have a proper display.")
-    disp("")
-    disp("Please follow the following 4 instructions:")
-    disp("")
-    disp("1. Hold the control key and hit c (do a control-c)")
-    disp("")
-    disp("2. Type the letter n on the command line, and hit enter-key 2 times after typing it!:")
-    disp("\tn")
-    disp("")
-    disp("3. Type the word ini on the command line, and hit enter-key 1 times after typing it:")
-    disp("\tini")
-    disp("")
-    disp("You have 30 sec to do so")
-    disp("")
-    disp("4. If you see this the second time (after you typed \"ini\"), then do nothing and just wait!")
-    disp("")
-    pause(30)
-%
-
 global aa_string acronymProtein acronymLigand proteinMass ligandMass ligandDescriptor affinityRange affinityValue koff ligandClass 
 global instructorMail my_pi offResonance numQuestions questionPoints questionAsked 
 global titrationPoint cspTime getkdTime numPeaks numCalib numCalibCheck easyMode cq beNice
@@ -148,6 +126,7 @@ my_pi = 3.14159265;    % custom pi to avoid overwriting value of pi by mistyping
 if exist("state.out") == 2
     % user can also issue saveAll command to save full state including spectra and titration so as to restart and append to previous results
     % load all these data
+    clc
     disp("")
     disp("Loading previous titration data (this may take a moment) ...")
     load("state.out")
@@ -155,22 +134,11 @@ if exist("state.out") == 2
     disp("")
     % check which questions have been answered
     disp("Checking your progress ...")
-    unansweredQ = [];
-    for q=1:numQuestions
-        if questionAsked(q) == 0
-            unansweredQ = [unansweredQ q];
-        end
-    end
-    if unansweredQ == [];
-        disp("")
-        disp("Great! You have answered all question, so looks like you're done!")
-        printf("To see your score again, type %s\n", dispCommand("checkFinished"))
-    else
-        disp("")
-        disp("Ok, you were not fully done yet. You still need to answer few questions")
-    end
     disp("")
     disp("Some tips on how to continue:")
+    disp("")
+    showBreak
+    disp("")
     if titrationPoint == 0
         disp("Ah you have no sample yet.")
         printf("Type % to continue.\n",dispCommand("makeSample"))
@@ -193,8 +161,8 @@ if exist("state.out") == 2
         disp("It seems you have not started the titration yet.")
         printf("Type %s to rerun the experiment and then %s to process it to a spectrum.\n", dispCommand("zg"), dispCommand("xfb"))
         printf("Then start the titration with %s command.\n", dispCommand("titrate"))
-    elseif pb < 0.85
-        % at least two spectra were plotted, so doing the titration and not saturated
+    elseif pb < 0.8 && sum(questionAsked) < numQuestions
+        % at least two spectra were plotted, so doing the titration and not saturated and some open questions
         disp("Ah, you were in the middle of the titration experiment")
         printf("Below you see the output of the %s command with\n", dispCommand("report"))
         disp("all the details on your titration steps.")
@@ -207,7 +175,7 @@ if exist("state.out") == 2
         printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
         printf("Type %s to continue the titration.\n", dispCommand("titrate"))
     else
-        % already enough bound state (>0.85%) to start analysis
+        % already enough bound state (>0.8%) to start analysis
         disp("It seems you completed the titration experiment.")
         if questionAsked(cspq) == 0
             disp("You can continue with the data analysis.")
@@ -226,7 +194,7 @@ if exist("state.out") == 2
             printf("Type %s to show the overlay of all spectra.\n", dispCommand("plotAll"))
             printf("Then type %s and then type %s.\n", dispCommand("restoreCSP"), dispQuestion("question",kdq))
         elseif sum(questionAsked) == numQuestions
-            disp("Ah it seems you were actually done!")
+            disp("You also answered all questions.")
             printf("Type %s to restore all Figures,\n", dispCommand("restoreAll"))
             printf("Then type %s to complete the practical.\n", dispCommand("checkFinished"))
         else
@@ -251,6 +219,7 @@ if exist("state.out") == 2
     disp("")
 else
     if exist("system.out") == 2
+        clc
         disp("")
         disp("Loading previous titration system...")
         % load system from previous titration to allow restart
@@ -384,6 +353,8 @@ else
     showSaturationTip = 0;                  % to track if saturation hint was shown
     peakDissappearCheck = 0;                % to track if peaks could have dissapeared below contour level
     titrateInfoShown = 0;                   % to track whether 1st info on how to use titrate has been given
+
+    totalTime = tic;                      % start timer of total time spent
     
     % set correct question number for CSP
     if easyMode == 1

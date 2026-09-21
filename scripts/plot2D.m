@@ -101,6 +101,32 @@ grid on
 titlestr = sprintf("%s (%.1f kDa) titration with %s (%.1f kDa)", acronymProtein, proteinMass, acronymLigand, ligandMass);
 title(titlestr,"fontweight","bold")
 
+% check whether contourlevels are good to display all signal
+[maxSpec, id] = max(max(Sr));
+% this is the maximum peak int, no exhange peak
+% peak intensities can differ up to 2 fold, so use factor 3
+if maxSpec*0.3 < baseLevel
+    % probably at least one peak is invisible
+    disp("")
+    disp("Looks like you may not be able to see all peaks properly....")
+    if proteinDilution < 0.2
+        disp("Your sample has been quite diluted due the ligand additions.")
+        disp("This lowers the protein concentration and thus the peak intensities")
+    end
+    disp("")
+    disp("You can adjust the contourplot settings to visualize all peaks")
+    printf("Use the %s command for this in the following way:\n", dispCommand("edlev"))
+    disp("")
+    % default edlev level is 0.05* initial peak height, now use the final max peak height
+    cntSetting = maxSpec*0.1/max(max(max(plotSpectra)));
+    printf("\t%s%s%.2f%s\n", dispCommand("edlev(10,1.8,"), RED, cntSetting, dispCommand(")"))
+    disp("")
+    disp("If you still do not the peaks of the last spectrum, lower the last number.")
+    disp("")
+    showBreak
+end
+
+
 % put labels
 % add amino acids based on aa_string
 

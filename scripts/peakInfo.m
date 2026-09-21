@@ -4,15 +4,19 @@ function peakInfo(peakNumber)
 
     global wHv wNv dwHv dwNv koff wHvppm wNvppm dwHvppm dwNvppm centerHppm centerNppm my_pi aa_string
 
+    defineColors
+
     if nargin == 0
         disp("")
-        disp("Specify a peak for examination, e.g. peakInfo(3).")
+        printf("Specify a peak for examination, e.g. %s.\n", dispCommand("peakInfo(3)"))
         disp("")
     else
         p = peakNumber;
         peakLabel = strcat(aa_string(p),num2str(p));
         disp("")
+        printf("%s", YEL)
         printf("\t*** details of peak %s ***\n", peakLabel)
+        printf("%s", WHT)
         disp("")
         printf("\tposition free state  (H/N, ppm)  : %6.3f / %6.2f\n", 2*centerHppm - wHvppm(p), 2*centerNppm - wNvppm(p));
         printf("\tposition bound state (H/N, ppm)  : %6.3f / %6.2f\n", 2*centerHppm - (wHvppm(p)+dwHvppm(p)), 2*centerNppm -(wNvppm(p)+dwNvppm(p)));

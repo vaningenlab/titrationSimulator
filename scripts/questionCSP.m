@@ -2,53 +2,26 @@
 % to make sure students perceive this explictly as a question
 peakErr = 0;
 continueCalcQuestion = "y";
-checkBound = 1;
 % for safety add check here as well
-if titrationPoint <= 2
-    % user first needs to do at least two additions
+if titrationPoint < 4
+    % user first needs to do at least three additions
     disp("")
     printf("First add some more ligand by typing %s at the command prompt.\n", dispCommand("titrate"))
     disp("")
 else % enough titrationPoints
-    if pb < 0.8 && beNice == 1
-        % warning if still far from saturation
-        % should be possible to continue
-        disp("")
-        disp("Try adding more ligand to your protein.")
-        disp("It looks like you're not done yet.")
-        if affinityValue*1e3 < proteinConc && molEq < 1.5
-        % check whether plateau has been reached in particular for high affinity binders
-            disp("")
-            disp("Even though the affinity is rather high, and your protein is nearly completely bound to ligand,")
-            disp("it is better to record an additional point to measure the binding plateau.")
-            printf("Type %s to see how far you are in the titration.\n", dispCommand("report"))
-            printf("Type %s to add more ligand, increase to at least 1.5 equivalents of ligand.\n", dispCommand("titrate"))
-        end
-        disp("")
-        printf("Continue anyway, or do first another %s.\n", dispCommand("titrate"))
-        continueCalcQuestion = input("Do you want to continue with the perturbation analysis? y/n: ","s");
-        if continueCalcQuestion != "n" && continueCalcQuestion != "y"
-            continueCalcQuestion = input("Please type y if you want to continue with analyis:","s");
-            if continueCalcQuestion != "n" && continueCalcQuestion != "y"
-                continueCalcQuestion = "n";
-            end
-        end
-        if continueCalcQuestion == "y"
-            % bound state is not reached so no checks on bound-state peak positions
-            checkBound = 0;
-        end
-    end % not saturated
     disp("")
     disp("You will be asked to simply left-click the peak center in the")
-    disp("first (=free) and final (=bound) spectrum with the mouse.")
+    printf("%sfirst (=free) and final (=bound)%s spectrum with the mouse.\n",CYN, WHT)
     disp("")
     disp("This works best if you enlarge the spectrum window as much as possible,")
     disp("but so that you can still see this.");
     if strcmp(graphics_toolkit, 'qt') == 1
         disp("")
+        printf("%s", CYN)
         disp("You can zoom in further to the region of the spectrum with all peaks.")
         disp("To do that click the magnifying glass with a 1 in it in the figure window menu bar.")
         disp("Make sure to deactivate the zoom tool when you are done!")
+        printf("%s", WHT)
     end
     disp("")
     disp("Do that now, and make sure to activate the spectrum by clicking on title bar.")
@@ -64,12 +37,16 @@ else % enough titrationPoints
     disp("Do not adjust the size of the spectrum window any more.")
     disp("")
     if strcmp(graphics_toolkit, 'qt') == 1
+        printf("%s", CYN)
         disp("In few cases the cursor changes to zoom mode by itself, visible as blue plus sign inside a circle.")
         disp("If that happens, first deactivate the zoom mode by clicking zoom button in the figure menu bar.")
         disp("When the cursor is back in selection mode, it shows up as a cursor arrow or as a big white plus sign.")
+        printf("%s", WHT)
     elseif strcmp(graphics_toolkit, 'fltk') == 1
+        printf("%s", CYN)
         disp("Be sure that the cursor is in selection mode, visible as a normal cursor.")
         disp("Make sure none of the A, P, G, R tools are active!")
+        printf("%s", WHT)
     end
     disp("")
     disp("And click slowly!")
@@ -102,13 +79,11 @@ else % enough titrationPoints
         %         mac version does not respond to ginput in CLI mode (gnuplot)
         %         windows version does work in CLI mode (fltk)
         % check whether peak has been picked correctly
-        % actualPosH = centerHppm - (wHvppm(p)-centerHppm);
-        % actualPosN = centerNppm - (wNvppm(p)-centerNppm);
+        % apo state peak position is in wHvppm / wNvppm vectors
         % ginput reports directly in ppm units
-        % hitting will also count as input but 
         if abs(x_f - wHvppm(p)) > cspBoxHppm || abs(y_f - wNvppm(p)) > cspBoxNppm
-            peakErr=peakErr+1;
-            peakErrApo = 1;
+            peakErr=peakErr+1
+            peakErrApo = 1
             if peakErr < 4
                 disp("")
                 disp("Ai, that is too far from the actual peak...")
@@ -152,38 +127,40 @@ else % enough titrationPoints
         end
         printf("Pick the center of peak %s in the bound spectrum (%s) \n", peakLabel, colorSpec)
         [x_b, y_b, buttons] = ginput(1);
-        % IMPORTANT! this check only works when (enough) fully bound!
-        % need to have approximate peak positions in final spectrum
-        % which should be equal to eigenvalue of largest eigenvector?
-        if checkBound == 1
-            %newPosH = actualPosH - dwHvppm(p);
-            %newPosN = actualPosN - dwNvppm(p);
-            % fix for Windows / FLTK / CLI 
-            % !double check minus sign!
-            newPosH = wHvppm(p) - dwHvppm(p);
-            newPosN = wNvppm(p) - dwNvppm(p);
-            if abs(x_b - newPosH) > cspBoxHppm || abs(y_b - newPosN) > cspBoxNppm
-                peakErr=peakErr+1;
-                peakErrBnd = 1;
-                if peakErr < 4
-                    disp("")
-                    disp("Ai, you clicked too far from the peak...")
-                    disp("For the next time, double check that you are looking at the right peak!")
-                    disp("Check that you have the correct residue and the bound-state spectrum. ")
-                    disp("")
-                    showBreak
-                else
-                    disp("")
-                    disp("There seems to be something going wrong here...")
-                    disp("You can continue but also decide to retry it.")
-                    disp("If you want to retry, type Ctrl-C until you the prompt,")
-                    printf("set cspTime to 0 (%s) and restart the analysis (%s).\n",dispCommand("cspTime=0"), dispQuestion(cspq))
-                    disp("Ask your instructor to have a look and help you. ")
-                    disp("")
-                    showBreak
-                end
+        % read the final peakposition from the maximum of the peakStore spectrum
+        % this can be different from the final bound state dependend on the saturation level
+        % extract 2D FID for peak
+        peakFIDX = peakStoreX(:,:,p, tp);
+        peakFIDY = peakStoreY(:,:,p, tp);
+        % process 2D FID of peak
+        SpHX    = processFID(peakFIDX, zfH, 0, 0, 0, 0, swH); % amplitude modulated cosine FID
+        SpHY    = processFID(peakFIDY, zfH, 0, 0, 0, 0, swH); % amplitude modulated sine FID
+        peakSr  = processFID(SpHX + sqrt(-1)*SpHY, zfN, 0, 0, 0, 0, swN);
+        % get peak maximum
+        [val, boundPosH] = max(max(peakSr));
+        [val, boundPosN] = max(max(peakSr'));
+        % above only fails if S/N is insufficient -- which is fair
+        if abs(x_b - asHppm(boundPosH)) > cspBoxHppm || abs(y_b - asNppm(boundPosN)) > cspBoxNppm
+            peakErr = peakErr + 1;
+            peakErrBnd = 1;
+            if peakErr < 4
+                disp("")
+                disp("Ai, you clicked too far from the peak...")
+                disp("For the next time, double check that you are looking at the right peak!")
+                disp("Check that you have the correct residue and the bound-state spectrum. ")
+                disp("")
+                showBreak
+            else
+                disp("")
+                disp("There seems to be something going wrong here...")
+                disp("You can continue but also decide to retry it.")
+                disp("If you want to retry, type Ctrl-C until you the prompt,")
+                printf("set cspTime to 0 (%s) and restart the analysis (%s).\n",dispCommand("cspTime=0"), dispQuestion(cspq))
+                disp("Ask your instructor to have a look and help you. ")
+                disp("")
+                showBreak
             end
-        end % check bound pick
+        end
         % calculate dx dx weighted CSP
         H_CSP = x_b - x_f;
         N_CSP = y_b - y_f;
@@ -197,27 +174,38 @@ else % enough titrationPoints
         simCSP(p)  = sqrt(simCSPH^2 + (simCSPN/5)^2);
         % checking absolute value allows swapping free and bound!
         % strict checking for scoring
-        % scaling by pb is only valid in fast exchange regime!
+        % scaling by pb is only valid in fast exchange regime! is maximum difference
         % this may not be true for all peaks, so also allow that
-        % correct if within 10%
+        % correct if CSP_o = [CSP_true*pb CSP_true]; thus CSP_o/CSP_true = pb-1 thus >=pb*0.9 < 1.1
         % also consider peakErr, since CSP is just a number could be accicentally correct
         % so actually both free and bound peak position should be correct within tolerance
         % and final CSP value should be within tolerance
-        if abs(CSP(p) - pb*simCSP(p)) < 0.1 && peakErrApo == 0 && peakErrBnd == 0
-            corrCSP(p) = 1;
-        elseif abs(CSP(p) - simCSP(p)) < 0.1 && peakErrApo == 0 && peakErrBnd == 0
-            corrCSP(p) = 1;
+        % zero CSP will give error so 
+        if simCSP(p) > 0.2 || simCSP(p) < -0.2
+            if CSP(p)/simCSP(p) > pb*0.9 && CSP(p)/simCSP(p) < 1.1 && peakErrApo == 0 && peakErrBnd == 0
+                corrCSP(p) = 1;
+            else
+                errList = [errList p];
+                p, CSP(p), simCSP(p), CSP(p)/simCSP(p)
+            end
         else
-            errList = [errList p];
+            % simCSP = 0 or small so do more lenient check, boxtolerance is 0.6
+            if abs(CSP(p)-simCSP(p)) < 0.1 && peakErrApo == 0 && peakErrBnd == 0
+               corrCSP(p) = 1;
+            else
+                errList = [errList p];
+                p, CSP(p), simCSP(p), abs(CSP(p)-simCSP(p))
+            end
         end
         % relaxed checking for continuing
-        if abs(CSP(p) - pb*simCSP(p)) < 0.2
-            corrCSP_easy(p) = 1;
-        end
+        %if abs(CSP(p) - pb*simCSP(p)) < 0.2
+        %    corrCSP_easy(p) = 1;
+        %end
         cspTime = cspTime + 1;  % number of times this analysis was done.
     end % loop over peaks
     % only continue if max 2 mistakes in easy
-    if (sum(corrCSP_easy) < numPeaks - 2)
+    %if (sum(corrCSP_easy) < numPeaks - 2)
+    if (sum(corrCSP) < numPeaks - 2)
         disp("")
         disp("Oops, there were too many peak picking mistakes to continue...")
         disp("")
@@ -252,6 +240,9 @@ else % enough titrationPoints
                     printf(" %s ", peakLabel)
                 end
                 printf("\n")
+                CSP
+                simCSP
+                CSP./simCSP
             end
             score=score+sum(corrCSP)+1;
             questionAsked(cspq)=1;
